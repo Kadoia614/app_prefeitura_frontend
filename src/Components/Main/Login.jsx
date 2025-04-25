@@ -64,7 +64,7 @@ const Login = () => {
         throw { message: "Token não encontrado" };
       }
 
-      let response = await API.get("/verifyToken");
+      let response = await API.get("/authuser");
       if (response.status === 200) {
         navigate("/");
       }

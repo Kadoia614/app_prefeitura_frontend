@@ -7,6 +7,8 @@ import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { Checkbox } from "primereact/checkbox";
+import { InputSwitch } from 'primereact/inputswitch';
+        
 import InputField from "../../../shared/InputField";
 import {
   Dialog,
@@ -19,13 +21,17 @@ import { Toast } from "primereact/toast";
 
 const PainelServices = () => {
   const [tableData, setTableData] = useState([]);
-  const [roles, setRoles] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
   const [excludeModal, setExcludeModal] = useState(null);
-  const [rolePermission, setRolePermission] = useState(false);
   const [dropdownService, setDropdownService] = useState(false);
+
+  const [roles, setRoles] = useState([]);
+  const [rolePermission, setRolePermission] = useState(false);
+
+  const [setor, setSetor] = useState([false]);
+
   const [error, setError] = useState(null);
   const toast = useRef(null); // Create a ref for the toast
 
@@ -35,6 +41,7 @@ const PainelServices = () => {
       console.log(response.data);
       setTableData(response.data.services);
       setRoles(response.data.roles);
+      setSetor(response.data.setores);
     } catch (error) {
       setError(error.status);
       showToast("error", "Failed to load services: " + error.message); // Show toast on error
@@ -79,6 +86,16 @@ const PainelServices = () => {
         perm.id === permissionId ? { ...perm, [key]: value } : perm
       ),
     }));
+  };
+
+  const editableVisibility = (visibilityId, value) => {
+    setModalData((prev) => ({
+      ...prev,
+      visibility: prev.visibility.map((visib) =>
+        visib.id === visibilityId ? { ...visib, visibility: value } : visib
+      ),
+    }));
+    console.log(modalData);
   };
   //#endregion EDIT ITEMS
 
@@ -227,7 +244,11 @@ const PainelServices = () => {
                         <div
                           id="RolesConfig"
                           className={`mt-6 bg-gray-100 rounded-sm ring-gray-300 ring-1 hover:ring-primary transition ${
-                            rolePermission ? "h-full" : "hidden"
+                            modalData
+                              ? rolePermission
+                                ? "h-full"
+                                : "h-15"
+                              : "hidden"
                           } overflow-hidden`}
                         >
                           <div
@@ -345,21 +366,43 @@ const PainelServices = () => {
                         <div
                           id="ServiceVisibility"
                           className={`mt-6 bg-gray-100 rounded-sm ring-gray-300 ring-1 hover:ring-primary transition ${
-                            dropdownService ? "h-full" : "h-15"
-                          } overflow-hidden`}
+                            modalData ? (dropdownService ? "h-full" : "h-15") : "hidden"} overflow-hidden`}
                         >
                           <div
                             className="flex justify-between items-center px-4 py-4 cursor-pointer"
-                            onClick={() => setDropdownService(!rolePermission)}
+                            onClick={() => setDropdownService(!dropdownService)}
                           >
                             <h3 className="text-lg font-bold">
                               Service Visibility
                             </h3>
                             <IoIosArrowDown
                               className={`transition ${
-                                rolePermission ? "rotate-180" : "rotate-0"
+                                dropdownService ? "rotate-180" : "rotate-0"
                               }`}
                             />
+                          </div>
+                          <div>
+                            {modalData?.visibility
+                              ? modalData.visibility.map((visibility) => {
+                                console.log(visibility)
+                                  return (
+                                    <div
+                                      key={visibility.id}
+                                      className="flex justify-between items-start px-4 py-2"
+                                    >
+                                      <h3 className="text-lg font-bold">
+                                        {
+                                          setor.find(
+                                            (setor) =>
+                                              setor.id == visibility.setor_id
+                                          )?.name
+                                        }
+                                      </h3>
+                                      <InputSwitch checked={visibility.visibility} onChange={(e) => editableVisibility(visibility.id, e.value)} />
+                                    </div>
+                                  );
+                                })
+                              : "Sem dados"}
                           </div>
                         </div>
                       </div>
