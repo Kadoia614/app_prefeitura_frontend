@@ -57,13 +57,15 @@ const FTAPP = () => {
           local: modalData.local,
         });
 
-        setOpenModalEdit(false);
         toast.current.show({
           severity: "success",
           summary: "Confirmed",
           detail: "Bolsista salvo com sucesso",
           life: 3000,
         });
+        setOpenModalEdit(false);
+        fetchData();
+
         return;
       }
 
@@ -86,6 +88,7 @@ const FTAPP = () => {
         life: 3000,
       });
       setOpenModalEdit(false);
+      fetchData();
     } catch (error) {
       toast.current.show({
         severity: "error",
