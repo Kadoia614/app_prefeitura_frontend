@@ -27,7 +27,6 @@ layer(primereact);
   background-image: url("/public/bg.png");
   background-size: cover;
   background-attachment: fixed;
-  overflow: scroll;
   .login-image {
     background-image: url("/public/login.jpg");
     background-size: cover;
@@ -52,7 +51,7 @@ layer(primereact);
 }
 
 .content{
-  @apply bg-white rounded-sm w-full my-10 overflow-hidden relative;
+  @apply bg-white w-full mb-10 py-5 overflow-auto relative;
 }
 .p-inputswitch-slider{
   &::before{

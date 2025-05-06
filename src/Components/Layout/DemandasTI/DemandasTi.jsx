@@ -1,10 +1,14 @@
 import { Outlet } from "react-router";
 import { Link } from "react-router";
+import Title from "../../shared/Title";
 
 const DemandasTi = () => {
   return (
-    <div id="DemandasTi" className="content">
-      <div className="">
+    <div id="DemandasTi">
+      <Title>Gerenciamento de demandas</Title>
+
+      <div>
+        {/* navigation */}
         <div className="flex gap-3">
           <div className="px-2 py-1 bg-primary-500 hover:bg-primary-600 text-md font-bold text-white rounded-t-lg actived">
             <Link to={"/demandasti/"}>
@@ -24,7 +28,9 @@ const DemandasTi = () => {
             </Link>
           </div>
         </div>
-        <div className=" md:p-10 py-10 rounded-b-sm bg-green-50">
+
+        {/* outlet */}
+        <div className=" p-5 rounded-b-sm bg-gray-50 shadow-md">
           <Outlet></Outlet>
         </div>
       </div>

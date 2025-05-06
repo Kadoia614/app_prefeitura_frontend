@@ -4,9 +4,9 @@ import Title from "../../shared/Title";
 
 const Admin = () => {
   return (
-    <div className="content">
+    <div id="Admin">
       <Title>Com grandes poderes vêm grandes responsabilidades</Title>
-      <div className="p-10">
+      <div>
         <div className="flex gap-3 mt-10">
           <div className="px-2 py-1 bg-primary-500 hover:bg-primaryhover text-md font-bold text-white rounded-t-lg">
             <Link to={"/admin/"}>
@@ -29,7 +29,7 @@ const Admin = () => {
             </Link>
           </div>
         </div>
-        <div className="ring-1 ring-black p-10 rounded-b-sm">
+        <div className=" p-5 rounded-b-sm bg-gray-50 shadow-md">
           <Outlet></Outlet>
         </div>
       </div>

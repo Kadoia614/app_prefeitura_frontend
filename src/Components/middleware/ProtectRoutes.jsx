@@ -9,14 +9,14 @@ import Error from "./HandleError";
 const ProtectRoutes = () => {
   let { setAuth, setScopo } = useContext(UserContext);
   let [isLoading, setIsLoading] = useState(true); // Para controlar a exibição enquanto carrega
-  let [ error, setError ] = useState(null);
+  let [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const authUser = async () => {
     try {
       const response = await API.get("/authuser");
       let responseScopo = response.data.user.role;
-      console.log('user autenticado')
+      console.log("user autenticado");
       setScopo(responseScopo);
       setAuth(true);
     } catch (err) {
@@ -25,8 +25,8 @@ const ProtectRoutes = () => {
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        console.log(err.response.data.message)
-        setError(err)
+        console.log(err.response.data.message);
+        setError(err);
       }
     } finally {
       setIsLoading(false); // Quando os dados estiverem carregados
@@ -37,19 +37,19 @@ const ProtectRoutes = () => {
     authUser();
   }, []);
 
-if(error) {
-  return (
-    <Error Error={error.response.data.message}></Error>
-  )
-}
+  if (error) {
+    return <Error Error={error.response.data.message}></Error>;
+  }
 
   if (isLoading) {
     return <Loading></Loading>; // Ou um spinner de loading
   }
 
   return (
-    <div className="container mx-auto">
-      <Outlet />
+    <div className="content">
+      <div className="container mx-auto bg-gray-50">
+        <Outlet />
+      </div>
     </div>
   );
 };

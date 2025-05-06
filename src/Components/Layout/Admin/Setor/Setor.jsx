@@ -1,18 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import API from "../../../../../service/API";
 import HandleError from "../../../middleware/HandleError";
+
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
 import { Toast } from "primereact/toast";
+
 import InputField from "../../../shared/InputField";
+import Modal from "../../../shared/Modal";
 
 const Setor = () => {
   const [tableData, setTableData] = useState([]);
@@ -92,8 +89,8 @@ const Setor = () => {
 
   return (
     <>
-      <div id="PainelSetor" className="p-4 bg-gray-50">
-        <Toast ref={toast}/>
+      <div id="PainelSetor">
+        <Toast ref={toast} />
         <Button
           label="Cadastrar Setor"
           className="btn-primary mb-4"
@@ -145,105 +142,56 @@ const Setor = () => {
         </DataTable>
 
         {/* Edit/Create Sector Modal */}
-        <Dialog
+        <Modal
+          id={"ModalEdit"}
+          title={modalData.id ? "Atualizar Setor" : "Cadastrar Setor"}
           open={openModalEdit}
           onClose={() => setOpenModalEdit(false)}
-          className="relative z-10"
+          acept={() => handleSave(modalData.id || null)}
+          aceptLabel={"Salvar"}
+          refuse={() => {
+            setOpenModalEdit(false);
+            clearModal();
+          }}
+          typeAction={"btn-primary"}
         >
-          <DialogBackdrop className="fixed inset-0 bg-gray-500/75 transition-opacity" />
-
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-left sm:mt-0 w-full">
-                      <DialogTitle as="h3" className="text-lg font-semibold text-gray-900">
-                        {modalData.id ? "Atualizar Setor" : "Cadastrar Setor"}
-                      </DialogTitle>
-                      <div className="mt-2">
-                        <div id="UserConfig">
-                          <div id="Data" className="sm:grid grid-cols-1 gap-4">
-                            {/* Name Field */}
-                            <InputField
-                              id="Name"
-                              label="Nome do Setor"
-                              value={modalData.name || ""}
-                              onChange={(e) => editableItem("name", e.target.value)}
-                            />
-                            {/* Description Field */}
-                            <InputField
-                              id="Description"
-                              label="Descrição do Setor"
-                              value={modalData.description || ""}
-                              onChange={(e) => editableItem("description", e.target.value)}
-                              isTextArea
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <Button
-                    label="Salvar"
-                    onClick={() => handleSave(modalData.id || null)}
-                    className="btn-primary"
-                  />
-                  <Button
-                    label="Cancelar"
-                    onClick={() => {
-                      setOpenModalEdit(false);
-                      clearModal();
-                    }}
-                    className="btn-danger ml-3"
-                  />
-                </div>
-              </DialogPanel>
+          <div id="UserConfig">
+            <div id="Data" className="sm:grid grid-cols-1 gap-4">
+              {/* Name Field */}
+              <InputField
+                id="Name"
+                label="Nome do Setor"
+                value={modalData.name || ""}
+                onChange={(e) => editableItem("name", e.target.value)}
+              />
+              {/* Description Field */}
+              <InputField
+                id="Description"
+                label="Descrição do Setor"
+                value={modalData.description || ""}
+                onChange={(e) => editableItem("description", e.target.value)}
+                isTextArea
+              />
             </div>
           </div>
-        </Dialog>
+        </Modal>
 
         {/* Exclude Confirmation Dialog */}
-        <Dialog
+        <Modal
+          id={"ExcludeModalSetor"}
+          title={"Excluir Setor?"}
+          acept={() => handleRemove(excludeModal)}
+          aceptLabel={"Excluir"}
+          refuse={() => setExcludeModalOpen(false)}
+          typeAction={"btn-danger"}
           open={excludeModalOpen}
           onClose={() => setExcludeModalOpen(false)}
-          className="relative z-10"
         >
-          <DialogBackdrop className="fixed inset-0 bg-gray-500/75 transition-opacity" />
-
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-left sm:mt-0 w-full">
-                      <DialogTitle as="h3" className="text-lg font-semibold text-gray-900">
-                        Deletar Setor
-                      </DialogTitle>
-                      <p className="text-red-500 font-bold mt-2">
-                        Tem certeza que deseja excluir esse item? Os dados excluídos não poderão ser recuperados.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 flex sm:flex-row-reverse sm:px-6">
-                  <Button
-                    label="Excluir"
-                    onClick={() => handleRemove(excludeModal)}
-                    className="btn-danger"
-                  />
-                  <Button
-                    label="Cancelar"
-                    onClick={() => setExcludeModalOpen(false)}
-                    className="btn-cancel mr-3"
-                  />
-                </div>
-              </DialogPanel>
-            </div>
-          </div>
-        </Dialog>
+          <p className="text-red-500 font-bold mt-2">
+            Tem certeza que deseja excluir esse item? Os dados excluídos não
+            poderão ser recuperados.
+          </p>
+        </Modal>
       </div>
     </>
   );

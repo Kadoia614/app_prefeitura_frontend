@@ -92,7 +92,7 @@ const RolesPainel = () => {
 
   return (
     <>
-      <div id="PainelRole" className="p-4 bg-gray-50">
+      <div id="PainelRole">
         <Toast ref={toast}/>
         <Button
           label="Cadastrar Role"

@@ -126,7 +126,7 @@ const PainelAdmin = () => {
   }
 
   return (
-    <div id="PainelAdmin" className="p-4 bg-gray-50">
+    <div id="PainelAdmin">
       <Toast ref={toast}/>
 
       <Button
@@ -249,6 +249,7 @@ const PainelAdmin = () => {
                       id="Email"
                       label="Email"
                       value={modalData.email || ""}
+                      keyfilter={"email"}
                       onChange={(e) =>
                         setModalData({ ...modalData, email: e.target.value })
                       }

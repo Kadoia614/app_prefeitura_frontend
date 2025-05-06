@@ -141,7 +141,7 @@ const PainelServices = () => {
   }
 
   return (
-    <div id="PainelServices" className="p-4 bg-gray-50">
+    <div id="PainelServices">
       <Toast ref={toast} /> {/* Add Toast component here */}
       <Button
         label="Cadastrar Serviço"

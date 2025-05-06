@@ -15,6 +15,8 @@ import Demandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
 import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
 import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/HistoryDemandas";
 
+import FT_APP from "./Components/Layout/FT_APP/FT_APP";
+
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
 import Admin from "./Components/Layout/Admin/Admin";
@@ -44,6 +46,7 @@ function App() {
               <Route path="userdemandas" element={<UserDemandas />} />
               <Route path="history" element={<HistoryDemandas />} />
             </Route>
+            <Route path="/ft-app" element={<FT_APP />}></Route>
           </Route>
           
           <Route path="*" element={<HandleError />} />
