@@ -90,6 +90,26 @@ const FTAPP = () => {
       setOpenModalEdit(false);
       fetchData();
     } catch (error) {
+      if (error.response.status == 400) {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: error.response.data.message,
+          life: 3000,
+        });
+        return;
+      }
+      if (error.response.status == 401) {
+        toast.current.show({
+          severity: "error",
+          summary: "Confirmed",
+          detail:
+            "Não foi possível salvar o Bolsista, Acesso Negado ",
+          life: 3000,
+        });
+        return
+      }
+
       toast.current.show({
         severity: "error",
         summary: "Confirmed",
@@ -117,10 +137,32 @@ const FTAPP = () => {
         life: 3000,
       });
     } catch (error) {
+      if (error.response.status == 400) {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: error.response.data.message,
+          life: 3000,
+        });
+        return;
+      }
+      if (error.response.status == 401) {
+        toast.current.show({
+          severity: "error",
+          summary: "Confirmed",
+          detail:
+            "Não foi possível salvar o Bolsista, Acesso Negado ",
+          life: 3000,
+        });
+        return
+      }
+
       toast.current.show({
         severity: "error",
-        summary: "Error",
-        detail: "Não foi possível excluir o bolsista. " + error,
+        summary: "Confirmed",
+        detail:
+          "Não foi possível salvar o Bolsista " + error.response.data.message ||
+          "Erro Desconhecido " + error,
         life: 3000,
       });
     } finally {
@@ -316,7 +358,6 @@ const FTAPP = () => {
             <div className="mt-1 col-span-1 sm:col-span-2">
               <InputField
                 id="CPF"
-                keyfilter="alpha"
                 inputClass="w-full"
                 label="Local"
                 value={modalData.local || ""}
