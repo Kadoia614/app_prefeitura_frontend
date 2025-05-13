@@ -31,7 +31,7 @@ const AllDemandas = () => {
   const fetchData = async () => {
     try {
       let response = await API.get("/demandas");
-      setTableData(response.data.demandas.demandas);
+      setTableData(response.data.demandas);
       setSetores(response.data.setores);
       console.log(response.data);
     } catch (error) {
