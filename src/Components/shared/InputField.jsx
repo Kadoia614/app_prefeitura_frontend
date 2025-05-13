@@ -1,6 +1,6 @@
 import { InputText } from "primereact/inputtext";
 
-const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputClass, placeHolder }) => (
+const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputClass, placeHolder, disabled }) => (
   <fieldset className="mt-2">
     <label htmlFor={id} className="font-bold text-gray-700">
       {label}
@@ -9,11 +9,12 @@ const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputCla
       <InputText
         keyfilter={keyfilter || ""}
         id={id}
-        className={`rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass}`}
+        className={`rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${disabled ? "bg-gray-100" : "bg-"}`}
         placeholder={`${placeHolder || label}`}
-        value={value}
+        value={value || ""}
         onChange={onChange}
         maxLength={maxLength}
+        disabled={disabled || false}
       />
     </div>
   </fieldset>

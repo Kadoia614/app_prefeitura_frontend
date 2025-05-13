@@ -17,6 +17,9 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
+import InputField from "../../../shared/InputField";
+import SelectField from "../../../shared/SelectField";
+
 const AllDemandas = () => {
   let { scopo } = useContext(UserContext);
   const toast = useRef(null);
@@ -330,37 +333,37 @@ const AllDemandas = () => {
             }
           />
 
-            <Column
-              header="Ações"
-              body={(rowData) => (
-                <div className="flex flex-wrap gap-2">
+          <Column
+            header="Ações"
+            body={(rowData) => (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition"
+                  onClick={() => {
+                    setOpenModalEdit(true);
+                    setModalData(rowData);
+                  }}
+                >
+                  <i className="pi pi-pencil" /> Editar
+                </button>
+                {(scopo == 1 || scopo == 2) && rowData.status !== 1 && (
                   <button
-                    className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition"
+                    className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
                     onClick={() => {
-                      setOpenModalEdit(true);
-                      setModalData(rowData);
+                      toAssume(rowData.id);
                     }}
                   >
-                    <i className="pi pi-pencil" /> Editar
+                    <i className="pi pi-check" /> Assumir
                   </button>
-                  {(scopo == 1 || scopo == 2) && rowData.status !== 1 && (
-                    <button
-                      className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
-                      onClick={() => {
-                        toAssume(rowData.id);
-                      }}
-                    >
-                      <i className="pi pi-check" /> Assumir
-                    </button>
-                  )}
-                </div>
-              )}
-            />
+                )}
+              </div>
+            )}
+          />
         </DataTable>
       </div>
 
       {scopo}
-      
+
       {/* Arrumar essa cagada aqui */}
       <Dialog
         open={openModalEdit}
@@ -394,51 +397,51 @@ const AllDemandas = () => {
                           id="Data"
                           className="sm:grid grid-cols-1 sm:grid-cols-2 gap-4"
                         >
-                          <fieldset className="mt-2 flex md:flex-row flex-col gap-4">
-                            <div className="w-full">
-                              <label htmlFor="Setor" className="font-bold">
-                                Setor responsável
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="Setor"
-                                  className="input"
-                                  placeholder={
-                                    setores.find((setor) => {
-                                      return setor.id === modalData.setor_id;
-                                    })?.name
-                                  }
-                                  required
-                                  disabled={"disabled"}
-                                />
+                          {modalData.id ? (
+                            <>
+                              <div className="w-full">
+                                <div className="mt-1">
+                                  <InputField
+                                    type="text"
+                                    id="Setor"
+                                    label={"Setor"}
+                                    placeHolder={"Setor responsável"}
+                                    inputClass="w-full"
+                                    value={
+                                      setores.find((setor) => {
+                                        return setor.id === modalData.setor_id;
+                                      })?.name
+                                    }
+                                    required
+                                    disabled={"disabled"}
+                                  />
+                                </div>
                               </div>
-                            </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
 
-                            <div className="w-full">
-                              <label htmlFor="Patrimonio" className="font-bold">
-                                Patrimônio
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="Patrimonio"
-                                  className="input"
-                                  placeholder="Patrimônio do equipamento"
-                                  value={modalData.patrimonio || ""}
-                                  onChange={(e) => {
-                                    editableItem("patrimonio", e.target.value);
-                                  }}
-                                  required
-                                  disabled={
-                                    modalData.id && scopo > 3
-                                      ? "disabled"
-                                      : false
-                                  }
-                                />
-                              </div>
+                          <div className="w-full">
+                            <div className="mt-1">
+                              <InputField
+                                type="text"
+                                id="Patrimonio"
+                                className="input"
+                                label={"Patrimônio"}
+                                inputClass="w-full"
+                                placeholder="Patrimônio do equipamento"
+                                value={modalData.patrimonio || ""}
+                                onChange={(e) => {
+                                  editableItem("patrimonio", e.target.value);
+                                }}
+                                required
+                                disabled={
+                                  modalData.id && scopo > 3 ? "disabled" : false
+                                }
+                              />
                             </div>
-                          </fieldset>
+                          </div>
                           <fieldset className="mt-2 col-span-2">
                             <label htmlFor="Descricao" className="font-bold">
                               Descrição
@@ -446,7 +449,7 @@ const AllDemandas = () => {
                             <div className="mt-1">
                               <textarea
                                 id="Descricao"
-                                className="input w-full"
+                                className="input w-full rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200"
                                 placeholder="Descrição do chamado"
                                 value={modalData.description || ""}
                                 onChange={(e) => {
@@ -463,11 +466,12 @@ const AllDemandas = () => {
                               Prioridade
                             </label>
                             <div className="mt-1">
-                              <select
+                              <SelectField
                                 className="select"
                                 name="Prioridade"
                                 id="Prioridade"
                                 value={modalData.prioridade + 1 || ""}
+                                options={[{id: 1, name: "Baixa"}, {id: 2, name: "Média"}, {id: 3, name: "Alta"}, {id: 4, name: "Gabinete"}]}
                                 onChange={(e) => {
                                   editableItem(
                                     "prioridade",
@@ -478,14 +482,7 @@ const AllDemandas = () => {
                                   modalData.id && scopo > 3 ? "disabled" : false
                                 }
                               >
-                                <option value="" disabled>
-                                  Selecione a prioridade
-                                </option>
-                                <option value="1">Baixa</option>
-                                <option value="2">Média</option>
-                                <option value="3">Alta</option>
-                                <option value="4">Gabinete</option>
-                              </select>
+                              </SelectField>
                             </div>
                           </fieldset>
                           <fieldset className="mt-2">
@@ -493,24 +490,19 @@ const AllDemandas = () => {
                               Status
                             </label>
                             <div className="mt-1">
-                              <select
-                                className="select"
+                              <SelectField
                                 name="Status"
                                 id="Status"
                                 value={modalData.status + 1 || ""}
+                                defaultValue={"Aberto"}
                                 onChange={(e) => {
                                   editableItem("status", e.target.value - 1);
                                 }}
+                                options={[{id: 1, name: "Aberto"}, {id: 2, name: "Em atendimento"}, {id: 3, name: "Aguardando resposta"}, {id: 4, name: "Concluído"}]}
                                 disabled={"disabled"}
                               >
-                                <option value="" disabled>
-                                  Status do Chamado
-                                </option>
-                                <option value="1">Aberto</option>
-                                <option value="2">Em atendimento</option>
-                                <option value="3">Aguardando resposta</option>
-                                <option value="4">Concluído</option>
-                              </select>
+
+                              </SelectField>
                             </div>
                           </fieldset>
                         </div>
