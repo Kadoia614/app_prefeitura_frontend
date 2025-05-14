@@ -23,7 +23,7 @@ const Login = () => {
 
   const Login = async (data) => {
     try {
-      let response = await API.post("/login", {
+      let response = await API.post("/auth/login", {
         credentials: {
           password: data.password,
           email: data.email,
@@ -64,7 +64,7 @@ const Login = () => {
         throw { message: "Token não encontrado" };
       }
 
-      let response = await API.get("/authuser");
+      let response = await API.get("/auth");
       if (response.status === 200) {
         navigate("/");
       }
