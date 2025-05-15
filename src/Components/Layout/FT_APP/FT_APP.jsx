@@ -30,7 +30,7 @@ const FTAPP = () => {
 
   const fetchData = async () => {
     try {
-      let response = await API.get("/bolsista");
+      let response = await API.get("/ft/bolsista");
       setTableData(response.data.bolsistas);
       console.log(response.data);
     } catch (error) {
@@ -43,33 +43,7 @@ const FTAPP = () => {
     console.log(modalData);
     let selectedDate = modalData.vencimento;
     try {
-      if (id) {
-        await API.put(`/bolsista/${id}`, {
-          bco: modalData.bco,
-          ag: modalData.ag,
-          dig_ag: modalData.dig_ag,
-          conta: modalData.conta,
-          dig_conta: modalData.dig_conta,
-          nome: modalData.nome,
-          bolsa: modalData.bolsa,
-          vencimento: selectedDate,
-          cpf: modalData.cpf,
-          local: modalData.local,
-        });
-
-        toast.current.show({
-          severity: "success",
-          summary: "Confirmed",
-          detail: "Bolsista salvo com sucesso",
-          life: 3000,
-        });
-        setOpenModalEdit(false);
-        fetchData();
-
-        return;
-      }
-
-      await API.post("/bolsista", {
+      let payload = {
         bco: modalData.bco,
         ag: modalData.ag,
         dig_ag: modalData.dig_ag,
@@ -80,7 +54,17 @@ const FTAPP = () => {
         vencimento: selectedDate,
         cpf: modalData.cpf,
         local: modalData.local,
-      });
+      };
+      if (id) {
+        await API.put(`/ft/bolsista/${id}`, {
+          ...payload,
+        });
+      } else {
+        await API.post("/ft/bolsista", {
+          ...payload,
+        });
+      }
+
       toast.current.show({
         severity: "success",
         summary: "Confirmed",
@@ -90,34 +74,13 @@ const FTAPP = () => {
       setOpenModalEdit(false);
       fetchData();
     } catch (error) {
-      if (error.response.status == 400) {
-        toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: error.response.data.message,
-          life: 3000,
-        });
-        return;
-      }
-      if (error.response.status == 401) {
-        toast.current.show({
-          severity: "error",
-          summary: "Confirmed",
-          detail:
-            "Não foi possível salvar o Bolsista, Acesso Negado ",
-          life: 3000,
-        });
-        return
-      }
-
       toast.current.show({
         severity: "error",
-        summary: "Confirmed",
-        detail:
-          "Não foi possível salvar o Bolsista " + error.response.data.message ||
-          "Erro Desconhecido " + error,
+        summary: "Error",
+        detail: error.response.data.message,
         life: 3000,
       });
+      return;
     }
   };
 
@@ -129,7 +92,7 @@ const FTAPP = () => {
 
   const handleRemove = async (id) => {
     try {
-      await API.delete(`/bolsista/${id}`);
+      await API.delete(`/ft/bolsista/${id}`);
       toast.current.show({
         severity: "success",
         summary: "Confirmed",
@@ -150,11 +113,10 @@ const FTAPP = () => {
         toast.current.show({
           severity: "error",
           summary: "Confirmed",
-          detail:
-            "Não foi possível salvar o Bolsista, Acesso Negado ",
+          detail: "Não foi possível salvar o Bolsista, Acesso Negado ",
           life: 3000,
         });
-        return
+        return;
       }
 
       toast.current.show({
