@@ -2,14 +2,14 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Toast } from "primereact/toast";
 
-import API from "../../../service/API";
+import API from "../../../../service/API";
 
 import { UserContext } from "/src/context/UserContextFile";
 import { InputText } from "primereact/inputtext";
 import { MdOutlinePassword } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
-import Loading from "../shared/Loading";
+import Loading from "../../shared/Loading";
 
 const Login = () => {
   let [email, setEmail] = useState("");

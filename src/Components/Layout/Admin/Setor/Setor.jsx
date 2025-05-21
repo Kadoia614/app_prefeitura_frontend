@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { Toast } from "primereact/toast";
 
-import InputField from "../../../shared/InputField";
+import InputField from "../../../shared/input/InputField";
 import Modal from "../../../shared/Modal";
 
 const Setor = () => {

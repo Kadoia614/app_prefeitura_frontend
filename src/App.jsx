@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router";
 
-import Header from "./Components/Main/Header";
-import Login from "./Components/Main/Login";
-import ChangePwd from "./Components/Main/changePwd";
+import Header from "./Components/Layout/Main/Header";
+import Login from "./Components/Layout/Main/Login";
 
 import Services from "./Components/Layout/Services";
 import PainelAdmin from "./Components/Layout/Admin/PainelAdmin/PainelAdmin";
@@ -20,7 +19,7 @@ import FT_APP from "./Components/Layout/FT_APP/FT_APP";
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
 import Admin from "./Components/Layout/Admin/Admin";
-import Footer from "./Components/Main/Footer";
+import Footer from "./Components/Layout/Main/Footer";
 
 function App() {
   return (
@@ -32,7 +31,6 @@ function App() {
 
           <Route path="/" element={<ProtectRoutes />}>
             <Route index element={<Services />} />
-            <Route path="alterarsenha" element={<ChangePwd />} />
 
             <Route path="admin" element={<Admin />}>
               <Route index element={<PainelAdmin />} />

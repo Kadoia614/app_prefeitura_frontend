@@ -17,8 +17,8 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import InputField from "../../../shared/InputField";
-import SelectField from "../../../shared/SelectField";
+import InputField from "../../../shared/input/InputField";
+import SelectField from "../../../shared/input/SelectField";
 
 const AllDemandas = () => {
   let { scopo } = useContext(UserContext);

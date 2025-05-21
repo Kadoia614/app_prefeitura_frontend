@@ -9,7 +9,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Checkbox } from "primereact/checkbox";
 import { InputSwitch } from 'primereact/inputswitch';
         
-import InputField from "../../../shared/InputField";
+import InputField from "../../../shared/input/InputField";
 import {
   Dialog,
   DialogBackdrop,

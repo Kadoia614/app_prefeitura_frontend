@@ -2,14 +2,15 @@ import { useContext, useEffect, useState, useRef } from "react";
 import API from "../../../../service/API";
 import HanlerError from "../../middleware/HandleError";
 
+// prime react
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
-import InputField from "../../shared/InputField";
-import CalendarInput from "../../shared/CalendarInput";
+import InputField from "../../shared/input/InputField";
+import CalendarInput from "../../shared/input/CalendarInput";
 import Title from "../../shared/Title";
 
 import { UserContext } from "/src/context/UserContextFile";

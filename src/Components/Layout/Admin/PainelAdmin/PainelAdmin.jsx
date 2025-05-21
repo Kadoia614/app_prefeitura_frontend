@@ -13,8 +13,8 @@ import {
 
 import API from "../../../../../service/API";
 import { Toast } from "primereact/toast";
-import SelectField from "../../../shared/SelectField";
-import InputField from "../../../shared/InputField";
+import SelectField from "../../../shared/input/SelectField";
+import InputField from "../../../shared/input/InputField";
 
 const API_ENDPOINTS = {
   USERS: "/user",
