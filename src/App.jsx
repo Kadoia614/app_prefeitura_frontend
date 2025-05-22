@@ -1,25 +1,25 @@
 import { Routes, Route } from "react-router";
 
-import Header from "./Components/Layout/Main/Header";
-import Login from "./Components/Layout/Main/Login";
+import Header from "./components/layout/Header";
+import Login from "./components/layout/Login";
 
-import Services from "./Components/Layout/Services";
-import PainelAdmin from "./Components/Layout/Admin/PainelAdmin/PainelAdmin";
-import PainelServices from "./Components/Layout/Admin/painelServices/painelServices";
-import Setor from "./Components/Layout/Admin/Setor/Setor";
-import RolesPainel from "./Components/Layout/Admin/RolesPainel/RolesPainel";
+import Services from "./pages/Services";
+import PainelAdmin from "./pages/admin/Users";
+import PainelServices from "./pages/admin/Services";
+import Setor from "./pages/admin/Setor";
+import RolesPainel from "./pages/admin/Roles";
 
-import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
-import Demandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
-import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
-import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/HistoryDemandas";
+import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
+import Demandas from "./pages/demandasTI/AllDemandas";
+import UserDemandas from "./pages/demandasTI/UserDemandas";
+import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
 
-import FT_APP from "./Components/Layout/FT_APP/FT_APP";
+import FT_APP from "./pages/FT/FT_APP";
 
-import ProtectRoutes from "./Components/middleware/ProtectRoutes";
-import HandleError from "./Components/middleware/HandleError";
-import Admin from "./Components/Layout/Admin/Admin";
-import Footer from "./Components/Layout/Main/Footer";
+import ProtectRoutes from "./middleware/ProtectRoutes";
+import HandleError from "./middleware/HandleError";
+import Admin from "./pages/admin/PainelAdmin";
+import Footer from "./components/layout/Footer";
 
 function App() {
   return (

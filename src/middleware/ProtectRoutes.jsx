@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { Outlet, useNavigate } from "react-router";
 
-import { UserContext } from "../../context/UserContextFile";
-import API from "../../../service/API";
-import Loading from "../shared/Loading";
+import { UserContext } from "../context/UserContextFile";
+import API from "../service/API";
+import Loading from "../components/layout/Loading";
 import Error from "./HandleError";
 
 const ProtectRoutes = () => {

@@ -1,9 +1,6 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import API from "../../../../../service/API";
-import HanlerError from "../../../middleware/HandleError";
-
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { Toast } from "primereact/toast";
+import { useContext, useEffect, useState } from "react";
+import API from "../../service/API";
+import HanlerError from "../../middleware/HandleError";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -19,18 +16,16 @@ import {
 
 const UserDemandas = () => {
   let { scopo } = useContext(UserContext);
-  const toast = useRef(null);
 
   let [tableData, setTableData] = useState([]);
   let [error, setError] = useState(false);
   let [modalData, setModalData] = useState([]);
   let [setores, setSetores] = useState([]);
   let [openModalEdit, setOpenModalEdit] = useState(false);
-  let [finish, setFinish] = useState(null);
 
   const fetchData = async () => {
     try {
-      let response = await API.get("/demandas/user");
+      let response = await API.get("/demandas/history");
       setTableData(response.data.demandas);
       setSetores(response.data.setores);
       console.log(response.data)
@@ -39,102 +34,9 @@ const UserDemandas = () => {
     }
   };
 
-  // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
-  const saveItem = async (id) => {
-    console.log(modalData);
-    try {
-      if (id) {
-        await API.put(`/demandas/${id}`, {
-          demanda: {
-            description: modalData.description,
-            patrimonio: modalData.patrimonio,
-            prioridade: modalData.prioridade,
-          },
-        });
-
-        setOpenModalEdit(false);
-        toast.current.show({
-          severity: "success",
-          summary: "Confirmed",
-          detail: "Demanda salva com sucesso",
-          life: 3000,
-        });
-        return;
-      }
-
-      await API.post("/demandas", {
-        demanda: {
-          description: modalData.description,
-          patrimonio: modalData.patrimonio,
-          prioridade: modalData.prioridade,
-        },
-      });
-      toast.current.show({
-        severity: "success",
-        summary: "Confirmed",
-        detail: "Demanda salva com sucesso",
-        life: 3000,
-      });
-      setOpenModalEdit(false);
-    } catch (error) {
-      toast.current.show({
-        severity: "error",
-        summary: "Confirmed",
-        detail:
-          "Não foi possível salvar a demanda " + error.response.data.message,
-        life: 3000,
-      });
-    } finally {
-      fetchData();
-    }
-  };
-
-  const finishDemanda = async (id) => {
-    try {
-      await API.put(`/demandas/${id}/finish`);
-
-      toast.current.show({
-        severity: "success",
-        summary: "Confirmed",
-        detail: "Demanda finalizada com sucesso",
-        life: 3000,
-      });
-    } catch (error) {
-      toast.current.show({
-        severity: "error",
-        summary: "Confirmed",
-        detail:
-          "Não foi possível finalizar a demanda " + error.response.data.message,
-        life: 3000,
-      });
-    } finally {
-      fetchData();
-    }
-  };
-
-  // sómente para gerenciar os valore dos inputs
-  const editableItem = (key, value) => {
-    setModalData((e) => ({ ...e, [key]: value }));
-  };
-
-  //#endregion EDIT ITEMS
-
   // apaga os dados do modal
   const clearModal = () => {
     setModalData({});
-  };
-
-  const acceptFinish = () => {
-    finishDemanda(finish);
-  };
-
-  const rejectFinish = () => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Rejected",
-      detail: "Operação Cancelada",
-      life: 3000,
-    });
   };
 
   //get a cada certo time (10seg nesse caso)
@@ -146,57 +48,6 @@ const UserDemandas = () => {
     }, 10000);
   }, []);
 
-  useEffect(() => {
-    if (finish !== undefined && finish !== null) {
-      confirmDialog({
-        message: (
-          <div className="text-gray-700 text-base p-4">
-            Você tem certeza que deseja{" "}
-            <span className="font-semibold text-blue-600">
-              Finalizar esta demanda
-            </span>
-            ?
-          </div>
-        ),
-        header: (
-          <div className="flex items-center gap-2 text-lg font-semibold text-red-500">
-            Confirmação Necessária
-          </div>
-        ),
-        icon: null, // Removido pois estamos usando o ícone manualmente no header
-        className: "rounded-xl shadow-lg p-4 bg-white",
-        style: {
-          width: "100%",
-          maxWidth: "450px",
-          borderRadius: "1rem",
-        },
-        defaultFocus: "accept",
-        acceptClassName:
-          "bg-blue-600 hover:bg-blue-700 transition text-white px-4 py-2 mx-2 rounded-md text-sm font-medium shadow-sm",
-        rejectClassName:
-          "bg-gray-200 hover:bg-gray-300 transition text-gray-800 px-4 py-2 mx-2 rounded-md text-sm font-medium shadow-sm",
-        acceptLabel: (
-          <span className="flex items-center gap-2">
-            <i className="pi pi-check" />
-            Sim, finalizar
-          </span>
-        ),
-        rejectLabel: (
-          <span className="flex items-center gap-2">
-            <i className="pi pi-times" />
-            Cancelar
-          </span>
-        ),
-        accept: acceptFinish,
-        reject: rejectFinish,
-      });
-    }
-  }, [finish]);
-
-  const toFinish = (id) => {
-    setFinish(id);
-  };
-
   // gerenciamento de erros para caso algo de errado ocorra durante as requisições
   if (error) {
     return <HanlerError error={error} />;
@@ -204,8 +55,6 @@ const UserDemandas = () => {
 
   return (
     <div id="AllDemandasTi">
-      <Toast ref={toast} />
-      <ConfirmDialog />
       <div>
         <button
           className="btn-primary"
@@ -288,7 +137,7 @@ const UserDemandas = () => {
                 0: ["Aberto", "bg-green-100 text-green-700"],
                 1: ["Em atendimento", "bg-yellow-100 text-yellow-700"],
                 2: ["Aguardando resposta", "bg-blue-100 text-blue-700"],
-                3: ["Concluído", "bg-gray-100 text-gray-700 text-white"],
+                3: ["Concluído", "bg-gray-100 text-gray-700"],
               };
               const [label, color] = map[rowData.status] || [
                 "-",
@@ -341,18 +190,18 @@ const UserDemandas = () => {
                       setModalData(rowData);
                     }}
                   >
-                    <i className="pi pi-pencil" /> Editar
+                    <i className="pi pi-pencil" /> Ver informações
                   </button>
-                  {(scopo == 1 || scopo == 2) && rowData.status == 1 && (
+                  {/* {(scopo == 1 ) && rowData.status == 3 && (
                     <button
                       className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-red-600 hover:bg-red-700 rounded-lg transition"
                       onClick={() => {
                         toFinish(rowData.id);
                       }}
                     >
-                      <i className="pi pi-check" /> Finalizar
+                      <i className="pi pi-check" /> Excluir
                     </button>
-                  )}
+                  )} */}
                 </div>
               )}
             />
@@ -423,15 +272,7 @@ const UserDemandas = () => {
                                   className="input"
                                   placeholder="Patrimônio do equipamento"
                                   value={modalData.patrimonio || ""}
-                                  onChange={(e) => {
-                                    editableItem("patrimonio", e.target.value);
-                                  }}
-                                  required
-                                  disabled={
-                                    modalData.id && scopo > 3
-                                      ? "disabled"
-                                      : false
-                                  }
+                                  disabled={"disabled"}
                                 />
                               </div>
                             </div>
@@ -446,12 +287,8 @@ const UserDemandas = () => {
                                 className="input w-full"
                                 placeholder="Descrição do chamado"
                                 value={modalData.description || ""}
-                                onChange={(e) => {
-                                  editableItem("description", e.target.value);
-                                }}
-                                disabled={
-                                  modalData.id && scopo > 3 ? "disabled" : false
-                                }
+                                disabled={"disabled"}
+
                               />
                             </div>
                           </fieldset>
@@ -465,13 +302,7 @@ const UserDemandas = () => {
                                 name="Prioridade"
                                 id="Prioridade"
                                 value={modalData.prioridade + 1 || ""}
-                                onChange={(e) => {
-                                  editableItem(
-                                    "prioridade",
-                                    e.target.value - 1
-                                  );
-                                }}
-                                disabled={scopo > 3 ? "disabled" : false}
+                                disabled={"disabled"}
                               >
                                 <option value="" disabled>
                                   Selecione a prioridade
@@ -493,9 +324,6 @@ const UserDemandas = () => {
                                 name="Status"
                                 id="Status"
                                 value={modalData.status + 1 || ""}
-                                onChange={(e) => {
-                                  editableItem("status", e.target.value - 1);
-                                }}
                                 disabled={"disabled"}
                               >
                                 <option value="" disabled>
@@ -517,23 +345,14 @@ const UserDemandas = () => {
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
                   type="button"
-                  onClick={() => {
-                    saveItem(modalData.id || null);
-                  }}
-                  className="btn-primary sm:mr-3"
-                >
-                  Salvar
-                </button>
-                <button
-                  type="button"
                   data-autofocus
                   onClick={() => {
                     setOpenModalEdit(false);
                     clearModal();
                   }}
-                  className="btn-cancel sm:mr-3"
+                  className="btn-primary sm:mr-3"
                 >
-                  Cancelar
+                  Fechar
                 </button>
               </div>
             </DialogPanel>

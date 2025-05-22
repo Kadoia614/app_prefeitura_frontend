@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { Link } from "react-router";
-import Title from "../../shared/Title";
+import Title from "../../components/shared/title/Title";
 
 const Admin = () => {
   return (

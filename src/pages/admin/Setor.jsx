@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import API from "../../../../../service/API";
-import HandleError from "../../../middleware/HandleError";
+import API from "../../service/API";
+import HandleError from "../../middleware/HandleError";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -8,8 +8,8 @@ import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { Toast } from "primereact/toast";
 
-import InputField from "../../../shared/input/InputField";
-import Modal from "../../../shared/Modal";
+import InputField from "../../components/shared/input/InputField";
+import Modal from "../../components/shared/modal/Modal";
 
 const Setor = () => {
   const [tableData, setTableData] = useState([]);

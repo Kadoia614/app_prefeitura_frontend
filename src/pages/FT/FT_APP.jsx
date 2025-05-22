@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import API from "../../../../service/API";
+import API from "../../service/API";
 import HanlerError from "../../middleware/HandleError";
 
 // prime react
@@ -9,13 +9,13 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
-import InputField from "../../shared/input/InputField";
-import CalendarInput from "../../shared/input/CalendarInput";
-import Title from "../../shared/Title";
+import InputField from "../../components/shared/input/InputField";
+import CalendarInput from "../../components/shared/input/CalendarInput";
+import Title from "../../components/shared/title/Title";
 
 import { UserContext } from "/src/context/UserContextFile";
 
-import Modal from "../../shared/Modal";
+import Modal from "../../components/shared/modal/Modal";
 
 const FTAPP = () => {
   let { scopo } = useContext(UserContext);

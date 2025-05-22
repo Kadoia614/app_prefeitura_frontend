@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import API from "../../../../../service/API";
-import HanlerError from "../../../middleware/HandleError";
-
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { Toast } from "primereact/toast";
-
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-
+import API from "../../service/API";
+import HanlerError from "../../middleware/HandleError";
 import { UserContext } from "/src/context/UserContextFile";
+import {
+  getDemandas,
+  updateDemanda,
+  createDemanda,
+  assumeDemanda,
+} from "../../service/demandasService";
+
 
 import {
   Dialog,
@@ -17,8 +17,14 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import InputField from "../../../shared/input/InputField";
-import SelectField from "../../../shared/input/SelectField";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { Button } from "primereact/button";
+import { DataTable } from "primereact/datatable";
+import { Toast } from "primereact/toast";
+import { Column } from "primereact/column";
+
+import InputField from "../../components/shared/input/InputField";
+import SelectField from "../../components/shared/input/SelectField";
 
 const AllDemandas = () => {
   let { scopo } = useContext(UserContext);
@@ -33,10 +39,9 @@ const AllDemandas = () => {
 
   const fetchData = async () => {
     try {
-      let response = await API.get("/demandas");
-      setTableData(response.data.demandas);
-      setSetores(response.data.setores);
-      console.log(response.data);
+      let response = await getDemandas();
+      setTableData(response.demandas);
+      setSetores(response.setores);
     } catch (error) {
       setError(error.status);
     }
@@ -47,7 +52,7 @@ const AllDemandas = () => {
     console.log(modalData);
     try {
       if (id) {
-        await API.put(`/demandas/${id}`, {
+        await updateDemanda(id, {
           demanda: {
             description: modalData.description,
             patrimonio: modalData.patrimonio,
@@ -65,7 +70,7 @@ const AllDemandas = () => {
         return;
       }
 
-      await API.post("/demandas", {
+      await createDemanda("/demandas", {
         demanda: {
           description: modalData.description,
           patrimonio: modalData.patrimonio,
@@ -91,10 +96,9 @@ const AllDemandas = () => {
       fetchData();
     }
   };
-
   const assumirDemanda = async (id) => {
     try {
-      await API.put(`/demandas/${id}/assume`);
+      await assumeDemanda(`${id}`);
 
       toast.current.show({
         severity: "success",

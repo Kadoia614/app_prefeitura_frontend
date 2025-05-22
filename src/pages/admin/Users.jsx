@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import HandleError from "../../../middleware/HandleError";
+import HandleError from "../../middleware/HandleError";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -11,10 +11,10 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import API from "../../../../../service/API";
+import API from "../../service/API";
 import { Toast } from "primereact/toast";
-import SelectField from "../../../shared/input/SelectField";
-import InputField from "../../../shared/input/InputField";
+import SelectField from "../../components/shared/input/SelectField";
+import InputField from "../../components/shared/input/InputField";
 
 const API_ENDPOINTS = {
   USERS: "/user",

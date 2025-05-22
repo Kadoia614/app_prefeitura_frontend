@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 
 import { UserContext } from "/src/context/UserContextFile";
 
-import API from "../../../../service/API";
+import API from "../../service/API";
 
 const Header = () => {
   let { auth, setAuth } = useContext(UserContext);

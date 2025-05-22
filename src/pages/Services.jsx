@@ -1,4 +1,4 @@
-import API from "/src/../service/API";
+import API from "../service/API";
 import { useEffect, useState } from "react";
 import HanlerError from "../middleware/HandleError";
 
