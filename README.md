@@ -64,3 +64,5 @@ Este projeto foi desenvolvido por Miguel A. M. Moraes e é de uso interno da Pre
 ### Contato
    email: miguel_moraes2001@hotmail.com
    celular: (11) 9 93737-9050
+
+@texto gerado por inteligencia artificial

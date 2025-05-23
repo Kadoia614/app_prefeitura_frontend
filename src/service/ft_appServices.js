@@ -30,3 +30,11 @@ export const getOneDoc = async (image) => {
     responseType: "blob",
   });
 };
+
+export const postDoc = async (id, data) => {
+  return await APIBolsistaImage.post(`/bolsista/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },  
+  });
+};

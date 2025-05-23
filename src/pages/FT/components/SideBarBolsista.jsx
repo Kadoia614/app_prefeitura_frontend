@@ -1,13 +1,15 @@
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
 import { getDocs, getOneDoc } from "@/service/ft_appServices";
 
-import SideBar from "@/components/shared/sidebar/SidePanel";
-import PropTypes from "prop-types";
-import { FaPrint, FaUpload } from "react-icons/fa";
 import { Image } from "primereact/image";
 import { Button } from "primereact/button";
+import { FaPrint } from "react-icons/fa";
+
+import SideBar from "@/components/shared/sidebar/SidePanel";
+import UploadImage from "./UploadImage";
 
 const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
   const { showToast } = useToast();
@@ -17,11 +19,11 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
   const [types, setTypes] = useState([]);
 
   const getData = async (id) => {
+    clearSideBar()
     try {
       const { data } = await getDocs(`${id}`);
       setData(data.archives);
       setTypes(data.types);
-      showToast("success", "Confirmed", "Documentos carregados com sucesso");
     } catch (error) {
       showToast("error", "Error", "Erro ao buscar documentos " + error);
     }
@@ -55,7 +57,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
 
   useEffect(() => {
     if (sideBarStatus) {
-      getData(sideBarData?.id || 10); // usa o `sideBarData.id` se tiver, senão usa 10
+      getData(sideBarData || 10);
     } else {
       clearSideBar();
     }
@@ -69,28 +71,36 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
     >
       <div className="sidebar-content flex flex-col gap-4">
         {types.map((type, typeIndex) => (
-          <div key={typeIndex} className="flex flex-col">
+          <div key={typeIndex} className="flex flex-col min-h-25">
+            {/* header */}
             <h4 className="text-lg font-bold">{type.toUpperCase()}</h4>
+            {/* content */}
             <div>
-              <Button
-                icon={<FaUpload />}
-                className="btn-primary text-white bg-primary-500 hover:bg-primary-700"
-              />
-              <Button icon={<FaPrint />} className="btn-primary ms-2" />
-
-              
+              {/* buttons and header */}
+              <div className="flex flex-row justify-between mt-2">
+                <span>
+                  <UploadImage type={type || ''} id={sideBarData} posAction={()=>getData(sideBarData)} />
+                </span>
+                <span>
+                  <Button icon={<FaPrint />} className="btn-primary ms-2" />
+                </span>
+              </div>
+              {/* images */}
+              <div className="mt-4">
+                {archives
+                  .filter((archive) => archive.type === typeIndex)
+                  .map((archive, archiveIndex) => (
+                    <Image
+                      className="rounded-lg overflow-hidden"
+                      key={archiveIndex}
+                      src={archive.imageUrl}
+                      alt={`Imagem de ${type}`}
+                      width="100%"
+                      preview
+                    />
+                  ))}
+              </div>
             </div>
-            {archives
-                .filter((archive) => archive.type === typeIndex)
-                .map((archive, archiveIndex) => (
-                  <Image
-                    key={archiveIndex}
-                    src={archive.imageUrl}
-                    alt={`Imagem de ${type}`}
-                    width="250"
-                    preview
-                  />
-                ))}
           </div>
         ))}
       </div>
