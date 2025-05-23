@@ -46,11 +46,14 @@ const ProtectRoutes = () => {
   }
 
   return (
-    <div className="content">
-      <div className="container mx-auto bg-gray-50">
-        <Outlet />
+    <>
+      {isLoading && <Loading></Loading>}
+      <div className="content">
+        <div className="container mx-auto bg-gray-50">
+          <Outlet context={{ setIsLoading }}  />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

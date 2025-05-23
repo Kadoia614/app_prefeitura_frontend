@@ -15,8 +15,11 @@ const BolsistasTable = ({
   tableData,
   setOpenModalEdit,
   setModalData,
+  setSideBarStatus,
+  setSideBarData,
   scopo,
   fetchData,
+  setIsLoading,
 }) => {
   let [excludeModalOpen, setExcludeModalOpen] = useState(false);
   let [excludeModal, setExcludeModal] = useState(null);
@@ -30,9 +33,12 @@ const BolsistasTable = ({
 
   const handleRemove = async (id) => {
     try {
+      setIsLoading(true);
       await deleteBolsista(`${id}`);
 
       showToast("success", "Confirmed", "Bolsista Deletado com sucesso");
+      setExcludeModalOpen(false);
+      fetchData();
     } catch (error) {
       showToast(
         "error",
@@ -40,8 +46,7 @@ const BolsistasTable = ({
         "Não foi possível deletar o bolsista: " + error
       );
     } finally {
-      setExcludeModalOpen(false);
-      fetchData();
+      setIsLoading(false);
     }
   };
 
@@ -123,7 +128,16 @@ const BolsistasTable = ({
                       setModalData(rowData);
                     }}
                   />
-
+                  <TableButton
+                    label="Editar"
+                    icon={<FaEdit />}
+                    iconPos="left"
+                    color="text-white bg-primary-500 hover:bg-primary-700"
+                    onClick={() => {
+                      setSideBarStatus(true);
+                      setSideBarData(rowData.id);
+                    }}
+                  />
                   {(scopo == 1 || scopo == 2) && (
                     <TableButton
                       icon={<FaTrash />}
@@ -166,6 +180,9 @@ BolsistasTable.propTypes = {
   tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
+  setSideBarStatus: PropTypes.func.isRequired,
+  setSideBarData: PropTypes.func.isRequired,
   scopo: PropTypes.any.isRequired,
   fetchData: PropTypes.func.isRequired,
 };

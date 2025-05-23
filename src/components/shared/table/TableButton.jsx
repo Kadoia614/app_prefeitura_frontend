@@ -17,7 +17,7 @@ const TableButton = ({ onClick, icon, label, color }) => {
 
 TableButton.propTypes = {
   onClick: PropTypes.func.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   color: PropTypes.string,
 };

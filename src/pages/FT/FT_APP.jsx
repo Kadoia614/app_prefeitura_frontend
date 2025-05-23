@@ -1,27 +1,36 @@
 import { useEffect, useState, useContext } from "react";
-import HanlerError from "../../middleware/HandleError";
-import { UserContext } from "/src/context/UserContextFile";
+import { useOutletContext } from "react-router";
+import HanlerError from "@/middleware/HandleError";
+import { UserContext } from "@/context/UserContextFile";
 
-import Title from "../../components/shared/title/Title";
+import Title from "@/components/shared/title/Title";
 
-import FT_Bolsista_Modal from "./components/FT_Bolsista_Modal";
 import BolsistasTable from "./components/BolsistasTable";
+import FT_Bolsista_Modal from "./components/FT_Bolsista_Modal";
+import SideBarBolsista from "./components/SideBarBolsista";
 
 import { getBolsista } from "@/service/ft_appServices";
 
 const FTAPP = () => {
+  const {setIsLoading} = useOutletContext();
   let [tableData, setTableData] = useState([]);
   let [error, setError] = useState(false);
   let [modalData, setModalData] = useState({});
   let [openModalEdit, setOpenModalEdit] = useState(false);
+  let [sideBarStatus, setSideBarStatus] = useState(false);
+  let [sideBarData, setSideBarData] = useState({});
   let { scopo } = useContext(UserContext);
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       let response = await getBolsista();
       setTableData(response.bolsistas);
+      await localStorage.setItem("upload_token", response.uploadToken);
     } catch (error) {
       setError(error.status);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -50,7 +59,16 @@ const FTAPP = () => {
         </button>
       </div>
 
-      <BolsistasTable tableData={tableData} fetchData={fetchData} scopo={scopo} setOpenModalEdit={setOpenModalEdit} setModalData={setModalData} />
+      <BolsistasTable
+        tableData={tableData}
+        fetchData={fetchData}
+        scopo={scopo}
+        setOpenModalEdit={setOpenModalEdit}
+        setSideBarStatus={setSideBarStatus}
+        setModalData={setModalData}
+        setIsLoading={setIsLoading}
+        setSideBarData={setSideBarData}
+      />
 
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal
@@ -60,7 +78,10 @@ const FTAPP = () => {
         setOpenModalEdit={setOpenModalEdit}
         fetchData={fetchData}
         scopo={scopo}
+        setIsLoading={setIsLoading}
       />
+
+      <SideBarBolsista sideBarStatus={sideBarStatus} setSideBarStatus={setSideBarStatus} sideBarData={sideBarData} />
     </div>
   );
 };

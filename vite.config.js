@@ -1,6 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -20,7 +24,12 @@ export default defineConfig({
         //target: "http://192.168.16.13:3000",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace('/api', ""),
+        rewrite: (path) => path.replace("/api", ""),
+      },
+      "/ft/img": {
+        target: "http://192.168.16.13:3007",
+        changeOrigin: true,
+        secure: false,
       },
     },
   },

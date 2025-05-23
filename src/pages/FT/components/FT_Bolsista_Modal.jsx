@@ -14,6 +14,7 @@ const FT_Bolsista_Modal = ({
   setOpenModalEdit,
   fetchData,
   scopo,
+  setIsLoading
 }) => {
   const today = new Date();
   const { showToast } = useToast();
@@ -26,6 +27,8 @@ const FT_Bolsista_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
+      console.log(setIsLoading)
+      setIsLoading(true);
       let payload = {
         bco: modalData.bco,
         ag: modalData.ag,
@@ -51,6 +54,8 @@ const FT_Bolsista_Modal = ({
     } catch (error) {
       showToast("error", "Error", "Erro ao salvar bolsista " + error);
       return;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,8 +63,6 @@ const FT_Bolsista_Modal = ({
   const clearModal = () => {
     setModalData({});
   };
-
-  console.log(modalData);
 
   return (
     <>
@@ -267,6 +270,7 @@ FT_Bolsista_Modal.propTypes = {
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   scopo: PropTypes.any.isRequired,
 };
