@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { IoIosDocument } from "react-icons/io";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
@@ -129,8 +130,8 @@ const BolsistasTable = ({
                     }}
                   />
                   <TableButton
-                    label="Editar"
-                    icon={<FaEdit />}
+                    label="Documentos"
+                    icon={<IoIosDocument />}
                     iconPos="left"
                     color="text-white bg-primary-500 hover:bg-primary-700"
                     onClick={() => {

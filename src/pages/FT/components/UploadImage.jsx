@@ -10,7 +10,7 @@ const UploadImage = ({ type, id, posAction }) => {
       posAction()
       console.log(response.data);
     } catch (error) {
-      console.error("Erro no upload:", error);
+      throw { message: "Erro ao fazer upload do arquivo", error };
     }
   };
 
@@ -28,6 +28,7 @@ const UploadImage = ({ type, id, posAction }) => {
 UploadImage.propTypes = {
   type: PropTypes.string.isRequired,
   id: PropTypes.any.isRequired,
+  posAction: PropTypes.func,
 };
 
 export default UploadImage;

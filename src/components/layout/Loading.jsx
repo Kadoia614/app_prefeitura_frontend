@@ -1,9 +1,13 @@
+import { ProgressSpinner } from 'primereact/progressspinner';
+        
+
 const Loading = () => {
   return (
     <>
-      <div className="absolute flex justify-center items-center h-full w-full left-0 top-0 opacity-5">
-        <div className="border-l-2 border-t-3 border-primary w-10 h-10 rounded-full animate-spin"></div>
+      <div id="Loading" className="absolute flex justify-center items-center h-full w-full left-0 top-0 brightness-100 bg-gray-700 opacity-60 z-999">
+        <ProgressSpinner/>
       </div>
+
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import API from "../../service/API";
-import HandleError from "../../middleware/HandleError";
+import API from "../../../service/API";
+import HandleError from "../../../middleware/HandleError";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { Toast } from "primereact/toast";
-import InputField from "../../components/shared/input/InputField";
+import InputField from "../../../components/shared/input/InputField";
 
 const RolesPainel = () => {
   const [tableData, setTableData] = useState([]);

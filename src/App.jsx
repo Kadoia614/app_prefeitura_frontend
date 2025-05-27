@@ -3,11 +3,11 @@ import { Routes, Route } from "react-router";
 import Header from "./components/layout/Header";
 import Login from "./components/layout/Login";
 
-import Services from "./pages/Services";
-import PainelAdmin from "./pages/admin/Users";
-import PainelServices from "./pages/admin/Services";
-import Setor from "./pages/admin/Setor";
-import RolesPainel from "./pages/admin/Roles";
+import ServicesCards from "./pages/Services";
+import Users from "./pages/admin/users/Users";
+import Services from "./pages/admin/services/Services";
+import Setor from "./pages/admin/setor/Setor";
+import Roles from "./pages/admin/roles/Roles";
 
 import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
 import Demandas from "./pages/demandasTI/AllDemandas";
@@ -30,13 +30,13 @@ function App() {
           <Route path="/login" index element={<Login />} />
 
           <Route path="/" element={<ProtectRoutes />}>
-            <Route index element={<Services />} />
+            <Route index element={<ServicesCards />} />
 
             <Route path="admin" element={<Admin />}>
-              <Route index element={<PainelAdmin />} />
-              <Route path="service" element={<PainelServices />} />
+              <Route index element={<Users />} />
+              <Route path="service" element={<Services />} />
               <Route path="setor" element={<Setor />} />
-              <Route path="roles" element={<RolesPainel />} />
+              <Route path="roles" element={<Roles />} />
             </Route>
 
             <Route path="demandasti" element={<DemandasTi />}>

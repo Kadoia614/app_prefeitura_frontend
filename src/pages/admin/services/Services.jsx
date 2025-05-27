@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import API from "../../service/API";
-import HandleError from "../../middleware/HandleError";
+import API from "../../../service/API";
+import HandleError from "../../../middleware/HandleError";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -9,7 +9,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Checkbox } from "primereact/checkbox";
 import { InputSwitch } from 'primereact/inputswitch';
         
-import InputField from "../../components/shared/input/InputField";
+import InputField from "../../../components/shared/input/InputField";
 import {
   Dialog,
   DialogBackdrop,

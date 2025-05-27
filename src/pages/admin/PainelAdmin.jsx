@@ -1,8 +1,10 @@
 import { Outlet } from "react-router";
 import { Link } from "react-router";
 import Title from "../../components/shared/title/Title";
-
+import { useOutletContext } from "react-router";
 const Admin = () => {
+  const {setIsLoading} = useOutletContext();
+  
   return (
     <div id="Admin">
       <Title>Com grandes poderes vêm grandes responsabilidades</Title>
@@ -30,7 +32,7 @@ const Admin = () => {
           </div>
         </div>
         <div className=" p-5 rounded-b-sm bg-gray-50 shadow-md">
-          <Outlet></Outlet>
+          <Outlet context={{setIsLoading}}></Outlet>
         </div>
       </div>
     </div>

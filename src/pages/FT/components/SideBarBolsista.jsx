@@ -19,7 +19,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
   const [types, setTypes] = useState([]);
 
   const getData = async (id) => {
-    clearSideBar()
+    clearSideBar();
     try {
       const { data } = await getDocs(`${id}`);
       setData(data.archives);
@@ -29,13 +29,16 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
     }
   };
 
-  const createImage = async (archive) => {
+  const createImage = async (archive, mime) => {
     try {
       const { data } = await getOneDoc(archive.path);
       const imageUrl = URL.createObjectURL(data);
 
       // Append ao array anterior
-      setArchives((prev) => [...prev, { imageUrl, type: archive.type_id }]);
+      setArchives((prev) => [
+        ...prev,
+        { imageUrl, type: archive.type_id, mime },
+      ]);
     } catch (err) {
       console.error("Erro ao carregar imagem:", err);
     }
@@ -50,7 +53,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
   useEffect(() => {
     if (data.length > 0) {
       data.forEach((archive) => {
-        createImage(archive);
+        createImage(archive, archive.mime);
       });
     }
   }, [data]);
@@ -79,26 +82,64 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
               {/* buttons and header */}
               <div className="flex flex-row justify-between mt-2">
                 <span>
-                  <UploadImage type={type || ''} id={sideBarData} posAction={()=>getData(sideBarData)} />
-                </span>
-                <span>
-                  <Button icon={<FaPrint />} className="btn-primary ms-2" />
+                  <UploadImage
+                    type={type || ""}
+                    id={sideBarData}
+                    posAction={() => getData(sideBarData)}
+                  />
                 </span>
               </div>
               {/* images */}
               <div className="mt-4">
                 {archives
                   .filter((archive) => archive.type === typeIndex)
-                  .map((archive, archiveIndex) => (
-                    <Image
-                      className="rounded-lg overflow-hidden"
-                      key={archiveIndex}
-                      src={archive.imageUrl}
-                      alt={`Imagem de ${type}`}
-                      width="100%"
-                      preview
-                    />
-                  ))}
+                  .map((archive, archiveIndex) => {
+                    const isPDF = archive.mime === "pdf";
+                    return isPDF ? (
+                      <div className="flex flex-row justify-between">
+                        <span>
+                          <a
+                            key={archiveIndex}
+                            href={archive.imageUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button
+                              label={`Visualizar PDF`}
+                              className="btn-primary w-full mb-2"
+                            />
+                          </a>
+                        </span>
+                        <span>
+                          <Button
+                            icon={<FaPrint />}
+                            className="btn-primary ms-2"
+                            onClick={() => {
+                              const printWindow = window.open(
+                                archive.imageUrl,
+                                "_blank"
+                              );
+                              printWindow.onload = () => {
+                                printWindow.print();
+                              };
+                            }}
+                            tooltip="Imprimir PDF"
+                            tooltipOptions={{ position: "left" }}
+                          />
+                        </span>
+                      </div>
+                    ) : (
+                      // Renderiza a imagem normalmente
+                      <Image
+                        className="rounded-lg overflow-hidden"
+                        key={archiveIndex}
+                        src={archive.imageUrl}
+                        alt={`Imagem de ${type}`}
+                        width="100%"
+                        preview
+                      />
+                    );
+                  })}
               </div>
             </div>
           </div>

@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import HandleError from "../../middleware/HandleError";
+import HandleError from "../../../middleware/HandleError";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { useOutletContext } from "react-router";
 import {
   Dialog,
   DialogBackdrop,
@@ -11,10 +12,10 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import API from "../../service/API";
+import API from "../../../service/API";
 import { Toast } from "primereact/toast";
-import SelectField from "../../components/shared/input/SelectField";
-import InputField from "../../components/shared/input/InputField";
+import SelectField from "../../../components/shared/input/SelectField";
+import InputField from "../../../components/shared/input/InputField";
 
 const API_ENDPOINTS = {
   USERS: "/user",
@@ -42,8 +43,11 @@ const PainelAdmin = () => {
   const [error, setError] = useState(null);
   const toast = useRef(null);
 
+  const {setIsLoading} = useOutletContext();
+
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await API.get(API_ENDPOINTS.USERS);
       console.log(response.data)
       setTableData(response.data.users);
@@ -51,6 +55,8 @@ const PainelAdmin = () => {
       setSetores(response.data.setores);
     } catch (error) {
       setError(error.status);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,6 +67,7 @@ const PainelAdmin = () => {
 
   const removeItem = async () => {
     try {
+      setIsLoading(true);
       await API.delete(`${API_ENDPOINTS.USERS}/${excludeModal}`);
       showToast("success", MESSAGES.SUCCESS.DELETE);
       setExcludeModalOpen(false);
@@ -70,6 +77,7 @@ const PainelAdmin = () => {
         MESSAGES.ERROR.OPERATION_CANCELLED(error.response.data.message)
       );
     } finally {
+      setIsLoading(false);
       setExcludeModal(null);
       fetchData();
     }
@@ -85,6 +93,7 @@ const PainelAdmin = () => {
     const url = id ? `${API_ENDPOINTS.USERS}/${id}` : API_ENDPOINTS.USERS;
 
     try {
+      setIsLoading(true);
       await method(url, { user: modalData });
       showToast("success", MESSAGES.SUCCESS.SAVE);
       clearModal();
@@ -95,6 +104,7 @@ const PainelAdmin = () => {
         MESSAGES.ERROR.OPERATION_CANCELLED(error.response.data.message)
       );
     } finally {
+      setIsLoading(false);
       fetchData();
     }
   };

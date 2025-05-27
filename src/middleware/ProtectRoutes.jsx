@@ -11,7 +11,6 @@ const ProtectRoutes = () => {
   let [isLoading, setIsLoading] = useState(true); // Para controlar a exibição enquanto carrega
   let [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const authUser = async () => {
     try {
       const response = await API.get("/auth");
@@ -41,16 +40,12 @@ const ProtectRoutes = () => {
     return <Error Error={error.response.data.message}></Error>;
   }
 
-  if (isLoading) {
-    return <Loading></Loading>; // Ou um spinner de loading
-  }
-
   return (
     <>
       {isLoading && <Loading></Loading>}
       <div className="content">
         <div className="container mx-auto bg-gray-50">
-          <Outlet context={{ setIsLoading }}  />
+          <Outlet context={{ setIsLoading }} />
         </div>
       </div>
     </>
