@@ -14,7 +14,7 @@ import {
 import { Toast } from "primereact/toast";
 import InputField from "../../../components/shared/input/InputField";
 
-const RolesPainel = () => {
+const RolesPainel = ({setIsLoading}) => {
   const [tableData, setTableData] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -25,11 +25,14 @@ const RolesPainel = () => {
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await API.get("/roles");
       setTableData(response.data.roles);
     } catch (error) {
       setError(error.status);
       showToast("error", "Failed to load sectors: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -39,6 +42,7 @@ const RolesPainel = () => {
 
   const handleSave = async (id) => {
     try {
+      setIsLoading(true);
       if (!id) {
         await API.post("/roles", { role: modalData });
         showToast("success", "Sector created successfully!");
@@ -51,11 +55,14 @@ const RolesPainel = () => {
       setOpenModalEdit(false);
     } catch (error) {
       showToast("error", "Failed to save sector: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleRemove = async (id) => {
     try {
+      setIsLoading(true);
       await API.delete(`/roles/${id}`);
       showToast("success", "Sector deleted successfully!");
       loadTable();
@@ -63,6 +70,7 @@ const RolesPainel = () => {
       showToast("error", "Failed to delete sector: " + error.message);
     } finally {
       setExcludeModalOpen(false);
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +112,7 @@ const RolesPainel = () => {
         />
         <DataTable
           value={tableData}
-          size="large"
+          size="small"
           rowHover
           stripedRows
           tableClassName="mt-4"
@@ -182,7 +190,7 @@ const RolesPainel = () => {
                   <Button
                     label="Salvar"
                     onClick={() => handleSave(modalData.id || null)}
-                    className="btn-primary"
+                    className="btn-primary ml-3"
                   />
                   <Button
                     label="Cancelar"

@@ -4,10 +4,6 @@ import Header from "./components/layout/Header";
 import Login from "./components/layout/Login";
 
 import ServicesCards from "./pages/Services";
-import Users from "./pages/admin/users/Users";
-import Services from "./pages/admin/services/Services";
-import Setor from "./pages/admin/setor/Setor";
-import Roles from "./pages/admin/roles/Roles";
 
 import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
 import Demandas from "./pages/demandasTI/AllDemandas";
@@ -31,13 +27,7 @@ function App() {
 
           <Route path="/" element={<ProtectRoutes />}>
             <Route index element={<ServicesCards />} />
-
-            <Route path="admin" element={<Admin />}>
-              <Route index element={<Users />} />
-              <Route path="service" element={<Services />} />
-              <Route path="setor" element={<Setor />} />
-              <Route path="roles" element={<Roles />} />
-            </Route>
+            <Route path="admin" element={<Admin />} />
 
             <Route path="demandasti" element={<DemandasTi />}>
               <Route index element={<Demandas />} />
@@ -46,7 +36,7 @@ function App() {
             </Route>
             <Route path="/ft-app" element={<FT_APP />}></Route>
           </Route>
-          
+
           <Route path="*" element={<HandleError />} />
         </Routes>
         <Footer />

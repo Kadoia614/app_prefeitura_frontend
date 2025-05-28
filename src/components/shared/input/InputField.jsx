@@ -9,7 +9,7 @@ const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputCla
       <InputText
         keyfilter={keyfilter || ""}
         id={id}
-        className={`rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${disabled ? "bg-gray-100" : "bg-"}`}
+        className={`rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${disabled ? "bg-gray-100" : ""}`}
         placeholder={`${placeHolder || label}`}
         value={value || ""}
         onChange={onChange}

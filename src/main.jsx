@@ -3,8 +3,11 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { UserProvider } from "./context/UserContext.jsx";
 import { ToastProvider } from "./components/shared/toast/ToastProvider.jsx";
+import { PrimeReactProvider } from "primereact/api";
+import "tailwindcss/index";
 
 import "./assets/sass/index.scss";
+
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -12,7 +15,9 @@ createRoot(document.getElementById("root")).render(
     <UserProvider>
       <BrowserRouter>
         <ToastProvider>
-          <App />
+          <PrimeReactProvider>
+            <App />
+          </PrimeReactProvider>
         </ToastProvider>
       </BrowserRouter>
     </UserProvider>

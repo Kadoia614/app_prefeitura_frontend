@@ -32,7 +32,7 @@ const MESSAGES = {
   },
 };
 
-const PainelAdmin = () => {
+const PainelAdmin = ({setIsLoading}) => {
   const [tableData, setTableData] = useState([]);
   const [roles, setRoles] = useState([]);
   const [setores, setSetores] = useState([]);
@@ -42,8 +42,6 @@ const PainelAdmin = () => {
   const [excludeModal, setExcludeModal] = useState(null);
   const [error, setError] = useState(null);
   const toast = useRef(null);
-
-  const {setIsLoading} = useOutletContext();
 
   const fetchData = async () => {
     try {
@@ -104,8 +102,9 @@ const PainelAdmin = () => {
         MESSAGES.ERROR.OPERATION_CANCELLED(error.response.data.message)
       );
     } finally {
-      setIsLoading(false);
       fetchData();
+      setIsLoading(false);
+
     }
   };
 

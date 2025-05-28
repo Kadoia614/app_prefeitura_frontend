@@ -19,7 +19,7 @@ import {
 
 import { Toast } from "primereact/toast";
 
-const PainelServices = () => {
+const PainelServices = ({setIsLoading}) => {
   const [tableData, setTableData] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});

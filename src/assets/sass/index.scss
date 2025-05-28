@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
 @import "primereact/resources/themes/lara-light-blue/theme.css"
 layer(primereact);
-@import "tailwindcss";
+
+@import "tailwindcss/utilities";
+@import "tailwindcss/theme";
 
 @theme {
   --color-primary-100: #d0edf8;

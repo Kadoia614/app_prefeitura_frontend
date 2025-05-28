@@ -11,7 +11,7 @@ import { Toast } from "primereact/toast";
 import InputField from "../../../components/shared/input/InputField";
 import Modal from "../../../components/shared/modal/Modal";
 
-const Setor = () => {
+const Setor = ({setIsLoading}) => {
   const [tableData, setTableData] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});
