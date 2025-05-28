@@ -7,10 +7,13 @@ import Services from "./services/Services";
 import Setor from "./setor/Setor";
 import User from "./users/Users";
 
+import { useSearchParams } from "react-router";
 const Admin = () => {
   const { setIsLoading } = useOutletContext();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [searchParams] = useSearchParams();
+  const [activeIndex, setActiveIndex] = useState(searchParams.get("tab") ? parseInt(searchParams.get("tab")) : 0);
 
+  console.log(searchParams.get("tab"));
   return (
     <div id="Admin">
       <Title>Com grandes poderes vêm grandes responsabilidades</Title>
@@ -23,13 +26,13 @@ const Admin = () => {
           <TabPanel header="Users">
             <User setIsLoading={setIsLoading} />
           </TabPanel>
-          <TabPanel header="Roles">
+          <TabPanel header="Setores">
             <Setor setIsLoading={setIsLoading} />
           </TabPanel>
-          <TabPanel header="Setores">
+          <TabPanel header="Serviços">
             <Services setIsLoading={setIsLoading} />
           </TabPanel>
-          <TabPanel header="Roles">
+          <TabPanel header="Permissões">
             <Roles setIsLoading={setIsLoading} />
           </TabPanel>
         </TabView>

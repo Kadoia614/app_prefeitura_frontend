@@ -1,4 +1,5 @@
 import { InputText } from "primereact/inputtext";
+import PropTypes from "prop-types";
 
 const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputClass, placeHolder, disabled }) => (
   <fieldset className="mt-2">
@@ -19,5 +20,16 @@ const InputField = ({ id, label, value, onChange, maxLength, keyfilter, inputCla
     </div>
   </fieldset>
 );
+InputField.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func.isRequired,
+  maxLength: PropTypes.number,
+  keyfilter: PropTypes.string,
+  inputClass: PropTypes.string,
+  placeHolder: PropTypes.string,
+  disabled: PropTypes.bool,
+};
 
 export default InputField;

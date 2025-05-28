@@ -68,6 +68,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
 
   return (
     <SideBar
+      className="w-[400px]" 
       setSideBarStatus={setSideBarStatus}
       sideBarStatus={sideBarStatus}
       header={"Documentos"}

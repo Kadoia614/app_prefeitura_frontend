@@ -9,7 +9,6 @@ import {
   assumeDemanda,
 } from "../../service/demandasService";
 
-
 import {
   Dialog,
   DialogBackdrop,
@@ -53,11 +52,9 @@ const AllDemandas = () => {
     try {
       if (id) {
         await updateDemanda(id, {
-          demanda: {
-            description: modalData.description,
-            patrimonio: modalData.patrimonio,
-            prioridade: modalData.prioridade,
-          },
+          description: modalData.description,
+          patrimonio: modalData.patrimonio,
+          prioridade: modalData.prioridade,
         });
 
         setOpenModalEdit(false);
@@ -70,12 +67,10 @@ const AllDemandas = () => {
         return;
       }
 
-      await createDemanda("/demandas", {
-        demanda: {
-          description: modalData.description,
-          patrimonio: modalData.patrimonio,
-          prioridade: modalData.prioridade,
-        },
+      await createDemanda({
+        description: modalData.description,
+        patrimonio: modalData.patrimonio,
+        prioridade: modalData.prioridade,
       });
       toast.current.show({
         severity: "success",
@@ -475,7 +470,12 @@ const AllDemandas = () => {
                                 name="Prioridade"
                                 id="Prioridade"
                                 value={modalData.prioridade + 1 || ""}
-                                options={[{id: 1, name: "Baixa"}, {id: 2, name: "Média"}, {id: 3, name: "Alta"}, {id: 4, name: "Gabinete"}]}
+                                options={[
+                                  { id: 1, name: "Baixa" },
+                                  { id: 2, name: "Média" },
+                                  { id: 3, name: "Alta" },
+                                  { id: 4, name: "Gabinete" },
+                                ]}
                                 onChange={(e) => {
                                   editableItem(
                                     "prioridade",
@@ -485,8 +485,7 @@ const AllDemandas = () => {
                                 disabled={
                                   modalData.id && scopo > 3 ? "disabled" : false
                                 }
-                              >
-                              </SelectField>
+                              ></SelectField>
                             </div>
                           </fieldset>
                           <fieldset className="mt-2">
@@ -502,11 +501,14 @@ const AllDemandas = () => {
                                 onChange={(e) => {
                                   editableItem("status", e.target.value - 1);
                                 }}
-                                options={[{id: 1, name: "Aberto"}, {id: 2, name: "Em atendimento"}, {id: 3, name: "Aguardando resposta"}, {id: 4, name: "Concluído"}]}
+                                options={[
+                                  { id: 1, name: "Aberto" },
+                                  { id: 2, name: "Em atendimento" },
+                                  { id: 3, name: "Aguardando resposta" },
+                                  { id: 4, name: "Concluído" },
+                                ]}
                                 disabled={"disabled"}
-                              >
-
-                              </SelectField>
+                              ></SelectField>
                             </div>
                           </fieldset>
                         </div>

@@ -83,9 +83,9 @@ const FT_Bolsista_Modal = ({
         onClose={setOpenModalEdit}
       >
         <div id="bolsistaData">
-          <div id="Data" className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div id="Data" className="grid grid-cols-1 sm:grid-cols-8 gap-4">
             {/* Nome */}
-            <div className="mt-1 col-span-1 sm:col-span-2">
+            <div className="mt-1 col-span-2 sm:col-span-4">
               <InputField
                 id="Name"
                 inputClass="w-full"
@@ -99,7 +99,7 @@ const FT_Bolsista_Modal = ({
             </div>
 
             {/* CPF */}
-            <div className="mt-1 col-span-1 sm:col-span-2">
+            <div className="mt-1 col-span-2 sm:col-span-4">
               <InputField
                 id="CPF"
                 keyfilter="num"
@@ -115,7 +115,7 @@ const FT_Bolsista_Modal = ({
             </div>
 
             {/* Local */}
-            <div className="mt-1 col-span-1 sm:col-span-2">
+            <div className="mt-1 col-span-full">
               <InputField
                 id="CPF"
                 inputClass="w-full"
@@ -145,12 +145,12 @@ const FT_Bolsista_Modal = ({
             </div>
 
             {/* agencia */}
-            <div className="mt-1 col-span-1">
+            <div className="mt-1 col-span-3">
               <div className="p-inputgroup">
                 <InputField
                   id="Ag"
                   keyfilter="int"
-                  inputClass="w-full sm:w-25"
+                  inputClass="w-full sm:w-33 mr-2"
                   label="Agência"
                   value={modalData?.ag || ""}
                   onChange={(e) => {
@@ -163,7 +163,7 @@ const FT_Bolsista_Modal = ({
                 <InputField
                   id="Dig_Ag"
                   keyfilter="int"
-                  inputClass="w-10"
+                  inputClass="w-full"
                   label="Dg"
                   value={modalData?.dig_ag || ""}
                   onChange={(e) => {
@@ -175,12 +175,12 @@ const FT_Bolsista_Modal = ({
               </div>
             </div>
 
-            <div className="mt-1 col-span-1">
+            <div className="mt-1 col-span-3">
               <div className="p-inputgroup">
                 <InputField
                   keyfilter="int"
                   id="Conta"
-                  inputClass="w-full sm:w-25"
+                  inputClass="w-full sm:w-33 mr-2"
                   label="Conta"
                   value={modalData?.conta || ""}
                   onChange={(e) => {
@@ -193,7 +193,7 @@ const FT_Bolsista_Modal = ({
                 <InputField
                   keyfilter="int"
                   id="Dig_Conta"
-                  inputClass="w-10"
+                  inputClass="w-full"
                   label="Dg"
                   value={modalData?.dig_conta || ""}
                   onChange={(e) => {
@@ -205,26 +205,8 @@ const FT_Bolsista_Modal = ({
               </div>
             </div>
 
-            {/* Bolsa */}
-            <div className="mt-1 col-span-1">
-              <div className="p-inputgroup">
-                <InputField
-                  keyfilter="money"
-                  id="Bolsa"
-                  inputClass="w-full"
-                  label="Bolsa"
-                  placeHolder={"R$ 0,00"}
-                  value={modalData?.bolsa || ""}
-                  onChange={(e) => {
-                    editableItem("bolsa", e.target.value);
-                  }}
-                  disabled={modalData?.id && scopo > 3 ? "disabled" : false}
-                />
-              </div>
-            </div>
-
             {/* Vencimento */}
-            <div className="mt-1 col-span-1">
+            <div className="mt-1 col-span-full sm:col-span-2">
               <div className="p-inputgroup">
                 <CalendarInput
                   label={"Vencimento"}
