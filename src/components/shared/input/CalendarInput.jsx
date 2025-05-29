@@ -10,7 +10,8 @@ const CalendarInput = ({
   inputClass,
   placeHolder,
   format,
-  disabled
+  disabled,
+  invalid
 }) => (
   <fieldset className="mt-2">
     <label htmlFor={id} className="font-bold text-gray-700">
@@ -18,6 +19,7 @@ const CalendarInput = ({
     </label>
     <div className="mt-1">
       <Calendar
+        invalid={invalid || false}
         id={id}
         placeholder={`${placeHolder || label || ""}`}
         value={value ? value : null}
@@ -38,7 +40,8 @@ CalendarInput.propTypes = {
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
   format: PropTypes.string,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  invalid: PropTypes.bool
 };
 
 export default CalendarInput;

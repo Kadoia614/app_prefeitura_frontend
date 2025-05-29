@@ -5,9 +5,9 @@ import { UserContext } from "@/context/UserContextFile";
 
 import Title from "@/components/shared/title/Title";
 
-import BolsistasTable from "./components/BolsistasTable";
-import FT_Bolsista_Modal from "./components/FT_Bolsista_Modal";
-import SideBarBolsista from "./components/SideBarBolsista";
+import BolsistasTable from "./bolsistas/components/BolsistasTable";
+import FT_Bolsista_Modal from "./bolsistas/components/FT_Bolsista_Modal";
+import SideBarBolsista from "./bolsistas/components/SideBarBolsista";
 
 import { getBolsista } from "@/service/ft_appServices";
 
@@ -25,7 +25,8 @@ const FTAPP = () => {
     try {
       setIsLoading(true);
       let response = await getBolsista();
-      setTableData(response.bolsistas);
+      console.log(response)
+      setTableData(response.bolsista);
       await localStorage.setItem("upload_token", response.uploadToken);
     } catch (error) {
       setError(error.status);

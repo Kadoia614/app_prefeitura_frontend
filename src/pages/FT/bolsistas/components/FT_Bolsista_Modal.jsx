@@ -3,7 +3,6 @@ import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
 import Modal from "@/components/shared/modal/Modal";
 import InputField from "@/components/shared/input/InputField";
-import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
@@ -14,9 +13,9 @@ const FT_Bolsista_Modal = ({
   setOpenModalEdit,
   fetchData,
   scopo,
-  setIsLoading
+  setIsLoading,
 }) => {
-  const today = new Date();
+
   const { showToast } = useToast();
 
   // sómente para gerenciar os valore dos inputs
@@ -27,7 +26,7 @@ const FT_Bolsista_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      console.log(setIsLoading)
+      console.log(setIsLoading);
       setIsLoading(true);
       let payload = {
         bco: modalData.bco,
@@ -37,7 +36,6 @@ const FT_Bolsista_Modal = ({
         dig_conta: modalData.dig_conta,
         nome: modalData.nome,
         bolsa: modalData.bolsa,
-        vencimento: modalData.vencimento,
         cpf: modalData.cpf,
         local: modalData.local,
       };
@@ -87,6 +85,7 @@ const FT_Bolsista_Modal = ({
             {/* Nome */}
             <div className="mt-1 col-span-2 sm:col-span-4">
               <InputField
+                invalid={modalData?.nome ? false : true}
                 id="Name"
                 inputClass="w-full"
                 label="Nome"
@@ -101,6 +100,7 @@ const FT_Bolsista_Modal = ({
             {/* CPF */}
             <div className="mt-1 col-span-2 sm:col-span-4">
               <InputField
+                invalid={modalData?.cpf ? false : true}
                 id="CPF"
                 keyfilter="num"
                 inputClass="w-full"
@@ -117,6 +117,7 @@ const FT_Bolsista_Modal = ({
             {/* Local */}
             <div className="mt-1 col-span-full">
               <InputField
+                invalid={modalData?.local ? false : true}
                 id="CPF"
                 inputClass="w-full"
                 label="Local"
@@ -131,6 +132,7 @@ const FT_Bolsista_Modal = ({
             {/* Banco */}
             <div className="mt-1 col-span-full">
               <InputField
+                invalid={modalData?.bco ? false : true}
                 id="Banco"
                 keyfilter="int"
                 inputClass="w-full sm:w-50"
@@ -149,6 +151,7 @@ const FT_Bolsista_Modal = ({
               <div className="p-inputgroup">
                 <InputField
                   id="Ag"
+                  invalid={modalData?.ag ? false : true}
                   keyfilter="int"
                   inputClass="w-full sm:w-33 mr-2"
                   label="Agência"
@@ -161,6 +164,7 @@ const FT_Bolsista_Modal = ({
                 />
 
                 <InputField
+                  invalid={modalData?.dig_ag ? false : true}
                   id="Dig_Ag"
                   keyfilter="int"
                   inputClass="w-full"
@@ -178,6 +182,7 @@ const FT_Bolsista_Modal = ({
             <div className="mt-1 col-span-3">
               <div className="p-inputgroup">
                 <InputField
+                  invalid={modalData?.conta ? false : true}
                   keyfilter="int"
                   id="Conta"
                   inputClass="w-full sm:w-33 mr-2"
@@ -191,6 +196,7 @@ const FT_Bolsista_Modal = ({
                 />
 
                 <InputField
+                  invalid={modalData?.dig_conta ? false : true}
                   keyfilter="int"
                   id="Dig_Conta"
                   inputClass="w-full"
@@ -201,30 +207,6 @@ const FT_Bolsista_Modal = ({
                   }}
                   maxLength={1}
                   disabled={modalData?.id && scopo > 3 ? "disabled" : false}
-                />
-              </div>
-            </div>
-
-            {/* Vencimento */}
-            <div className="mt-1 col-span-full sm:col-span-2">
-              <div className="p-inputgroup">
-                <CalendarInput
-                  label={"Vencimento"}
-                  inputClass="w-full"
-                  value={
-                    modalData?.vencimento
-                      ? new Date(
-                          today.getFullYear(),
-                          today.getMonth(),
-                          modalData?.vencimento
-                        )
-                      : null
-                  }
-                  onChange={(e) => {
-                    editableItem("vencimento", e.target.value.getDate());
-                  }}
-                  format={"dd"}
-                  view="date"
                 />
               </div>
             </div>
