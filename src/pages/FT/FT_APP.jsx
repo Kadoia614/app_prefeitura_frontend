@@ -1,44 +1,62 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
 import { UserContext } from "@/context/UserContextFile";
 
 import Title from "@/components/shared/title/Title";
 
-import BolsistasTable from "./bolsistas/components/BolsistasTable";
+import BolsistasTable from "./bolsistas/components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./bolsistas/components/FT_Bolsista_Modal";
-import SideBarBolsista from "./bolsistas/components/SideBarBolsista";
 
-import { getBolsista } from "@/service/ft_appServices";
+
+import {
+  getBolsista,
+  getEdital,
+  getBolsistaEdital,
+} from "@/service/ft_appServices";
 
 const FTAPP = () => {
-  const {setIsLoading} = useOutletContext();
-  let [tableData, setTableData] = useState([]);
-  let [error, setError] = useState(false);
-  let [modalData, setModalData] = useState({});
-  let [openModalEdit, setOpenModalEdit] = useState(false);
-  let [sideBarStatus, setSideBarStatus] = useState(false);
-  let [sideBarData, setSideBarData] = useState({});
-  let { scopo } = useContext(UserContext);
+  const { setIsLoading } = useOutletContext();
+  const [error, setError] = useState(false);
 
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      let response = await getBolsista();
-      console.log(response)
-      setTableData(response.bolsista);
-      await localStorage.setItem("upload_token", response.uploadToken);
-    } catch (error) {
-      setError(error.status);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [openModalEdit, setOpenModalEdit] = useState(false);
 
-  //get a cada certo time (10seg nesse caso) alterar para websocket
+  const [tableData, setTableData] = useState([]);
+  const [tableOptions, setTableOptions] = useState([]);
+  const [selectedTable, setSelectedTable] = useState();
+  const [modalData, setModalData] = useState({});
+
+  const { scopo } = useContext(UserContext);
+
+  const fetchData = useCallback(
+    async (selectedTable) => {
+      try {
+        setIsLoading(true);
+
+        if (!selectedTable) {
+          const { bolsista, uploadToken } = await getBolsista();
+          const { edital } = await getEdital();
+          setTableOptions(edital);
+          setTableData(bolsista);
+          localStorage.setItem("upload_token", uploadToken);
+          return;
+        }
+
+        const response = await getBolsistaEdital(selectedTable);
+        console.log(response);
+        setTableData(response.bolsista);
+      } catch (error) {
+        setError(error.status);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setIsLoading]
+  );
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(selectedTable);
+  }, [fetchData, selectedTable]);
 
   // gerenciamento de erros para caso algo de errado ocorra durante as requisições
   if (error) {
@@ -46,31 +64,26 @@ const FTAPP = () => {
   }
 
   return (
-    <div id="AllDemandasTi" className="content">
+    <div id="Bolsistas" className="content">
+      <Title>Com grandes poderes vêm grandes responsabilidades</Title>
+
       <div>
-        <Title>Com grandes poderes vêm grandes responsabilidades</Title>
+        <div className="flex flex-row justify-between items-end">
 
-        <button
-          className="btn-primary"
-          onClick={() => {
-            setOpenModalEdit(true);
-          }}
-        >
-          Cadastrar Bolsista
-        </button>
+        </div>
+        <BolsistasTable
+        selectedTable={selectedTable}
+          setSelectedTable={setSelectedTable}
+          tableOptions={tableOptions}
+          tableData={tableData}
+          fetchData={fetchData}
+          scopo={scopo}
+          setOpenModalEdit={setOpenModalEdit}
+          setModalData={setModalData}
+          setIsLoading={setIsLoading}
+        />
       </div>
-
-      <BolsistasTable
-        tableData={tableData}
-        fetchData={fetchData}
-        scopo={scopo}
-        setOpenModalEdit={setOpenModalEdit}
-        setSideBarStatus={setSideBarStatus}
-        setModalData={setModalData}
-        setIsLoading={setIsLoading}
-        setSideBarData={setSideBarData}
-      />
-
+      
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal
         modalData={modalData}
@@ -81,8 +94,6 @@ const FTAPP = () => {
         scopo={scopo}
         setIsLoading={setIsLoading}
       />
-
-      <SideBarBolsista sideBarStatus={sideBarStatus} setSideBarStatus={setSideBarStatus} sideBarData={sideBarData} />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
-@import "primereact/resources/themes/lara-light-blue/theme.css"
-layer(primereact);
+@import "primereact/resources/themes/lara-light-blue/theme.css";
 
 @import "tailwindcss/utilities";
 @import "tailwindcss/theme";
@@ -29,11 +28,12 @@ layer(primereact);
   background-image: url("/public/bg.png");
   background-size: cover;
   background-attachment: fixed;
-  .login-image {
-    background-image: url("/public/login.jpg");
-    background-size: cover;
-    background-position: center;
-  }
+}
+
+.login-image {
+  background-image: url("/public/login.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
 .input, .p-calendar input {
@@ -52,22 +52,22 @@ layer(primereact);
   @apply bg-red-500 hover:bg-red-600 cursor-pointer text-white py-1 px-2 rounded;
 }
 
-.content{
+.content {
   @apply bg-white w-full mb-10 py-5 overflow-auto relative;
 }
-.p-inputswitch-slider{
-  &::before{
-    @apply -mt-2.5
-  }
+
+.p-inputswitch-slider::before {
+  @apply -mt-2.5;
 }
 
 @keyframes jump {
   0% {
     transform: scale(100%);
-  } 50% {
+  }
+  50% {
     transform: scale(120%);
   }
   100% {
     transform: scale(100%);
-    }
+  }
 }

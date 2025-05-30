@@ -9,7 +9,7 @@ import { Button } from "primereact/button";
 import { FaPrint } from "react-icons/fa";
 
 import SideBar from "@/components/shared/sidebar/SidePanel";
-import UploadImage from "./UploadImage";
+import UploadImage from "../UploadImage";
 
 const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
   const { showToast } = useToast();
