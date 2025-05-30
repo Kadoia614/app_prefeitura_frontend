@@ -32,7 +32,7 @@ const MESSAGES = {
   },
 };
 
-const PainelAdmin = ({setIsLoading}) => {
+const PainelAdmin = ({ setIsLoading }) => {
   const [tableData, setTableData] = useState([]);
   const [roles, setRoles] = useState([]);
   const [setores, setSetores] = useState([]);
@@ -47,7 +47,7 @@ const PainelAdmin = ({setIsLoading}) => {
     try {
       setIsLoading(true);
       const response = await API.get(API_ENDPOINTS.USERS);
-      console.log(response.data)
+      console.log(response.data);
       setTableData(response.data.users);
       setRoles(response.data.roles);
       setSetores(response.data.setores);
@@ -104,7 +104,6 @@ const PainelAdmin = ({setIsLoading}) => {
     } finally {
       fetchData();
       setIsLoading(false);
-
     }
   };
 
@@ -136,7 +135,7 @@ const PainelAdmin = ({setIsLoading}) => {
 
   return (
     <div id="PainelAdmin">
-      <Toast ref={toast}/>
+      <Toast ref={toast} />
 
       <Button
         label="Cadastrar usuário"
@@ -295,17 +294,17 @@ const PainelAdmin = ({setIsLoading}) => {
 
                 <div className="flex justify-end items-center mt-4">
                   <Button
-                    label="Salvar"
-                    onClick={() => saveItem(modalData.id || null)}
-                    className="btn-primary"
-                  />
-                  <Button
                     label="Cancelar"
                     onClick={() => {
                       setOpenModalEdit(false);
                       clearModal();
                     }}
-                    className="btn-danger ml-3"
+                    className="btn-cancel mr-3"
+                  />
+                  <Button
+                    label="Salvar"
+                    onClick={() => saveItem(modalData.id || null)}
+                    className="btn-primary"
                   />
                 </div>
               </div>

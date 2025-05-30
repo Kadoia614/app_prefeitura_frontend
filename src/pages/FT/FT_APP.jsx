@@ -6,7 +6,7 @@ import { UserContext } from "@/context/UserContextFile";
 import Title from "@/components/shared/title/Title";
 
 import BolsistasTable from "./bolsistas/components/Table/BolsistasTable";
-import FT_Bolsista_Modal from "./bolsistas/components/FT_Bolsista_Modal";
+import FT_Bolsista_Modal from "./bolsistas/components/modal/FT_Bolsista_Modal";
 
 
 import {

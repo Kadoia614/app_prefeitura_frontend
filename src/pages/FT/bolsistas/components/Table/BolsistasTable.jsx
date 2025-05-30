@@ -1,19 +1,19 @@
 import { useState } from "react";
 import SelectField from "@/components/shared/input/SelectField";
 import { Button } from "primereact/button";
-import SideBarBolsista from "./SideBarBolsista";
+import SideBarBolsista from "../sidebar/SideBarBolsista";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { IoIosDocument } from "react-icons/io";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaUser, FaRegNewspaper } from "react-icons/fa";
 
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/layout/TableContainer";
 
 import TableButton from "@/components/shared/table/TableButton";
-import TableHeader from "../../../../../components/shared/table/TableHeader";
+import TableHeader from "@/components/shared/table/TableHeader";
 import { deleteBolsista } from "@/service/ft_appServices";
 
 import PropTypes from "prop-types";
@@ -29,8 +29,8 @@ const BolsistasTable = ({
   setSelectedTable,
   tableOptions,
 }) => {
-  let [excludeModalOpen, setExcludeModalOpen] = useState(false);
-  let [excludeModal, setExcludeModal] = useState(null);
+  const [excludeModalOpen, setExcludeModalOpen] = useState(false);
+  const [excludeModal, setExcludeModal] = useState(null);
   const [sideBarStatus, setSideBarStatus] = useState(false);
   const [sideBarData, setSideBarData] = useState({});
 
@@ -66,24 +66,39 @@ const BolsistasTable = ({
       <TableContainer>
         <TableHeader
           start={
-            <SelectField
-              id="SelectEdital"
-              label="Selecione o Edital"
-              selectClass={"select"}
-              value={selectedTable}
-              onChange={(e) => {
-                setSelectedTable(e.target.value);
-              }}
-              defaultValue={" Bolsistas"}
-              defaultDisabled={false}
-              options={tableOptions}
-            />
+            <div className="flex items-center">
+              <SelectField
+                id="SelectEdital"
+                label="Selecione o Edital"
+                selectClass={"select"}
+                value={selectedTable}
+                onChange={(e) => {
+                  setSelectedTable(e.target.value);
+                }}
+                defaultValue={" Bolsistas"}
+                defaultDisabled={false}
+                options={tableOptions}
+              />
+              <Button
+                className="btn-primary ml-5"
+                icon={
+                  <>
+                    {" "}
+                    <FaPlus className="mr-2" /> <FaRegNewspaper/>
+                  </>
+                }
+              />
+            </div>
           }
           end={
             <>
               {" "}
               <Button
-                label="Cadastrar Bolsista"
+                icon={
+                  <>
+                    <FaPlus className="mr-2" /> <FaUser/>
+                  </>
+                }
                 className="btn-primary"
                 onClick={() => {
                   setOpenModalEdit(true);

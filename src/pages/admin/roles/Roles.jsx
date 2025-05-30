@@ -198,7 +198,7 @@ const RolesPainel = ({setIsLoading}) => {
                       setOpenModalEdit(false);
                       clearModal();
                     }}
-                    className="btn-danger ml-3"
+                    className="btn-cancel ml-3"
                   />
                 </div>
               </DialogPanel>
