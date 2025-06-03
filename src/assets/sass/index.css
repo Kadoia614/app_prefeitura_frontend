@@ -36,8 +36,16 @@
   background-position: center;
 }
 
-.input, .p-calendar input {
+.input .p-calendar, input {
   @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 ;
+}
+
+.p-speeddial-button{
+  @apply h-[48px] w-[48px] bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2
+}
+
+.p-speeddial-list{
+  @apply top-[110%] absolute
 }
 
 .btn-primary {
@@ -54,10 +62,6 @@
 
 .content {
   @apply bg-white w-full mb-10 py-5 overflow-auto relative;
-}
-
-.p-inputswitch-slider::before {
-  @apply -mt-2.5;
 }
 
 @keyframes jump {

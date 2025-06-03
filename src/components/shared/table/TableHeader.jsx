@@ -18,12 +18,14 @@ const TableHeader = ({start, center, end}) => {
 
   const endContent = (
     <Fragment>
+      <div className="flex justify-end gap-4 items-center relative">
       {end}
+      </div>
     </Fragment>
   );
 
   return (
-    <div className="card">
+    <div className="relative header-table">
       <Toolbar start={startContent} center={centerContent} end={endContent} />
     </div>
   );

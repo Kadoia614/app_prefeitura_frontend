@@ -1,17 +1,22 @@
+import { useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 import InputField from "@/components/shared/input/InputField";
-import { postBolsista, updateBolsista } from "@/service/ft_appServices";
+import InputFieldMoney from "@/components/shared/input/InputFieldMoney";
+import { postEdital, updateEdital } from "@/service/ft_appServices";
+import CalendarInput from "@/components/shared/input/CalendarInput";
+import PropTypes from "prop-types";
 
-const Edital_Modal = (
-  editalData,
-  setEditalData,
+const Edital_Modal = ({
   isEditalModalOpen,
   setIsEditalModalOpen,
   fetchData,
-  setIsLoading
-) => {
+  setIsLoading,
+}) => {
+  const [editalData, setEditalData] = useState({});
+
   const { showToast } = useToast();
+  const today = new Date();
 
   // sómente para gerenciar os valore dos inputs
   const editableItem = (key, value) => {
@@ -28,26 +33,29 @@ const Edital_Modal = (
     try {
       console.log(setIsLoading);
       setIsLoading(true);
+      console.log(editalData.data_publicacao)
       let payload = {
-        name: editalData.name,
-        data_publicacao: editalData.ag,
-        data_vencimento: editalData.dig_ag,
-        dia_pagamento: editalData.conta,
-        valor_bolsa: editalData.dig_conta,
+        edital: {
+          name: editalData.name,
+          data_publicacao: editalData.data_publicacao,
+          data_vencimento: editalData.data_vencimento,
+          dia_pagamento: editalData.dia_pagamento,
+          valor_bolsa: editalData.valor_bolsa,
+        },
       };
 
       if (id) {
-        await updateBolsista(`${id}`, payload);
+        await updateEdital(`${id}`, payload);
       } else {
-        await postBolsista(payload);
+        await postEdital(payload);
       }
 
-      showToast("success", "Confirmed", "Bolsista salvo com sucesso");
-      setOpenModalEdit(false);
+      showToast("success", "Confirmed", "Edital salvo com sucesso");
+      setIsEditalModalOpen(false);
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar bolsista " + error);
+      showToast("error", "Error", "Erro ao salvar Edital " + error);
       return;
     } finally {
       setIsLoading(false);
@@ -56,10 +64,10 @@ const Edital_Modal = (
 
   return (
     <>
-      {/* Modal to create/ edit a bolsista */}
+      {/* Modal to create/ edit a Edital */}
       <Modal
         id="EditBolsista"
-        title={editalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
+        title={editalData?.id ? "Atualizar Edital" : "Cadastrar Edital"}
         acept={() => {
           saveItem(editalData?.id || null);
         }}
@@ -72,133 +80,102 @@ const Edital_Modal = (
         open={isEditalModalOpen}
         onClose={setIsEditalModalOpen}
       >
-        <div id="bolsistaData">
+        <div id="EditalData">
           <div id="Data" className="grid grid-cols-1 sm:grid-cols-8 gap-4">
             {/* Nome */}
-            <div className="mt-1 col-span-2 sm:col-span-4">
+            <div className="mt-1 col-span-2 sm:col-span-full">
               <InputField
-                invalid={editalData?.nome ? false : true}
+                invalid={editalData?.name ? false : true}
                 id="Name"
                 inputClass="w-full"
                 label="Nome"
-                value={editalData?.nome || ""}
-                onChange={(e) => {
-                  editableItem("nome", e.target.value);
-                }}
-              />
-            </div>
-
-            {/* CPF */}
-            <div className="mt-1 col-span-2 sm:col-span-4">
-              <InputField
-                invalid={editalData?.cpf ? false : true}
-                id="CPF"
-                keyfilter="num"
-                inputClass="w-full"
-                label="CPF"
-                value={editalData?.cpf || ""}
-                onChange={(e) => {
-                  editableItem("cpf", e.target.value);
-                }}
-                maxLength={11}
-              />
-            </div>
-
-            {/* Local */}
-            <div className="mt-1 col-span-full">
-              <InputField
-                invalid={editalData?.local ? false : true}
-                id="CPF"
-                inputClass="w-full"
-                label="Local"
-                value={editalData?.local || ""}
-                onChange={(e) => {
-                  editableItem("local", e.target.value);
-                }}
-              />
-            </div>
-
-            {/* Banco */}
-            <div className="mt-1 col-span-full">
-              <InputField
-                invalid={editalData?.name ? false : true}
-                id="Banco"
-                keyfilter="int"
-                inputClass="w-full sm:w-50"
-                label="Banco"
                 value={editalData?.name || ""}
                 onChange={(e) => {
                   editableItem("name", e.target.value);
                 }}
-                maxLength={3}
               />
             </div>
 
-            {/* agencia */}
-            <div className="mt-1 col-span-3">
-              <div className="p-inputgroup">
-                <InputField
-                  id="Ag"
-                  invalid={editalData?.ag ? false : true}
-                  keyfilter="int"
-                  inputClass="w-full sm:w-33 mr-2"
-                  label="Agência"
-                  value={editalData?.ag || ""}
-                  onChange={(e) => {
-                    editableItem("ag", e.target.value);
-                  }}
-                  maxLength={4}
-                />
-
-                <InputField
-                  invalid={editalData?.dig_ag ? false : true}
-                  id="Dig_Ag"
-                  keyfilter="int"
-                  inputClass="w-full"
-                  label="Dg"
-                  value={editalData?.dig_ag || ""}
-                  onChange={(e) => {
-                    editableItem("dig_ag", e.target.value);
-                  }}
-                  maxLength={1}
-                />
-              </div>
+            {/* Publicacao */}
+            <div className="mt-1 col-span-4">
+              <CalendarInput
+                invalid={editalData?.data_publicacao ? false : true}
+                label={"Publicação"}
+                inputClass="w-full"
+                value={editalData?.data_publicacao || ""}
+                onChange={(e) => {
+                  editableItem("data_publicacao", e.target.value);
+                }}
+                format={"dd-mm-yy"}
+                view="date"
+                showIcon
+              />
             </div>
 
-            <div className="mt-1 col-span-3">
-              <div className="p-inputgroup">
-                <InputField
-                  invalid={editalData?.conta ? false : true}
-                  keyfilter="int"
-                  id="Conta"
-                  inputClass="w-full sm:w-33 mr-2"
-                  label="Conta"
-                  value={editalData?.conta || ""}
-                  onChange={(e) => {
-                    editableItem("conta", e.target.value);
-                  }}
-                  maxLength={6}
-                />
+            {/* Validade */}
+            <div className="mt-1 col-span-4">
+              <CalendarInput
+                invalid={editalData?.data_vencimento ? false : true}
+                label={"Vencimento"}
+                inputClass="w-full"
+                value={editalData?.data_vencimento || ""}
+                onChange={(e) => {
+                  editableItem("data_vencimento", e.target.value);
+                }}
+                format={"dd-mm-yy"}
+                view="date"
+                showIcon
+              />
+            </div>
 
-                <InputField
-                  invalid={editalData?.dig_conta ? false : true}
-                  keyfilter="int"
-                  id="Dig_Conta"
-                  inputClass="w-full"
-                  label="Dg"
-                  value={editalData?.dig_conta || ""}
-                  onChange={(e) => {
-                    editableItem("dig_conta", e.target.value);
-                  }}
-                  maxLength={1}
-                />
-              </div>
+            {/* Pagamento */}
+            <div className="mt-1 col-span-4">
+              <CalendarInput
+                invalid={editalData?.dia_pagamento ? false : true}
+                label={"Vencimento"}
+                inputClass="w-full"
+                value={
+                  editalData?.dia_pagamento
+                    ? new Date(
+                        today.getFullYear(),
+                        today.getMonth(),
+                        editalData?.dia_pagamento
+                      )
+                    : null
+                }
+                onChange={(e) => {
+                  editableItem("dia_pagamento", e.target.value.getDate());
+                }}
+                format={"dd"}
+                view="date"
+              />
+            </div>
+
+            {/* Bolsa */}
+            <div className="mt-1 col-span-4">
+              <InputFieldMoney
+                invalid={editalData?.valor_bolsa ? false : true}
+                id="Bolsa"
+                keyfilter="int"
+                inputClass="w-full sm:w-50"
+                label="Valor da Bolsa"
+                value={editalData?.valor_bolsa || ""}
+                onChange={(e) => {
+                  editableItem("valor_bolsa", e.target.value);
+                }}
+              />
             </div>
           </div>
         </div>
       </Modal>
     </>
   );
+};
+Edital_Modal.propTypes = {
+  isEditalModalOpen: PropTypes.bool.isRequired,
+  setIsEditalModalOpen: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
 };
 
 export default Edital_Modal;

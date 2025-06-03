@@ -1,32 +1,32 @@
 import { useState } from "react";
-import SelectField from "@/components/shared/input/SelectField";
-import { Button } from "primereact/button";
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { IoIosDocument } from "react-icons/io";
-import { FaTrash, FaEdit, FaPlus, FaUser, FaRegNewspaper } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
-import TableContainer from "@/components/layout/TableContainer";
+import TableContainer from "@/components/shared/table/TableContainer";
 
 import TableButton from "@/components/shared/table/TableButton";
-import TableHeader from "@/components/shared/table/TableHeader";
 import { deleteBolsista } from "@/service/ft_appServices";
 
 import PropTypes from "prop-types";
+import BolsistaTableHeader from "./BolsistaTableHeader";
 
 const BolsistasTable = ({
   tableData,
   setOpenModalEdit,
+  setIsEditalModalOpen,
   setModalData,
   scopo,
   fetchData,
   setIsLoading,
   selectedTable,
   setSelectedTable,
+  setIsVincularModalOpen,
   tableOptions,
 }) => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
@@ -64,49 +64,15 @@ const BolsistasTable = ({
   return (
     <>
       <TableContainer>
-        <TableHeader
-          start={
-            <div className="flex items-center">
-              <SelectField
-                id="SelectEdital"
-                label="Selecione o Edital"
-                selectClass={"select"}
-                value={selectedTable}
-                onChange={(e) => {
-                  setSelectedTable(e.target.value);
-                }}
-                defaultValue={" Bolsistas"}
-                defaultDisabled={false}
-                options={tableOptions}
-              />
-              <Button
-                className="btn-primary ml-5"
-                icon={
-                  <>
-                    {" "}
-                    <FaPlus className="mr-2" /> <FaRegNewspaper/>
-                  </>
-                }
-              />
-            </div>
-          }
-          end={
-            <>
-              {" "}
-              <Button
-                icon={
-                  <>
-                    <FaPlus className="mr-2" /> <FaUser/>
-                  </>
-                }
-                className="btn-primary"
-                onClick={() => {
-                  setOpenModalEdit(true);
-                }}
-              />
-            </>
-          }
-        ></TableHeader>
+        <BolsistaTableHeader
+          setOpenModalEdit={setOpenModalEdit}
+          setIsEditalModalOpen={setIsEditalModalOpen}
+          setIsVincularModalOpen={setIsVincularModalOpen}
+          selectedTable={selectedTable}
+          setSelectedTable={setSelectedTable}
+          tableOptions={tableOptions}
+        />
+
         <DataTable
           id="BolistaTable"
           value={tableData}
@@ -141,16 +107,6 @@ const BolsistasTable = ({
             sortable
             filter
             filterPlaceholder="Pesquisar Local"
-            filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4"
-          />
-          <Column
-            headerClassName="p-2"
-            field="vencimento"
-            header="Vencimento"
-            sortable
-            filter
-            filterPlaceholder="Pesquisar status"
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4"
           />
@@ -220,7 +176,6 @@ const BolsistasTable = ({
         refuse={() => setExcludeModalOpen(false)}
         typeAction={"btn-danger"}
         open={excludeModalOpen}
-        onClose={() => setExcludeModalOpen(false)}
       >
         <p className="text-red-500 font-bold mt-2">
           Tem certeza que deseja excluir esse item? Os dados excluídos não
@@ -240,6 +195,8 @@ const BolsistasTable = ({
 BolsistasTable.propTypes = {
   tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
+  setIsEditalModalOpen: PropTypes.func,
+  setIsVincularModalOpen: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
   setSideBarStatus: PropTypes.func.isRequired,

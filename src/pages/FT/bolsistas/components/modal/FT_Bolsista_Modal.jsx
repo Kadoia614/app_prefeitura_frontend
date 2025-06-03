@@ -80,7 +80,7 @@ const FT_Bolsista_Modal = ({
         open={openModalEdit}
         onClose={setOpenModalEdit}
       >
-        <div id="bolsistaData">
+        <div id="BolsistaData">
           <div id="Data" className="grid grid-cols-1 sm:grid-cols-8 gap-4">
             {/* Nome */}
             <div className="mt-1 col-span-2 sm:col-span-4">

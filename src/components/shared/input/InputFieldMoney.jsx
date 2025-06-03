@@ -1,7 +1,7 @@
-import { InputText } from "primereact/inputtext";
+import { InputNumber } from 'primereact/inputnumber';
 import PropTypes from "prop-types";
 
-const InputField = ({
+const InputFieldMoney = ({
   id,
   label,
   value,
@@ -19,23 +19,24 @@ const InputField = ({
       {label}
     </label>
     <div className="mt-1">
-      <InputText
+      <InputNumber
         invalid={invalid || false}
         keyfilter={keyfilter || ""}
         id={id}
-        className={`rounded-md ps-2 py-1.5 focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${
+        className={`${inputClass} ${
           disabled ? "bg-gray-100" : ""
         }`}
         placeholder={`${placeHolder || label}`}
         value={value || ""}
-        onChange={onChange}
+        onValueChange={onChange}
         maxLength={maxLength}
         disabled={disabled || false}
+        mode="currency" currency="BRL" locale="pt-BR"
       />
     </div>
   </fieldset>
 );
-InputField.propTypes = {
+InputFieldMoney.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -44,8 +45,9 @@ InputField.propTypes = {
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
+  widthField: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
 };
 
-export default InputField;
+export default InputFieldMoney;

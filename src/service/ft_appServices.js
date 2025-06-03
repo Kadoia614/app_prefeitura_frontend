@@ -3,7 +3,7 @@ import { APIBolsistaImage } from "./API";
 
 // bolsistas
 export const getBolsista = async (url) => {
-  const {data} = await API.get(url ? url : "/ft/bolsista");
+  const { data } = await API.get(url ? url : "/ft/bolsista");
   return data;
 };
 
@@ -20,8 +20,8 @@ export const deleteBolsista = async (id) => {
 };
 
 export const getBolsistaEdital = async (id) => {
-  const {data} = await API.get(`/ft/bolsista/${id}/edital`);
-  return data
+  const { data } = await API.get(`/ft/bolsista/edital/${id}`);
+  return data;
 };
 
 // images
@@ -59,4 +59,19 @@ export const postEdital = async (data) => {
 
 export const deleteEdital = async (id) => {
   return await API.delete(`/ft/edital/${id}`);
+};
+
+export const getEditalWithBolsista = async () => {
+  const { data } = await API.get(`/ft/edital/bolsista`);
+
+  return data;
+};
+
+export const vincularBolsista = async (id, bolsistas) => {
+  console.log([bolsistas])
+  const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
+    bolsista: bolsistas,
+  });
+
+  return data;
 };

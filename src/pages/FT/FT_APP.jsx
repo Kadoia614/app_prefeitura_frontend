@@ -6,8 +6,9 @@ import { UserContext } from "@/context/UserContextFile";
 import Title from "@/components/shared/title/Title";
 
 import BolsistasTable from "./bolsistas/components/Table/BolsistasTable";
+import Vincular_Bolsista from "./bolsistas/components/modal/Vincular_Bolsista";
 import FT_Bolsista_Modal from "./bolsistas/components/modal/FT_Bolsista_Modal";
-
+import Edital_Modal from "./bolsistas/components/modal/Edital_Modal";
 
 import {
   getBolsista,
@@ -20,6 +21,8 @@ const FTAPP = () => {
   const [error, setError] = useState(false);
 
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [isEditalModalOpen, setIsEditalModalOpen] = useState(false);
+  const [isVincularModalOpen, setIsVincularModalOpen] = useState(false);
 
   const [tableData, setTableData] = useState([]);
   const [tableOptions, setTableOptions] = useState([]);
@@ -68,14 +71,13 @@ const FTAPP = () => {
       <Title>Com grandes poderes vêm grandes responsabilidades</Title>
 
       <div>
-        <div className="flex flex-row justify-between items-end">
-
-        </div>
         <BolsistasTable
-        selectedTable={selectedTable}
+          setIsVincularModalOpen={setIsVincularModalOpen}
+          selectedTable={selectedTable}
           setSelectedTable={setSelectedTable}
           tableOptions={tableOptions}
           tableData={tableData}
+          setIsEditalModalOpen={setIsEditalModalOpen}
           fetchData={fetchData}
           scopo={scopo}
           setOpenModalEdit={setOpenModalEdit}
@@ -83,6 +85,20 @@ const FTAPP = () => {
           setIsLoading={setIsLoading}
         />
       </div>
+
+      <Edital_Modal
+        setIsEditalModalOpen={setIsEditalModalOpen}
+        isEditalModalOpen={isEditalModalOpen}
+        fetchData={fetchData}
+        setIsLoading={setIsLoading}
+      ></Edital_Modal>
+
+      <Vincular_Bolsista
+        isVincularModalOpen={isVincularModalOpen}
+        setIsVincularModalOpen={setIsVincularModalOpen}
+        fetchData={fetchData}
+        setIsLoading={setIsLoading}
+      ></Vincular_Bolsista>
       
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal
