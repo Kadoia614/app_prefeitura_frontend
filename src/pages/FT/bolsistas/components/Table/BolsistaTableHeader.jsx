@@ -10,18 +10,19 @@ const BolsistaTableHeader = ({
   setSelectedTable,
   tableOptions,
   setIsEditalModalOpen,
-  setIsVincularModalOpen
+  setIsVincularModalOpen,
 }) => {
   const items = [
     {
-      label: "Add",
+      label: "Adicionar Bolsista",
       icon: <FaUser />,
       command: () => {
         setOpenModalEdit(true);
       },
+      tooltip: "Adicionar novo bolsista",
     },
     {
-      label: "Add",
+      label: "Novo Edital",
       icon: <FaRegNewspaper />,
       command: () => {
         setIsEditalModalOpen(true);
@@ -33,14 +34,16 @@ const BolsistaTableHeader = ({
       command: () => {
         setIsVincularModalOpen(true);
       },
+      tooltip: "Criar novo edital",
     },
-        {
-      label: "Add",
+    {
+      label: "Vincular Bolsista",
       icon: <FaFileCsv />,
       disabled: true,
       command: () => {
         setIsVincularModalOpen(true);
       },
+      tooltip: "Vincular bolsista a um edital",
     },
   ];
 
@@ -68,6 +71,8 @@ const BolsistaTableHeader = ({
             <SpeedDial
               model={items}
               direction="down"
+              tooltipOptions={{ position: "left" }}
+              type="linear"
               style={{ right: 0 }}
             ></SpeedDial>
           </>
@@ -83,7 +88,6 @@ BolsistaTableHeader.propTypes = {
   tableOptions: PropTypes.array.isRequired,
   setIsEditalModalOpen: PropTypes.func.isRequired,
   setIsVincularModalOpen: PropTypes.func.isRequired,
-  
 };
 
 export default BolsistaTableHeader;
