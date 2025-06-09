@@ -3,6 +3,7 @@ import { SpeedDial } from "primereact/speeddial";
 import SelectField from "@/components/shared/input/SelectField";
 import { FaUnlink, FaUser, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
 const BolsistaTableHeader = ({
   setOpenModalEdit,
@@ -11,7 +12,10 @@ const BolsistaTableHeader = ({
   tableOptions,
   setIsEditalModalOpen,
   setIsVincularModalOpen,
+  tag,
 }) => {
+  const [status, setStatus] = useState("");
+
   const items = [
     {
       label: "Adicionar Bolsista",
@@ -31,6 +35,7 @@ const BolsistaTableHeader = ({
     {
       label: "Add",
       icon: <FaUnlink />,
+      disabled: status === "inativo",
       command: () => {
         setIsVincularModalOpen(true);
       },
@@ -39,7 +44,7 @@ const BolsistaTableHeader = ({
     {
       label: "Vincular Bolsista",
       icon: <FaFileCsv />,
-      disabled: true,
+      disabled: status === "",
       command: () => {
         setIsVincularModalOpen(true);
       },
@@ -47,11 +52,24 @@ const BolsistaTableHeader = ({
     },
   ];
 
+  const verifyStatus = (id) => {
+    if (id) {
+      setStatus(tableOptions.find((option) => option.id.includes(id))?.status);
+      return;
+    }
+    setStatus(null);
+    return;
+  };
+
+  useEffect(() => {
+    verifyStatus(selectedTable);
+  }, [selectedTable]);
+
   return (
     <>
       <TableHeader
         start={
-          <div className="flex items-center">
+          <div className="flex items-end gap-10">
             <SelectField
               id="SelectEdital"
               label="Selecione o Edital"
@@ -64,6 +82,14 @@ const BolsistaTableHeader = ({
               defaultDisabled={false}
               options={tableOptions}
             />
+            {status ? (
+              <div className={`flex gap-2 items-center ${tag[status].style}`}>
+                {tag[status].icon}
+                {tag[status].label }
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         }
         end={

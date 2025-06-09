@@ -44,10 +44,9 @@ const FTAPP = () => {
           localStorage.setItem("upload_token", uploadToken);
           return;
         }
-
-        const response = await getBolsistaEdital(selectedTable);
-        console.log(response);
-        setTableData(response.bolsista);
+        const data = await getBolsistaEdital(selectedTable);
+        console.log(data);
+        setTableData(data.bolsista);
       } catch (error) {
         setError(error.status);
       } finally {
@@ -79,7 +78,6 @@ const FTAPP = () => {
           tableData={tableData}
           setIsEditalModalOpen={setIsEditalModalOpen}
           fetchData={fetchData}
-          scopo={scopo}
           setOpenModalEdit={setOpenModalEdit}
           setModalData={setModalData}
           setIsLoading={setIsLoading}
