@@ -35,7 +35,7 @@ const BolsistaTableHeader = ({
     {
       label: "Add",
       icon: <FaUnlink />,
-      disabled: status === "inativo",
+      disabled: status === "inativo" || !selectedTable,
       command: () => {
         setIsVincularModalOpen(true);
       },
@@ -44,7 +44,7 @@ const BolsistaTableHeader = ({
     {
       label: "Vincular Bolsista",
       icon: <FaFileCsv />,
-      disabled: status === "",
+      disabled: status === "inativo" || !selectedTable,
       command: () => {
         setIsVincularModalOpen(true);
       },

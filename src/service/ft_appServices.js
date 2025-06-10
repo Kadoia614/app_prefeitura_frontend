@@ -61,7 +61,13 @@ export const deleteEdital = async (id) => {
   return await API.delete(`/ft/edital/${id}`);
 };
 
-export const getEditalWithBolsista = async () => {
+export const getEditalWithBolsista = async (id) => {
+  const { data } = await API.get(`/ft/edital/${id}/bolsista`);
+
+  return data;
+};
+
+export const getAllEditalWithBolsista = async () => {
   const { data } = await API.get(`/ft/edital/bolsista`);
 
   return data;

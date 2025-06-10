@@ -55,7 +55,7 @@ function Services() {
                 title={service.name}
                 subTitle={service.description}
                 footer={cardFooter(service.url, service.name)}
-                className="p-4"
+                className="py-4"
               >
                 {service.name}
               </Card>
