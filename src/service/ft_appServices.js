@@ -26,17 +26,17 @@ export const getBolsistaEdital = async (id) => {
 
 // images
 export const getDocs = async (id) => {
-  return await APIBolsistaImage.get(`/bolsista/${id}`);
+  return await APIBolsistaImage.get(`/img/bolsista/${id}`);
 };
 
 export const getOneDoc = async (image) => {
-  return await APIBolsistaImage.get(`/${image}`, {
+  return await APIBolsistaImage.get(`/img/${image}`, {
     responseType: "blob",
   });
 };
 
 export const postDoc = async (id, data) => {
-  return await APIBolsistaImage.post(`/bolsista/${id}`, data, {
+  return await APIBolsistaImage.post(`/img/bolsista/${id}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -77,6 +77,16 @@ export const vincularBolsista = async (id, bolsistas) => {
   console.log([bolsistas])
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
+  });
+
+  return data;
+};
+
+// RELATORIO
+export const getRelatory = async (id) => {
+  console.log(id)
+  const { data } = await APIBolsistaImage.get(`/relatory/${id}`, {
+    responseType: "blob",
   });
 
   return data;

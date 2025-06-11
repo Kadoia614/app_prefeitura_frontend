@@ -4,6 +4,7 @@ import SelectField from "@/components/shared/input/SelectField";
 import { FaUnlink, FaUser, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { getRelatory } from "@/service/ft_appServices";
 
 const BolsistaTableHeader = ({
   setOpenModalEdit,
@@ -15,6 +16,13 @@ const BolsistaTableHeader = ({
   tag,
 }) => {
   const [status, setStatus] = useState("");
+
+  async function openRelatory() {
+    const data = await getRelatory(selectedTable);
+
+    const archive = URL.createObjectURL(data);
+    window.open(archive, "_blank")
+  }
 
   const items = [
     {
@@ -42,13 +50,13 @@ const BolsistaTableHeader = ({
       tooltip: "Criar novo edital",
     },
     {
-      label: "Vincular Bolsista",
+      label: "get Relatory",
       icon: <FaFileCsv />,
       disabled: status === "inativo" || !selectedTable,
       command: () => {
-        setIsVincularModalOpen(true);
+        openRelatory();
       },
-      tooltip: "Vincular bolsista a um edital",
+      tooltip: "Baixar Relatório",
     },
   ];
 
@@ -85,7 +93,7 @@ const BolsistaTableHeader = ({
             {status ? (
               <div className={`flex gap-2 items-center ${tag[status].style}`}>
                 {tag[status].icon}
-                {tag[status].label }
+                {tag[status].label}
               </div>
             ) : (
               ""

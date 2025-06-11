@@ -28,7 +28,7 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace("/api", ""),
       },
-      "/ft/img": {
+      "/ft/": {
         target: "http://192.168.16.13:3007",
         changeOrigin: true,
         secure: false,
