@@ -8,7 +8,7 @@ const TableButton = ({ onClick, icon, label, color }) => {
         label={label}
         icon={icon}
         iconPos="left"
-        className={`flex items-center gap-1 px-3 py-1 text-sm ${color} rounded-lg transition`}
+        className={`flex items-center gap-1 px-3 py-1 text-sm ${color} rounded-lg transition text-xl`}
         onClick={onClick}
       />
     </>

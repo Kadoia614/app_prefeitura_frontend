@@ -8,15 +8,17 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import { GiConfirmed } from "react-icons/gi";
 import { CiWarning } from "react-icons/ci";
 import { AiOutlineExclamation } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
-import { deleteBolsista } from "@/service/ft_appServices";
 import BolsistaTableHeader from "./BolsistaTableHeader";
 import { UserContext } from "@/context/UserContextFile";
+
+import { deleteBolsista, toggleBolsista } from "@/service/ft_appServices";
 
 const tag = {
   ativo: {
@@ -49,7 +51,9 @@ const BolsistasTable = ({
   tableOptions,
 }) => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
+  const [alterModalOpen, setAlterModalOpen] = useState(false);
   const [excludeId, setExcludeId] = useState(null);
+  const [alterId, setAlterId] = useState(null);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { showToast } = useToast();
@@ -60,6 +64,11 @@ const BolsistasTable = ({
     setExcludeModalOpen(true);
   };
 
+  const confirmToggle = (id) => {
+    setAlterId(id);
+    setAlterModalOpen(true);
+  };
+
   const handleDelete = async (id) => {
     try {
       setIsLoading(true);
@@ -68,6 +77,20 @@ const BolsistasTable = ({
       fetchData();
     } catch (err) {
       showToast("error", "Erro", `Erro ao deletar bolsista: ${err}`);
+    } finally {
+      setExcludeModalOpen(false);
+      setIsLoading(false);
+    }
+  };
+
+  const handleToggle = async (id) => {
+    try {
+      setIsLoading(true);
+      await toggleBolsista(`${id}`, `${selectedTable}`);
+      showToast("success", "Confirmado", "Bolsista alterado com sucesso");
+      fetchData();
+    } catch (err) {
+      showToast("error", "Erro", `Erro ao alterar bolsista: ${err}`);
     } finally {
       setExcludeModalOpen(false);
       setIsLoading(false);
@@ -88,30 +111,35 @@ const BolsistasTable = ({
   const renderActions = (rowData) => (
     <div className="flex flex-wrap gap-2">
       <TableButton
-        label={"Editar"}
         icon={<FaEdit />}
         iconPos="left"
-        color="text-white bg-primary-500 hover:bg-primary-700"
+        color="text-primary-500 bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
           setModalData(rowData);
         }}
       />
       <TableButton
-        label="Documentos"
         icon={<IoIosDocument />}
         iconPos="left"
-        color="text-white bg-primary-500 hover:bg-primary-700"
+        color="text-primary-500 bg-white border-none"
         onClick={() => {
           setSideBarOpen(true);
           setSideBarId(rowData.id);
         }}
       />
+      <TableButton
+        icon={<ImCross />}
+        iconPos="left"
+        color="text-yellow-500 bg-white border-none"
+        onClick={() => {
+          confirmToggle(rowData.id);
+        }}
+      />
       {(scopo == 1 || scopo == 2) && (
         <TableButton
-          label="Deletar"
           icon={<FaTrash />}
-          color="text-white bg-red-500 hover:bg-red-700"
+          color="text-red-500 bg-white border-none"
           onClick={() => confirmDelete(rowData.id)}
         />
       )}
@@ -141,7 +169,11 @@ const BolsistasTable = ({
           className="min-w-full p-4"
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
-          <Column field="id" header="Id" className="text-sm text-gray-800 p-4 whitespace-nowrap" />
+          <Column
+            field="id"
+            header="Id"
+            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+          />
           <Column
             field="nome"
             header="Nome"
@@ -175,7 +207,9 @@ const BolsistasTable = ({
             filterPlaceholder="Pesquisar data"
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
-            body={(rowData) => new Date(rowData.createdAt).toLocaleDateString("pt-BR")}
+            body={(rowData) =>
+              new Date(rowData.createdAt).toLocaleDateString("pt-BR")
+            }
           />
           {(scopo == 1 || scopo == 2) && (
             <Column header="Ações" body={renderActions} />
@@ -193,7 +227,23 @@ const BolsistasTable = ({
         open={excludeModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
-          Tem certeza que deseja excluir esse item? Os dados excluídos não poderão ser recuperados.
+          Tem certeza que deseja excluir esse item? Os dados excluídos não
+          poderão ser recuperados.
+        </p>
+      </Modal>
+
+      <Modal
+        id="ToggleBolsista"
+        title="Alterar Status do Bolsista?"
+        acept={() => handleToggle(alterId)}
+        aceptLabel="Alterar"
+        refuse={() => setAlterModalOpen(false)}
+        typeAction="btn-danger"
+        open={alterModalOpen}
+      >
+        <p className="text-red-500 font-bold mt-2">
+          Tem certeza que deseja excluir esse item? Os dados excluídos não
+          poderão ser recuperados.
         </p>
       </Modal>
 
@@ -202,7 +252,6 @@ const BolsistasTable = ({
         setSideBarStatus={setSideBarOpen}
         sideBarData={sideBarId}
       />
-      {scopo}
     </>
   );
 };

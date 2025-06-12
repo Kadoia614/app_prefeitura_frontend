@@ -21,6 +21,7 @@ const BolsistaTableHeader = ({
     const data = await getRelatory(selectedTable);
 
     const archive = URL.createObjectURL(data);
+    
     window.open(archive, "_blank")
   }
 
@@ -122,6 +123,13 @@ BolsistaTableHeader.propTypes = {
   tableOptions: PropTypes.array.isRequired,
   setIsEditalModalOpen: PropTypes.func.isRequired,
   setIsVincularModalOpen: PropTypes.func.isRequired,
+  tag: PropTypes.objectOf(
+    PropTypes.shape({
+      style: PropTypes.string,
+      icon: PropTypes.node,
+      label: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default BolsistaTableHeader;

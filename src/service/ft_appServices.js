@@ -24,6 +24,11 @@ export const getBolsistaEdital = async (id) => {
   return data;
 };
 
+export const toggleBolsista = async (bolsista, edital) => {
+  const { data } = await API.put(`/ft/bolsista/${bolsista}/edital/${edital}`);
+  return data;
+};
+
 // images
 export const getDocs = async (id) => {
   return await APIBolsistaImage.get(`/img/bolsista/${id}`);
@@ -74,7 +79,7 @@ export const getAllEditalWithBolsista = async () => {
 };
 
 export const vincularBolsista = async (id, bolsistas) => {
-  console.log([bolsistas])
+  console.log([bolsistas]);
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
   });
@@ -84,7 +89,6 @@ export const vincularBolsista = async (id, bolsistas) => {
 
 // RELATORIO
 export const getRelatory = async (id) => {
-  console.log(id)
   const { data } = await APIBolsistaImage.get(`/relatory/${id}`, {
     responseType: "blob",
   });

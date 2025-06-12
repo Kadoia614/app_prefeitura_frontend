@@ -45,6 +45,7 @@ const FTAPP = () => {
           return;
         }
         const data = await getBolsistaEdital(selectedTable);
+        console.log(data)
         setTableData(data.bolsista);
       } catch (error) {
         setError(error.status);
