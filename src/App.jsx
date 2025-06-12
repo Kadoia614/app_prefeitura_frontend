@@ -15,6 +15,7 @@ import FT_APP from "./pages/FT/FT_APP";
 import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
+import UserConfig from "./pages/user/UserConfig";
 import Footer from "./components/layout/Footer";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
 
           <Route path="/" element={<ProtectRoutes />}>
             <Route index element={<ServicesCards />} />
+            <Route path="/config" element={<UserConfig />} />
             <Route path="admin" element={<Admin />} />
 
             <Route path="demandasti" element={<DemandasTi />}>
