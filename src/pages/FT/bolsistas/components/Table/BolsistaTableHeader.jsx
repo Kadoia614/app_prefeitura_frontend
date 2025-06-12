@@ -3,6 +3,8 @@ import { SpeedDial } from "primereact/speeddial";
 import SelectField from "@/components/shared/input/SelectField";
 import { FaUnlink, FaUser, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { getRelatory } from "@/service/ft_appServices";
 
 const BolsistaTableHeader = ({
   setOpenModalEdit,
@@ -10,18 +12,30 @@ const BolsistaTableHeader = ({
   setSelectedTable,
   tableOptions,
   setIsEditalModalOpen,
-  setIsVincularModalOpen
+  setIsVincularModalOpen,
+  tag,
 }) => {
+  const [status, setStatus] = useState("");
+
+  async function openRelatory() {
+    const data = await getRelatory(selectedTable);
+
+    const archive = URL.createObjectURL(data);
+    
+    window.open(archive, "_blank")
+  }
+
   const items = [
     {
-      label: "Add",
+      label: "Adicionar Bolsista",
       icon: <FaUser />,
       command: () => {
         setOpenModalEdit(true);
       },
+      tooltip: "Adicionar novo bolsista",
     },
     {
-      label: "Add",
+      label: "Novo Edital",
       icon: <FaRegNewspaper />,
       command: () => {
         setIsEditalModalOpen(true);
@@ -30,25 +44,41 @@ const BolsistaTableHeader = ({
     {
       label: "Add",
       icon: <FaUnlink />,
+      disabled: status === "inativo" || !selectedTable,
       command: () => {
         setIsVincularModalOpen(true);
       },
+      tooltip: "Criar novo edital",
     },
-        {
-      label: "Add",
+    {
+      label: "get Relatory",
       icon: <FaFileCsv />,
-      disabled: true,
+      disabled: status === "inativo" || !selectedTable,
       command: () => {
-        setIsVincularModalOpen(true);
+        openRelatory();
       },
+      tooltip: "Baixar Relatório",
     },
   ];
+
+  const verifyStatus = (id) => {
+    if (id) {
+      setStatus(tableOptions.find((option) => option.id.includes(id))?.status);
+      return;
+    }
+    setStatus(null);
+    return;
+  };
+
+  useEffect(() => {
+    verifyStatus(selectedTable);
+  }, [selectedTable]);
 
   return (
     <>
       <TableHeader
         start={
-          <div className="flex items-center">
+          <div className="flex items-end gap-10">
             <SelectField
               id="SelectEdital"
               label="Selecione o Edital"
@@ -61,6 +91,14 @@ const BolsistaTableHeader = ({
               defaultDisabled={false}
               options={tableOptions}
             />
+            {status ? (
+              <div className={`flex gap-2 items-center ${tag[status].style}`}>
+                {tag[status].icon}
+                {tag[status].label}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         }
         end={
@@ -68,6 +106,8 @@ const BolsistaTableHeader = ({
             <SpeedDial
               model={items}
               direction="down"
+              tooltipOptions={{ position: "left" }}
+              type="linear"
               style={{ right: 0 }}
             ></SpeedDial>
           </>
@@ -83,7 +123,13 @@ BolsistaTableHeader.propTypes = {
   tableOptions: PropTypes.array.isRequired,
   setIsEditalModalOpen: PropTypes.func.isRequired,
   setIsVincularModalOpen: PropTypes.func.isRequired,
-  
+  tag: PropTypes.objectOf(
+    PropTypes.shape({
+      style: PropTypes.string,
+      icon: PropTypes.node,
+      label: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default BolsistaTableHeader;

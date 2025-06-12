@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
@@ -12,7 +12,8 @@ import {
   vincularBolsista,
 } from "@/service/ft_appServices";
 
-const Edital_Modal = ({
+const Vincular_Bolsista = ({
+  selectedTable,
   isVincularModalOpen,
   setIsVincularModalOpen,
   fetchData,
@@ -20,19 +21,23 @@ const Edital_Modal = ({
 }) => {
   const [bolsistasData, setBolsistasData] = useState([]);
   const [editalData, setEditalData] = useState([]);
-  const [editaisSelecionados, setEditaisSelecionados] = useState([]);
+  const [bolsistaSelecionado, setBolsistaSelecionado] = useState([]);
 
   const { showToast } = useToast();
 
   const getData = async () => {
     const [{ bolsista }, { bolsista_edital }] = await Promise.all([
       getBolsista(),
-      getEditalWithBolsista(),
+      getEditalWithBolsista(selectedTable),
     ]);
-
+    console.log(bolsista, bolsista_edital);
     setEditalData(bolsista_edital);
     setBolsistasData(bolsista);
   };
+
+  useEffect(() => {
+    fetchData(selectedTable);
+  }, [fetchData, selectedTable]);
 
   const CloseModal = () => {
     setIsVincularModalOpen(false);
@@ -40,21 +45,20 @@ const Edital_Modal = ({
   };
   // apaga os dados do modal
   const clearModal = () => {
-    setEditaisSelecionados([]);
+    setBolsistaSelecionado([]);
   };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async () => {
-    console.log(editaisSelecionados);
+    console.log(setBolsistaSelecionado);
     try {
       setIsLoading(true);
-      editaisSelecionados.forEach(async (selecionados) => {
-        await vincularBolsista(selecionados.id, selecionados.bolsista);
-      });
+      await vincularBolsista(selectedTable, bolsistaSelecionado);
+
       setIsVincularModalOpen(false);
       clearModal();
       showToast("success", "Confirmed", "Edital salvo com sucesso");
-      fetchData();
+      fetchData(selectedTable);
     } catch (error) {
       showToast("error", "Error", "Erro ao salvar Edital " + error);
       return;
@@ -63,34 +67,21 @@ const Edital_Modal = ({
     }
   };
 
-  const toggleBolsista = (editalId, bolsistaId) => {
-    setEditaisSelecionados((prev) => {
-      const isInclude = prev.find((e) => e.id === editalId);
-
-      if (isInclude) {
-        const haveBolsista = isInclude.bolsista.includes(bolsistaId);
-
-        const novaListaBolsistas = haveBolsista
-          ? isInclude.bolsista.filter((id) => id !== bolsistaId)
-          : [...isInclude.bolsista, bolsistaId];
-
-        return novaListaBolsistas.length === 0
-          ? prev.filter((e) => e.id !== editalId)
-          : prev.map((e) =>
-              e.id === editalId ? { ...e, bolsista: novaListaBolsistas } : e
-            );
-      } else {
-        return [...prev, { id: editalId, bolsista: [bolsistaId] }];
+  const toggleBolsista = (bolsistaId) => {
+    setBolsistaSelecionado((prev) => {
+      const isIncluded = prev.includes(bolsistaId);
+      console.log(isIncluded);
+      if (isIncluded) {
+        return prev.filter((item) => item !== bolsistaId);
       }
+      return [...prev, bolsistaId];
     });
   };
 
-  const isChecked = (edital, bolsistaId) => {
+  const isChecked = (bolsistaId) => {
     return (
-      edital.bolsistas?.some((b) => b.id === bolsistaId) ||
-      (editaisSelecionados || [])
-        .find((e) => e.id === edital.id)
-        ?.bolsista.includes(bolsistaId)
+      editalData.bolsistas?.includes(bolsistaId) ||
+      bolsistaSelecionado.includes(bolsistaId)
     );
   };
 
@@ -109,34 +100,30 @@ const Edital_Modal = ({
       >
         <div id="EditalData">
           <div id="Data" className="flex flex-col">
-            <Accordion activeIndex={0}>
-              {editalData?.map((edital, index) => {
-                return (
-                  <AccordionTab key={index} header={edital.name}>
-                    {bolsistasData.map((bolsista) => (
-                      <div key={bolsista.id} className="flex items-center mb-2">
-                        <Checkbox
-                          disabled={edital.bolsistas?.some(
-                            (b) => b.id === bolsista.id
-                          )}
-                          inputId={`cb-${edital.id}-${bolsista.id}`}
-                          checked={isChecked(edital, bolsista.id)}
-                          onChange={() =>
-                            toggleBolsista(edital.id, bolsista.id)
-                          }
-                        />
-                        <label
-                          htmlFor={`cb-${edital.id}-${bolsista.id}`}
-                          className="ml-2"
-                        >
-                          {bolsista.nome}
-                        </label>
-                      </div>
-                    ))}
-                  </AccordionTab>
-                );
-              })}
-            </Accordion>
+            {bolsistasData.map((bolsista) => (
+              <div key={bolsista.id} className="flex items-center mb-2">
+                <Checkbox
+                  disabled={
+                    bolsista.status === "pendente" ||
+                    editalData.bolsistas.includes(bolsista.id)
+                  }
+                  inputId={`cb-${editalData.id}-${bolsista.id}`}
+                  checked={isChecked(bolsista.id)}
+                  onChange={() => toggleBolsista(bolsista.id)}
+                />
+                <label
+                  htmlFor={`cb-${editalData.id}-${bolsista.id}`}
+                  className={`ml-2 ${
+                    bolsista.status === "pendente" ||
+                    editalData.bolsistas.includes(bolsista.id)
+                      ? "text-red-500/80 font-bold capitalize"
+                      : ""
+                  }`}
+                >
+                  {bolsista.nome}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
       </Modal>
@@ -144,11 +131,11 @@ const Edital_Modal = ({
   );
 };
 
-Edital_Modal.propTypes = {
+Vincular_Bolsista.propTypes = {
   isVincularModalOpen: PropTypes.bool.isRequired,
   setIsVincularModalOpen: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
 };
 
-export default Edital_Modal;
+export default Vincular_Bolsista;

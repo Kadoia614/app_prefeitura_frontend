@@ -21,7 +21,7 @@ API.interceptors.request.use(
 );
 
 export const APIBolsistaImage = axios.create({
-  baseURL: "/ft/img",
+  baseURL: "/ft",
 });
 
 APIBolsistaImage.interceptors.request.use(

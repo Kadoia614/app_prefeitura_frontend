@@ -44,10 +44,9 @@ const FTAPP = () => {
           localStorage.setItem("upload_token", uploadToken);
           return;
         }
-
-        const response = await getBolsistaEdital(selectedTable);
-        console.log(response);
-        setTableData(response.bolsista);
+        const data = await getBolsistaEdital(selectedTable);
+        console.log(data)
+        setTableData(data.bolsista);
       } catch (error) {
         setError(error.status);
       } finally {
@@ -79,7 +78,6 @@ const FTAPP = () => {
           tableData={tableData}
           setIsEditalModalOpen={setIsEditalModalOpen}
           fetchData={fetchData}
-          scopo={scopo}
           setOpenModalEdit={setOpenModalEdit}
           setModalData={setModalData}
           setIsLoading={setIsLoading}
@@ -94,12 +92,13 @@ const FTAPP = () => {
       ></Edital_Modal>
 
       <Vincular_Bolsista
+        selectedTable={selectedTable}
         isVincularModalOpen={isVincularModalOpen}
         setIsVincularModalOpen={setIsVincularModalOpen}
         fetchData={fetchData}
         setIsLoading={setIsLoading}
       ></Vincular_Bolsista>
-      
+
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal
         modalData={modalData}

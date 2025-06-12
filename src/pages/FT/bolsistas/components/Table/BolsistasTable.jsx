@@ -1,27 +1,48 @@
-import { useState } from "react";
-import SideBarBolsista from "../sidebar/SideBarBolsista";
-
+import { useState, useContext } from "react";
+import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+
 import { IoIosDocument } from "react-icons/io";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { GiConfirmed } from "react-icons/gi";
+import { CiWarning } from "react-icons/ci";
+import { AiOutlineExclamation } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 
+import SideBarBolsista from "../sidebar/SideBarBolsista";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
-
 import TableButton from "@/components/shared/table/TableButton";
-import { deleteBolsista } from "@/service/ft_appServices";
-
-import PropTypes from "prop-types";
 import BolsistaTableHeader from "./BolsistaTableHeader";
+import { UserContext } from "@/context/UserContextFile";
+
+import { deleteBolsista, toggleBolsista } from "@/service/ft_appServices";
+
+const tag = {
+  ativo: {
+    style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    icon: <GiConfirmed />,
+    label: "Ativo",
+  },
+  inativo: {
+    style: "bg-amber-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    icon: <CiWarning />,
+    label: "Inativo",
+  },
+  pendente: {
+    style: "bg-red-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    icon: <AiOutlineExclamation />,
+    label: "Pendente",
+  },
+};
 
 const BolsistasTable = ({
   tableData,
   setOpenModalEdit,
   setIsEditalModalOpen,
   setModalData,
-  scopo,
   fetchData,
   setIsLoading,
   selectedTable,
@@ -30,41 +51,106 @@ const BolsistasTable = ({
   tableOptions,
 }) => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
-  const [excludeModal, setExcludeModal] = useState(null);
-  const [sideBarStatus, setSideBarStatus] = useState(false);
-  const [sideBarData, setSideBarData] = useState({});
-
+  const [alterModalOpen, setAlterModalOpen] = useState(false);
+  const [excludeId, setExcludeId] = useState(null);
+  const [alterId, setAlterId] = useState(null);
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+  const [sideBarId, setSideBarId] = useState(null);
   const { showToast } = useToast();
+  const { scopo } = useContext(UserContext);
 
-  // To delete some item
-  const toDelete = (id) => {
-    setExcludeModal(id);
+  const confirmDelete = (id) => {
+    setExcludeId(id);
     setExcludeModalOpen(true);
   };
 
-  const handleRemove = async (id) => {
+  const confirmToggle = (id) => {
+    setAlterId(id);
+    setAlterModalOpen(true);
+  };
+
+  const handleDelete = async (id) => {
     try {
       setIsLoading(true);
       await deleteBolsista(`${id}`);
-
-      showToast("success", "Confirmed", "Bolsista Deletado com sucesso");
-      setExcludeModalOpen(false);
+      showToast("success", "Confirmado", "Bolsista deletado com sucesso");
       fetchData();
-    } catch (error) {
-      showToast(
-        "error",
-        "Error",
-        "Não foi possível deletar o bolsista: " + error
-      );
+    } catch (err) {
+      showToast("error", "Erro", `Erro ao deletar bolsista: ${err}`);
     } finally {
+      setExcludeModalOpen(false);
       setIsLoading(false);
     }
   };
+
+  const handleToggle = async (id) => {
+    try {
+      setIsLoading(true);
+      await toggleBolsista(`${id}`, `${selectedTable}`);
+      showToast("success", "Confirmado", "Bolsista alterado com sucesso");
+      fetchData();
+    } catch (err) {
+      showToast("error", "Erro", `Erro ao alterar bolsista: ${err}`);
+    } finally {
+      setExcludeModalOpen(false);
+      setIsLoading(false);
+    }
+  };
+
+  const renderStatus = ({ status }) => {
+    const item = tag[status];
+    if (!item) return null;
+    return (
+      <div className={`flex gap-2 items-center ${item.style}`}>
+        {item.icon}
+        {item.label}
+      </div>
+    );
+  };
+
+  const renderActions = (rowData) => (
+    <div className="flex flex-wrap gap-2">
+      <TableButton
+        icon={<FaEdit />}
+        iconPos="left"
+        color="text-primary-500 bg-white border-none"
+        onClick={() => {
+          setOpenModalEdit(true);
+          setModalData(rowData);
+        }}
+      />
+      <TableButton
+        icon={<IoIosDocument />}
+        iconPos="left"
+        color="text-primary-500 bg-white border-none"
+        onClick={() => {
+          setSideBarOpen(true);
+          setSideBarId(rowData.id);
+        }}
+      />
+      <TableButton
+        icon={<ImCross />}
+        iconPos="left"
+        color="text-yellow-500 bg-white border-none"
+        onClick={() => {
+          confirmToggle(rowData.id);
+        }}
+      />
+      {(scopo == 1 || scopo == 2) && (
+        <TableButton
+          icon={<FaTrash />}
+          color="text-red-500 bg-white border-none"
+          onClick={() => confirmDelete(rowData.id)}
+        />
+      )}
+    </div>
+  );
 
   return (
     <>
       <TableContainer>
         <BolsistaTableHeader
+          tag={tag}
           setOpenModalEdit={setOpenModalEdit}
           setIsEditalModalOpen={setIsEditalModalOpen}
           setIsVincularModalOpen={setIsVincularModalOpen}
@@ -74,7 +160,7 @@ const BolsistasTable = ({
         />
 
         <DataTable
-          id="BolistaTable"
+          id="BolsistaTable"
           value={tableData}
           paginator
           rows={25}
@@ -84,14 +170,11 @@ const BolsistasTable = ({
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
           <Column
-            headerClassName="p-2"
             field="id"
             header="Id"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
           />
-
           <Column
-            headerClassName="p-2"
             field="nome"
             header="Nome"
             sortable
@@ -101,7 +184,6 @@ const BolsistasTable = ({
             className="text-sm text-gray-800 p-4"
           />
           <Column
-            headerClassName="p-2"
             field="local"
             header="Local"
             sortable
@@ -111,7 +193,13 @@ const BolsistasTable = ({
             className="text-sm text-gray-800 p-4"
           />
           <Column
-            headerClassName="p-2"
+            field="status"
+            header="Status"
+            body={renderStatus}
+            sortable
+            className="text-sm text-gray-800 p-4"
+          />
+          <Column
             field="createdAt"
             header="Criação"
             sortable
@@ -123,58 +211,19 @@ const BolsistasTable = ({
               new Date(rowData.createdAt).toLocaleDateString("pt-BR")
             }
           />
-          {scopo == 1 || scopo == 2 ? (
-            <Column
-              header="Ações"
-              body={(rowData) => (
-                <div className="flex flex-wrap gap-2">
-                  <TableButton
-                    label="Editar"
-                    icon={<FaEdit />}
-                    iconPos="left"
-                    color="text-white bg-primary-500 hover:bg-primary-700"
-                    onClick={() => {
-                      setOpenModalEdit(true);
-                      setModalData(rowData);
-                    }}
-                  />
-                  <TableButton
-                    label="Documentos"
-                    icon={<IoIosDocument />}
-                    iconPos="left"
-                    color="text-white bg-primary-500 hover:bg-primary-700"
-                    onClick={() => {
-                      setSideBarStatus(true);
-                      setSideBarData(rowData.id);
-                    }}
-                  />
-                  {(scopo == 1 || scopo == 2) && (
-                    <TableButton
-                      icon={<FaTrash />}
-                      label="Deletar"
-                      color="text-white bg-red-500 hover:bg-red-700"
-                      onClick={() => {
-                        toDelete(rowData.id);
-                      }}
-                    />
-                  )}
-                </div>
-              )}
-            />
-          ) : (
-            ""
+          {(scopo == 1 || scopo == 2) && (
+            <Column header="Ações" body={renderActions} />
           )}
         </DataTable>
       </TableContainer>
 
-      {/* Exclude Confirmation Dialog */}
       <Modal
-        id={"ExcludeModalBolsista"}
-        title={"Excluir Bolsista?"}
-        acept={() => handleRemove(excludeModal)}
-        aceptLabel={"Excluir"}
+        id="ExcludeModalBolsista"
+        title="Excluir Bolsista?"
+        acept={() => handleDelete(excludeId)}
+        aceptLabel="Excluir"
         refuse={() => setExcludeModalOpen(false)}
-        typeAction={"btn-danger"}
+        typeAction="btn-danger"
         open={excludeModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
@@ -183,10 +232,25 @@ const BolsistasTable = ({
         </p>
       </Modal>
 
+      <Modal
+        id="ToggleBolsista"
+        title="Alterar Status do Bolsista?"
+        acept={() => handleToggle(alterId)}
+        aceptLabel="Alterar"
+        refuse={() => setAlterModalOpen(false)}
+        typeAction="btn-danger"
+        open={alterModalOpen}
+      >
+        <p className="text-red-500 font-bold mt-2">
+          Tem certeza que deseja excluir esse item? Os dados excluídos não
+          poderão ser recuperados.
+        </p>
+      </Modal>
+
       <SideBarBolsista
-        sideBarStatus={sideBarStatus}
-        setSideBarStatus={setSideBarStatus}
-        sideBarData={sideBarData}
+        sideBarStatus={sideBarOpen}
+        setSideBarStatus={setSideBarOpen}
+        sideBarData={sideBarId}
       />
     </>
   );
@@ -199,8 +263,6 @@ BolsistasTable.propTypes = {
   setIsVincularModalOpen: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
-  setSideBarStatus: PropTypes.func.isRequired,
-  setSideBarData: PropTypes.func.isRequired,
   scopo: PropTypes.any.isRequired,
   fetchData: PropTypes.func.isRequired,
   selectedTable: PropTypes.any.isRequired,

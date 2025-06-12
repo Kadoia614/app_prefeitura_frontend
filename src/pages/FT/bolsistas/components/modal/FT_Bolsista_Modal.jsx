@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
-import Modal from "@/components/shared/modal/Modal";  
+import Modal from "@/components/shared/modal/Modal";
 import InputField from "@/components/shared/input/InputField";
+import SelectField from "@/components/shared/input/SelectField";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
@@ -14,7 +15,6 @@ const FT_Bolsista_Modal = ({
   fetchData,
   setIsLoading,
 }) => {
-
   const { showToast } = useToast();
 
   // sómente para gerenciar os valore dos inputs
@@ -47,7 +47,7 @@ const FT_Bolsista_Modal = ({
 
       showToast("success", "Confirmed", "Bolsista salvo com sucesso");
       setOpenModalEdit(false);
-      clearModal()
+      clearModal();
       fetchData();
     } catch (error) {
       showToast("error", "Error", "Erro ao salvar bolsista " + error);
@@ -112,11 +112,26 @@ const FT_Bolsista_Modal = ({
               />
             </div>
 
+            {/* Local Pagador */}
+            <div className="mt-1 col-span-4">
+              <SelectField
+                invalid={modalData?.pagador ? false : true}
+                id="Pagador"
+                inputClass="w-full"
+                label="Pagador"
+                options={[{id: 1, name: "Local 1"}, {id: 2, name: "Local 2"}]}
+                value={modalData?.pagador || ""}
+                onChange={(e) => {
+                  editableItem("pagador", e.target.value);
+                }}
+              />
+            </div>
+
             {/* Local */}
             <div className="mt-1 col-span-full">
               <InputField
                 invalid={modalData?.local ? false : true}
-                id="CPF"
+                id="Local"
                 inputClass="w-full"
                 label="Local"
                 value={modalData?.local || ""}
@@ -222,6 +237,7 @@ FT_Bolsista_Modal.propTypes = {
     cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     local: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    pagador: PropTypes.any
   }),
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
