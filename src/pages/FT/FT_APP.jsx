@@ -26,6 +26,7 @@ const FTAPP = () => {
 
   const [tableData, setTableData] = useState([]);
   const [tableOptions, setTableOptions] = useState([]);
+  const [pagadorOptions, setPagadorOptions] = useState([]);
   const [selectedTable, setSelectedTable] = useState();
   const [modalData, setModalData] = useState({});
 
@@ -37,13 +38,16 @@ const FTAPP = () => {
         setIsLoading(true);
 
         if (!selectedTable) {
-          const { bolsista, uploadToken } = await getBolsista();
+          const { bolsista, pagador, uploadToken } = await getBolsista();
+          
           const { edital } = await getEdital();
           setTableOptions(edital);
           setTableData(bolsista);
+          setPagadorOptions(pagador)
           localStorage.setItem("upload_token", uploadToken);
           return;
         }
+        
         const data = await getBolsistaEdital(selectedTable);
         console.log(data)
         setTableData(data.bolsista);
@@ -107,6 +111,7 @@ const FTAPP = () => {
         setOpenModalEdit={setOpenModalEdit}
         fetchData={fetchData}
         scopo={scopo}
+        pagadorOptions={pagadorOptions}
         setIsLoading={setIsLoading}
       />
     </div>

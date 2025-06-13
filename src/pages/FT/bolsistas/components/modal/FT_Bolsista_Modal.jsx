@@ -14,6 +14,7 @@ const FT_Bolsista_Modal = ({
   setOpenModalEdit,
   fetchData,
   setIsLoading,
+  pagadorOptions,
 }) => {
   const { showToast } = useToast();
 
@@ -25,7 +26,6 @@ const FT_Bolsista_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      console.log(setIsLoading);
       setIsLoading(true);
       let payload = {
         bco: modalData.bco,
@@ -33,6 +33,7 @@ const FT_Bolsista_Modal = ({
         dig_ag: modalData.dig_ag,
         conta: modalData.conta,
         dig_conta: modalData.dig_conta,
+        pagador: modalData.pagador,
         nome: modalData.nome,
         bolsa: modalData.bolsa,
         cpf: modalData.cpf,
@@ -119,7 +120,7 @@ const FT_Bolsista_Modal = ({
                 id="Pagador"
                 inputClass="w-full"
                 label="Pagador"
-                options={[{id: 1, name: "Local 1"}, {id: 2, name: "Local 2"}]}
+                options={pagadorOptions}
                 value={modalData?.pagador || ""}
                 onChange={(e) => {
                   editableItem("pagador", e.target.value);
@@ -237,7 +238,7 @@ FT_Bolsista_Modal.propTypes = {
     cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     local: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    pagador: PropTypes.any
+    pagador: PropTypes.any,
   }),
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
