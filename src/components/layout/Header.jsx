@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 import { useContext, useEffect, useState } from "react";
+import logo from "../../assets/img/logo.png"
 
 import { UserContext } from "/src/context/UserContextFile";
 import API from "../../service/API";
@@ -45,7 +46,7 @@ const Header = () => {
   return (
     <header className="bg-primary-500 text-white font-bold h-20 flex items-center justify-between flex-row py-4 px-8">
       <a href="#" className="w-16 bg-white rounded-md">
-        <img src="/public/logo.png" alt="" className="h-12 m-auto p-0" />
+        <img src={logo} alt="" className="h-12 m-auto p-0" />
       </a>
 
       <div className="flex flex-row justify-between items-center">
