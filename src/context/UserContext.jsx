@@ -6,6 +6,10 @@ export const UserProvider = ({ children }) => {
   let [auth, setAuth] = useState(false);
   let [userServices, setUserServices] = useState([]);
 
+  const AttAuth = (value) => {
+    setAuth = value
+  }
+
   return (
     <UserContext.Provider value={{ scopo, setScopo, auth, setAuth, userServices, setUserServices }}>
       {children}
