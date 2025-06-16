@@ -7,7 +7,7 @@ const UploadImage = ({ type, id, posAction }) => {
   const handleUpload = async (formData) => {
     try {
       const response = await postDoc(id, formData);
-      posAction();
+      if (posAction) posAction();
       console.log(response.data);
     } catch (error) {
       throw { message: "Erro ao fazer upload do arquivo", error };

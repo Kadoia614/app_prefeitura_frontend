@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Tooltip } from "primereact/tooltip";
 
 import { IoIosDocument } from "react-icons/io";
 import { FaTrash, FaEdit } from "react-icons/fa";
