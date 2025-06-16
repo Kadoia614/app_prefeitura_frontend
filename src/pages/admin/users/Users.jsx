@@ -15,7 +15,7 @@ import {
 import API from "../../../service/API";
 import { Toast } from "primereact/toast";
 import SelectField from "../../../components/shared/input/SelectField";
-import InputField from "../../../components/shared/input/InputField";
+import InputField from "../../../components/shared/input/inputfield/InputField";
 
 const API_ENDPOINTS = {
   USERS: "/user",

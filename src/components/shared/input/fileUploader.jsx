@@ -1,15 +1,21 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useRef, useState } from "react";
+
 import { FileUpload } from "primereact/fileupload";
 import { useToast } from "@/components/shared/toast/ToastProvider";
+import { Tooltip } from "primereact/tooltip";
+import { Button } from "primereact/button";
+import { Tag } from "primereact/tag";
+import { ProgressBar } from "primereact/progressbar";
 
-const FileUploader = ({ type, maxSize, label, icon, upload, inputClass }) => {
+import { CiImageOn } from "react-icons/ci";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { CiBookmarkRemove } from "react-icons/ci";
+
+const FileUploader = ({ type, maxSize, label, upload }) => {
   const { showToast } = useToast();
-
-  const [fileStatus, setFileStatus] = useState({
-    name: "",
-    status: "pendente", // "pendente" | "sucesso" | "erro"
-  });
+  const [totalSize, setTotalSize] = useState(0);
+  const fileUploadRef = useRef(null);
 
   const handleUpload = async (event) => {
     const { files } = event;
@@ -20,62 +26,124 @@ const FileUploader = ({ type, maxSize, label, icon, upload, inputClass }) => {
     }
 
     const file = files[0];
-    setFileStatus({ name: file.name, status: "pendente" });
 
     const formData = new FormData();
     formData.append(type, file);
 
     try {
       await upload(formData);
-      setFileStatus({ name: file.name, status: "sucesso" });
       showToast("success", "Sucesso", "Upload realizado com sucesso");
     } catch (error) {
-      setFileStatus({ name: file.name, status: "erro" });
       showToast("error", "Erro", "Erro ao fazer upload: " + error.message);
     }
   };
 
-  const itemTemplate = () => {
-    if (!fileStatus.name) return null;
+  const onTemplateSelect = (e) => {
+    let _totalSize = totalSize;
+    let files = e.files;
 
-    let bgClass = "bg-yellow-100 text-yellow-800";
-    let label = "Pendente";
+    Object.keys(files).forEach((key) => {
+      _totalSize += files[key].size || 0;
+    });
 
-    if (fileStatus.status === "sucesso") {
-      bgClass = "bg-green-100 text-green-800";
-      label = "Enviado";
-    } else if (fileStatus.status === "erro") {
-      bgClass = "bg-red-100 text-red-800";
-      label = "Erro";
-    }
+    setTotalSize(_totalSize);
+  };
+
+  const onTemplateUpload = (e) => {
+    let _totalSize = 0;
+
+    e.files.forEach((file) => {
+      _totalSize += file.size || 0;
+    });
+
+    setTotalSize(_totalSize);
+    showToast("info", "Success", "File Uploaded");
+  };
+
+  const onTemplateRemove = (file, callback) => {
+    setTotalSize(totalSize - file.size);
+    callback();
+  };
+
+  const onTemplateClear = () => {
+    setTotalSize(0);
+  };
+
+  const headerTemplate = (options) => {
+    const { className, chooseButton, uploadButton, cancelButton } = options;
+    const value = totalSize / 10000;
+    const formatedValue =
+      fileUploadRef && fileUploadRef.current
+        ? fileUploadRef.current.formatSize(totalSize)
+        : "0 B";
 
     return (
-      <div className="flex items-center justify-between p-2 border rounded shadow-sm">
-        <span className="text-sm font-medium truncate">{fileStatus.name}</span>
-        <span className={`ml-4 px-2 py-1 rounded text-xs font-semibold ${bgClass}`}>
-          {label}
-        </span>
+      <div
+        className={className}
+        style={{
+          backgroundColor: "transparent",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        {chooseButton}
+        {uploadButton}
+        {cancelButton}
+        <div className="flex align-items-center gap-3 ml-auto">
+          <span>
+            {formatedValue} / {maxSize / (1024 * 1024)}MB
+          </span>
+          <ProgressBar
+            value={value}
+            showValue={false}
+            style={{ width: "10rem", height: "12px" }}
+          ></ProgressBar>
+        </div>
       </div>
     );
   };
 
+
+  const chooseOptions = {
+    icon: <CiImageOn />,
+    iconOnly: true,
+    className: "custom-choose-btn rounded-full bg-primary-500 hover:bg-primary-700",
+  };
+  const uploadOptions = {
+    icon: <IoCloudUploadOutline />,
+    iconOnly: true,
+    className: "custom-upload-btn rounded-full bg-green-500 hover:bg-green-700",
+  };
+  const cancelOptions = {
+    icon: <CiBookmarkRemove />,
+    iconOnly: true,
+    className: "custom-cancel-btn rounded-full bg-red-500 hover:bg-red-700",
+  };
+
   return (
-    <FileUpload
-      name={type}
-      mode="advanced"
-      auto
-      customUpload
-      maxFileSize={maxSize}
-      chooseLabel={label}
-      uploadHandler={handleUpload}
-      itemTemplate={itemTemplate}
-      pt={{
-        chooseButton: {
-          className: inputClass || "btn-primary",
-          icon: icon || "",
-        },
-      }}
-    />
+    <>
+      <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
+      <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
+      <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
+
+      <FileUpload
+        ref={fileUploadRef}
+        name={type}
+        mode="advanced"
+        customUpload
+        maxFileSize={maxSize}
+        chooseLabel={label}
+        uploadHandler={handleUpload}
+        onUpload={onTemplateUpload}
+        onSelect={onTemplateSelect}
+        onError={onTemplateClear}
+        onClear={onTemplateClear}
+        headerTemplate={headerTemplate}
+        chooseOptions={chooseOptions}
+        uploadOptions={uploadOptions}
+        cancelOptions={cancelOptions}
+      />
+    </>
   );
 };
 
@@ -83,9 +151,7 @@ FileUploader.propTypes = {
   type: PropTypes.string.isRequired,
   maxSize: PropTypes.number.isRequired,
   label: PropTypes.string,
-  icon: PropTypes.any,
   upload: PropTypes.func.isRequired,
-  inputClass: PropTypes.string,
 };
 
 export default FileUploader;

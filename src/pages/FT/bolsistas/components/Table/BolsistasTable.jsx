@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Tooltip } from "primereact/tooltip";
 
 import { IoIosDocument } from "react-icons/io";
 import { FaTrash, FaEdit } from "react-icons/fa";
@@ -111,6 +112,7 @@ const BolsistasTable = ({
   const renderActions = (rowData) => (
     <div className="flex flex-wrap gap-2">
       <TableButton
+        tooltip={`Editar`}
         icon={<FaEdit />}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
@@ -120,6 +122,7 @@ const BolsistasTable = ({
         }}
       />
       <TableButton
+        tooltip={`Documentos`}
         icon={<IoIosDocument />}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
@@ -128,16 +131,21 @@ const BolsistasTable = ({
           setSideBarId(rowData.id);
         }}
       />
-      <TableButton
-        icon={<ImCross />}
-        iconPos="left"
-        color="text-yellow-500 bg-white border-none"
-        onClick={() => {
-          confirmToggle(rowData.id);
-        }}
-      />
+      {selectedTable != "bolsistas" && (
+        <TableButton
+          tooltip={`Inativar bolsista`}
+          icon={<ImCross />}
+          iconPos="left"
+          color="text-yellow-500 bg-white border-none"
+          onClick={() => {
+            confirmToggle(rowData.id);
+          }}
+        />
+      )}
+
       {(scopo == 1 || scopo == 2) && (
         <TableButton
+          tooltip={`Excluir`}
           icon={<FaTrash />}
           color="text-red-500 bg-white border-none"
           onClick={() => confirmDelete(rowData.id)}
@@ -263,9 +271,8 @@ BolsistasTable.propTypes = {
   setIsVincularModalOpen: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
-  scopo: PropTypes.any.isRequired,
   fetchData: PropTypes.func.isRequired,
-  selectedTable: PropTypes.any.isRequired,
+  selectedTable: PropTypes.any,
   setSelectedTable: PropTypes.func.isRequired,
   tableOptions: PropTypes.array.isRequired,
 };

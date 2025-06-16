@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { Toast } from "primereact/toast";
-import InputField from "../../../components/shared/input/InputField";
+import InputField from "../../../components/shared/input/inputfield/InputField";
 
 const RolesPainel = ({setIsLoading}) => {
   const [tableData, setTableData] = useState([]);

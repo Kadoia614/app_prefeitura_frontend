@@ -2,19 +2,19 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Toast } from "primereact/toast";
 
-import API from "../../service/API";
-
-import { UserContext } from "/src/context/UserContextFile";
-import { InputText } from "primereact/inputtext";
-import { MdOutlinePassword } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
-import Loading from "./Loading";
+import { MdOutlinePassword } from "react-icons/md";
+
+import PasswordField from "../shared/input/passwordfield/PasswordField";
+import InputFieldLine from "../shared/input/inputfield/InputFieldLine";
+import { UserContext } from "/src/context/UserContextFile";
+
+import API from "../../service/API";
 
 const Login = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
-  let [loading, setLoading] = useState(false);
 
   let { setAuth, setScopo, scopo } = useContext(UserContext);
 
@@ -91,10 +91,6 @@ const Login = () => {
     verifyToken();
   }, []);
 
-  if (loading) {
-    return <Loading></Loading>;
-  }
-
   return (
     <div className="flex items-start justify-center h-full">
       <div className="mt-35 flex flex-row bg-white px-10">
@@ -107,33 +103,35 @@ const Login = () => {
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               className=" w-full bg-white py-4 px-4 box-border"
             >
-              <fieldset className="flex">
-                <span className="p-inputgroup-addon">
-                  <i className="pi pi-user">
-                    <FaUser />
-                  </i>
-                </span>
-                <InputText
-                  type="text"
-                  id="User"
-                  placeholder="Usuário"
-                  className="w-full input"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </fieldset>
+              <InputFieldLine
+                icon={<FaUser />}
+                type="text"
+                id="User"
+                placeholder="Usuário"
+                className="w-full input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-              <fieldset className="flex my-4">
-                <span className="p-inputgroup-addon">
+              <div className="flex my-4">
+                <PasswordField icon={<MdOutlinePassword />}
+                  placeholder="Senha"
+                  id="Pwd"
+                  value={password}
+                  feedback={false}
+                  onChange={(e) => setPassword(e.target.value)}
+                 />
+
+                {/* <span className="p-inputgroup-addon">
                   <MdOutlinePassword />
                 </span>
-                <input
+                <PasswordField
                   type="password"
                   id="Pwd"
                   placeholder="Senha"
-                  className="w-full input"
                   onChange={(e) => setPassword(e.target.value)}
-                />
-              </fieldset>
+                /> */}
+              </div>
               <Button
                 onClick={handleSubmit}
                 label="Login"

@@ -46,6 +46,7 @@ InputField.propTypes = {
   placeHolder: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
+  widthField: PropTypes.string
 };
 
 export default InputField;

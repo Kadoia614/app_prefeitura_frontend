@@ -1,10 +1,11 @@
 import { Button } from "primereact/button";
 import PropTypes from "prop-types";
 
-const TableButton = ({ onClick, icon, label, color }) => {
+const TableButton = ({ onClick, icon, label, color, tooltip }) => {
   return (
     <>
       <Button
+      tooltip={tooltip}
         label={label}
         icon={icon}
         iconPos="left"
@@ -17,9 +18,10 @@ const TableButton = ({ onClick, icon, label, color }) => {
 
 TableButton.propTypes = {
   onClick: PropTypes.func.isRequired,
-  icon: PropTypes.any.isRequired,
-  label: PropTypes.string.isRequired,
+  icon: PropTypes.any,
+  label: PropTypes.string,
   color: PropTypes.string,
+  tooltip: PropTypes.string,
 };
 
 export default TableButton;

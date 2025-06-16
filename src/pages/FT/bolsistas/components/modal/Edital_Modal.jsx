@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
-import InputField from "@/components/shared/input/InputField";
+import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMoney from "@/components/shared/input/InputFieldMoney";
 import { postEdital, updateEdital } from "@/service/ft_appServices";
 import CalendarInput from "@/components/shared/input/CalendarInput";
@@ -97,11 +97,10 @@ const Edital_Modal = ({
             </div>
 
             {/* Publicacao */}
-            <div className="mt-1 col-span-4">
+            <div className="mt-1 col-span-3">
               <CalendarInput
                 invalid={editalData?.data_publicacao ? false : true}
                 label={"Publicação"}
-                inputClass="w-full"
                 value={editalData?.data_publicacao || ""}
                 onChange={(e) => {
                   editableItem("data_publicacao", e.target.value);
@@ -113,10 +112,10 @@ const Edital_Modal = ({
             </div>
 
             {/* Validade */}
-            <div className="mt-1 col-span-4">
+            <div className="mt-1 col-span-3">
               <CalendarInput
                 invalid={editalData?.data_vencimento ? false : true}
-                label={"Vencimento"}
+                label={"Expira em:"}
                 inputClass="w-full"
                 value={editalData?.data_vencimento || ""}
                 onChange={(e) => {
@@ -129,10 +128,10 @@ const Edital_Modal = ({
             </div>
 
             {/* Pagamento */}
-            <div className="mt-1 col-span-4">
+            <div className="mt-1 col-span-2">
               <CalendarInput
                 invalid={editalData?.dia_pagamento ? false : true}
-                label={"Vencimento"}
+                label={"Pagamento"}
                 inputClass="w-full"
                 value={
                   editalData?.dia_pagamento
