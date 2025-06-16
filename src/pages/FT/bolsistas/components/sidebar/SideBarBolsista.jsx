@@ -86,7 +86,6 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
                   <UploadImage
                     type={type || ""}
                     id={sideBarData}
-                    posAction={() => getData(sideBarData)}
                   />
                 </span>
               </div>

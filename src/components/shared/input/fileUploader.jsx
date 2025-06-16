@@ -4,8 +4,6 @@ import { useRef, useState } from "react";
 import { FileUpload } from "primereact/fileupload";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import { Tooltip } from "primereact/tooltip";
-import { Button } from "primereact/button";
-import { Tag } from "primereact/tag";
 import { ProgressBar } from "primereact/progressbar";
 
 import { CiImageOn } from "react-icons/ci";
@@ -19,7 +17,7 @@ const FileUploader = ({ type, maxSize, label, upload }) => {
 
   const handleUpload = async (event) => {
     const { files } = event;
-
+console.log(fileUploadRef)
     if (!files || !files.length) {
       showToast("error", "Erro", "Nenhum arquivo selecionado");
       return;
@@ -32,8 +30,10 @@ const FileUploader = ({ type, maxSize, label, upload }) => {
 
     try {
       await upload(formData);
+      fileUploadRef.current?.onUpload?.();
       showToast("success", "Sucesso", "Upload realizado com sucesso");
     } catch (error) {
+      fileUploadRef.current?.onError?.();
       showToast("error", "Erro", "Erro ao fazer upload: " + error.message);
     }
   };
@@ -61,7 +61,7 @@ const FileUploader = ({ type, maxSize, label, upload }) => {
   };
 
   const onTemplateRemove = (file, callback) => {
-    setTotalSize(totalSize - file.size);
+    setTotalSize(totalSize - file.size || 0);
     callback();
   };
 
@@ -138,6 +138,7 @@ const FileUploader = ({ type, maxSize, label, upload }) => {
         onSelect={onTemplateSelect}
         onError={onTemplateClear}
         onClear={onTemplateClear}
+        onRemove={onTemplateRemove}
         headerTemplate={headerTemplate}
         chooseOptions={chooseOptions}
         uploadOptions={uploadOptions}
