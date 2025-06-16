@@ -131,7 +131,7 @@ const BolsistasTable = ({
           setSideBarId(rowData.id);
         }}
       />
-      {selectedTable != "bolsistas" && (
+      {selectedTable && (
         <TableButton
           tooltip={`Inativar bolsista`}
           icon={<ImCross />}
