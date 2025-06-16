@@ -7,7 +7,7 @@ const UploadImage = ({ type, id, posAction }) => {
   const handleUpload = async (formData) => {
     try {
       const response = await postDoc(id, formData);
-      posAction()
+      posAction();
       console.log(response.data);
     } catch (error) {
       throw { message: "Erro ao fazer upload do arquivo", error };
@@ -16,6 +16,7 @@ const UploadImage = ({ type, id, posAction }) => {
 
   return (
     <FileUploader
+      mode={`basic`}
       maxSize={2097152} // 2MB
       type={type}
       label="Subir arquivo"

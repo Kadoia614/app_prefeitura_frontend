@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
 import Modal from "@/components/shared/modal/Modal";
-import InputField from "@/components/shared/input/InputField";
+import InputField from "@/components/shared/input/inputfield/InputField";
+import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
 import SelectField from "@/components/shared/input/SelectField";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
@@ -36,7 +37,7 @@ const FT_Bolsista_Modal = ({
         pagador: modalData.pagador,
         nome: modalData.nome,
         bolsa: modalData.bolsa,
-        cpf: modalData.cpf,
+        cpf: modalData.cpf.split(".").join("").split("-").join(""),
         local: modalData.local,
       };
 
@@ -99,12 +100,13 @@ const FT_Bolsista_Modal = ({
 
             {/* CPF */}
             <div className="mt-1 col-span-2 sm:col-span-4">
-              <InputField
+              <InputFieldMask
                 invalid={modalData?.cpf ? false : true}
                 id="CPF"
                 keyfilter="num"
                 inputClass="w-full"
                 label="CPF"
+                mask={"999.999.999-99"}
                 value={modalData?.cpf || ""}
                 onChange={(e) => {
                   editableItem("cpf", e.target.value);
@@ -245,7 +247,6 @@ FT_Bolsista_Modal.propTypes = {
   setOpenModalEdit: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
-  scopo: PropTypes.any.isRequired,
 };
 
 export default FT_Bolsista_Modal; // export default FT_Bolsista_Modal;  //

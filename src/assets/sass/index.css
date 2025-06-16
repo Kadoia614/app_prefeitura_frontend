@@ -64,6 +64,10 @@
   @apply bg-white w-full mb-10 py-5 overflow-auto relative;
 }
 
+.p-datepicker-trigger {
+  @apply bg-primary-500 p-0
+}
+
 @keyframes jump {
   0% {
     transform: scale(100%);

@@ -22,7 +22,7 @@ import { DataTable } from "primereact/datatable";
 import { Toast } from "primereact/toast";
 import { Column } from "primereact/column";
 
-import InputField from "../../components/shared/input/InputField";
+import InputField from "../../components/shared/input/inputfield/InputField";
 import SelectField from "../../components/shared/input/SelectField";
 
 const AllDemandas = () => {

@@ -153,7 +153,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
 SideBarBolsista.propTypes = {
   sideBarStatus: PropTypes.bool.isRequired,
   setSideBarStatus: PropTypes.func.isRequired,
-  sideBarData: PropTypes.any.isRequired,
+  sideBarData: PropTypes.any,
 };
 
 export default SideBarBolsista;

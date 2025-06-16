@@ -11,9 +11,9 @@ const CalendarInput = ({
   placeHolder,
   format,
   disabled,
-  invalid
+  invalid,
 }) => (
-  <fieldset className="mt-2">
+  <fieldset className="mt-2 border=0">
     <label htmlFor={id} className="font-bold text-gray-700">
       {label}
     </label>
@@ -23,10 +23,13 @@ const CalendarInput = ({
         id={id}
         placeholder={`${placeHolder || label || ""}`}
         value={value ? value : null}
-        className={`rounded-md focus:border-blue-500 ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${disabled ? "bg-gray-100" : ""}`}
+        className={`rounded-md py-1.5 focus:border-blue-500 ${inputClass} ${
+          disabled ? "bg-gray-100" : ""
+        }`}
         onChange={onChange}
         view={view}
         dateFormat={format || "mm/dd/yy"}
+        showIcon
       />
     </div>
   </fieldset>
@@ -41,7 +44,7 @@ CalendarInput.propTypes = {
   placeHolder: PropTypes.string,
   format: PropTypes.string,
   disabled: PropTypes.bool,
-  invalid: PropTypes.bool
+  invalid: PropTypes.bool,
 };
 
 export default CalendarInput;
