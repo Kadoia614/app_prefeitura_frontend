@@ -71,7 +71,7 @@ const FTAPP = () => {
 
   return (
     <div id="Bolsistas" className="content">
-      <Title>Com grandes poderes vêm grandes responsabilidades</Title>
+      <Title>Frente de Trabalho</Title>
 
       <div>
         <BolsistasTable
