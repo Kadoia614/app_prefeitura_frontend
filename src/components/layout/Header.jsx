@@ -3,7 +3,8 @@ import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 import { useContext, useEffect, useState } from "react";
 
-import { UserContext } from "/src/context/UserContextFile";
+import { UserContext } from "@/context/UserContext";
+
 import API from "../../service/API";
 
 const Header = () => {

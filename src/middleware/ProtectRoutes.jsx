@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Outlet, useNavigate } from "react-router";
 
-import { UserContext } from "../context/UserContextFile";
+import { UserContext } from "@/context/UserContext";
 import API from "../service/API";
 import Loading from "../components/layout/Loading";
 import Error from "./HandleError";

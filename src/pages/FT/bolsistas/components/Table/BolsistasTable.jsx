@@ -16,7 +16,7 @@ import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
-import { UserContext } from "@/context/UserContextFile";
+import { UserContext } from "@/context/UserContext";
 
 import { deleteBolsista, toggleBolsista } from "@/service/ft_appServices";
 

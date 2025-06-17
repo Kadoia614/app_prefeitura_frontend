@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useCallback } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
-import { UserContext } from "@/context/UserContextFile";
+import { UserContext } from "@/context/UserContext";
 
 import Title from "@/components/shared/title/Title";
 
@@ -67,7 +67,7 @@ const FTAPP = () => {
 
   return (
     <div id="Bolsistas" className="content">
-      <Title>Com grandes poderes vêm grandes responsabilidades</Title>
+      <Title>Frente de Trabalho</Title>
 
       <div>
         <BolsistasTable

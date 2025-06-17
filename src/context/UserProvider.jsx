@@ -1,0 +1,19 @@
+import { useState } from "react";
+import { UserContext } from "./UserContext";
+
+
+export const UserProvider = ({ children }) => {
+  let [scopo, setScopo] = useState(null);
+  let [auth, setAuth] = useState(false);
+  let [userServices, setUserServices] = useState([]);
+
+  const AttAuth = (value) => {
+    setAuth = value
+  }
+  
+  return (
+    <UserContext.Provider value={{ scopo, setScopo, auth, setAuth, userServices, setUserServices }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
