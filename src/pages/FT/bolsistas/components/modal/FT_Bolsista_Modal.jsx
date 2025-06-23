@@ -5,6 +5,7 @@ import Modal from "@/components/shared/modal/Modal";
 import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
 import SelectField from "@/components/shared/input/SelectField";
+// import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
@@ -37,6 +38,7 @@ const FT_Bolsista_Modal = ({
         pagador: modalData.pagador,
         nome: modalData.nome,
         bolsa: modalData.bolsa,
+        data_inicio: modalData.data_inicio,
         cpf: modalData.cpf.split(".").join("").split("-").join(""),
         local: modalData.local,
       };
@@ -129,6 +131,20 @@ const FT_Bolsista_Modal = ({
                 }}
               />
             </div>
+            {/* <div className="mt-1 col-span-4">
+              <CalendarInput
+                invalid={modalData?.data_inicio ? false : true}
+                label={"Inicia em:"}
+                inputClass="w-full"
+                value={modalData?.data_inicio || ""}
+                onChange={(e) => {
+                  editableItem("data_inicio", e.target.value);
+                }}
+                format={"dd-mm-yy"}
+                view="date"
+                showIcon
+              />
+            </div> */}
 
             {/* Local */}
             <div className="mt-1 col-span-full">
@@ -241,7 +257,9 @@ FT_Bolsista_Modal.propTypes = {
     local: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     pagador: PropTypes.any,
+    data_inicio: PropTypes.string,
   }),
+  pagadorOptions: PropTypes.arrayOf(PropTypes.any),
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
@@ -249,4 +267,4 @@ FT_Bolsista_Modal.propTypes = {
   fetchData: PropTypes.func.isRequired,
 };
 
-export default FT_Bolsista_Modal; // export default FT_Bolsista_Modal;  //
+export default FT_Bolsista_Modal;

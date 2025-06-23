@@ -1,23 +1,20 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import { IoIosDocument } from "react-icons/io";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { GiConfirmed } from "react-icons/gi";
 import { CiWarning } from "react-icons/ci";
 import { AiOutlineExclamation } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 
-import SideBarBolsista from "../sidebar/SideBarBolsista";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
-import BolsistaTableHeader from "./BolsistaTableHeader";
-import { UserContext } from "@/context/UserContextFile";
+import EditalTableHeader from "./EditalTableHeader";
 
-import { deleteBolsista } from "@/service/ft_appServices";
+import { toggleBolsista } from "@/service/ft_appServices";
 
 const tag = {
   ativo: {
@@ -37,40 +34,42 @@ const tag = {
   },
 };
 
-const BolsistasTable = ({
+const EditalTable = ({
   tableData,
   setOpenModalEdit,
-  setModalData,
+  setIsEditalModalOpen,
   fetchData,
   setIsLoading,
+  selectedTable,
+  setSelectedTable,
+  setIsVincularModalOpen,
+  tableOptions,
 }) => {
-  const [excludeModalOpen, setExcludeModalOpen] = useState(false);
-  const [excludeId, setExcludeId] = useState(null);
-  const [sideBarOpen, setSideBarOpen] = useState(false);
-  const [sideBarId, setSideBarId] = useState(null);
+  const [alterModalOpen, setAlterModalOpen] = useState(false);
+  const [alterId, setAlterId] = useState(null);
   const { showToast } = useToast();
-  const { scopo } = useContext(UserContext);
 
-  const confirmDelete = (id) => {
-    setExcludeId(id);
-    setExcludeModalOpen(true);
+  const confirmToggle = (id) => {
+    setAlterId(id);
+    setAlterModalOpen(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleToggle = async (id) => {
     try {
       setIsLoading(true);
-      await deleteBolsista(`${id}`);
-      showToast("success", "Confirmado", "Bolsista deletado com sucesso");
-      fetchData();
+      await toggleBolsista(`${id}`, `${selectedTable}`);
+      showToast("success", "Confirmado", "Bolsista alterado com sucesso");
+      fetchData(selectedTable);
     } catch (err) {
-      showToast("error", "Erro", `Erro ao deletar bolsista: ${err}`);
+      showToast("error", "Erro", `Erro ao alterar bolsista: ${err}`);
     } finally {
-      setExcludeModalOpen(false);
+      setAlterModalOpen(false);
       setIsLoading(false);
     }
   };
 
-  const renderStatus = ({ status }) => {
+  const renderStatus = (row) => {
+    const status = row.BolsistasEdital?.status;
     const item = tag[status];
     if (!item) return null;
     return (
@@ -83,32 +82,15 @@ const BolsistasTable = ({
 
   const renderActions = (rowData) => (
     <div className="flex flex-wrap gap-2">
-      <TableButton
-        tooltip={`Editar`}
-        icon={<FaEdit />}
-        iconPos="left"
-        color="text-primary-500 bg-white border-none"
-        onClick={() => {
-          setOpenModalEdit(true);
-          setModalData(rowData);
-        }}
-      />
-      <TableButton
-        tooltip={`Documentos`}
-        icon={<IoIosDocument />}
-        iconPos="left"
-        color="text-primary-500 bg-white border-none"
-        onClick={() => {
-          setSideBarOpen(true);
-          setSideBarId(rowData.id);
-        }}
-      />
-
-      {(scopo == 1 || scopo == 2) && (
+      {selectedTable && (
         <TableButton
-          icon={<FaTrash />}
-          color="text-red-500 bg-white border-none"
-          onClick={() => confirmDelete(rowData.id)}
+          tooltip={`Inativar bolsista`}
+          icon={<ImCross />}
+          iconPos="left"
+          color="text-yellow-500 bg-white border-none"
+          onClick={() => {
+            confirmToggle(rowData.id);
+          }}
         />
       )}
     </div>
@@ -117,11 +99,16 @@ const BolsistasTable = ({
   return (
     <>
       <TableContainer>
-        <BolsistaTableHeader
+        {console.log("Table Data:", tableData)}
+        <EditalTableHeader
           tag={tag}
           setOpenModalEdit={setOpenModalEdit}
+          setIsEditalModalOpen={setIsEditalModalOpen}
+          setIsVincularModalOpen={setIsVincularModalOpen}
+          selectedTable={selectedTable}
+          setSelectedTable={setSelectedTable}
+          tableOptions={tableOptions}
         />
-
         <DataTable
           id="BolsistaTable"
           value={tableData}
@@ -156,7 +143,7 @@ const BolsistasTable = ({
             className="text-sm text-gray-800 p-4"
           />
           <Column
-            field="status"
+            field="BolsistasEdital.status"
             header="Status"
             body={renderStatus}
             sortable
@@ -180,35 +167,35 @@ const BolsistasTable = ({
       </TableContainer>
 
       <Modal
-        id="ExcludeModalBolsista"
-        title="Excluir Bolsista?"
-        acept={() => handleDelete(excludeId)}
-        aceptLabel="Excluir"
-        refuse={() => setExcludeModalOpen(false)}
+        id="ToggleBolsista"
+        title="Alterar Status do Bolsista?"
+        acept={() => handleToggle(alterId)}
+        aceptLabel="Alterar"
+        refuse={() => setAlterModalOpen(false)}
         typeAction="btn-danger"
-        open={excludeModalOpen}
+        open={alterModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
-          Tem certeza que deseja excluir esse item? Os dados excluídos não
+          Tem certeza que deseja alterar esse item? Os dados alterados não
           poderão ser recuperados.
         </p>
       </Modal>
 
-      <SideBarBolsista
-        sideBarStatus={sideBarOpen}
-        setSideBarStatus={setSideBarOpen}
-        sideBarData={sideBarId}
-      />
     </>
   );
 };
 
-BolsistasTable.propTypes = {
+EditalTable.propTypes = {
   tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
+  setIsEditalModalOpen: PropTypes.func,
+  setIsVincularModalOpen: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
+  selectedTable: PropTypes.any,
+  setSelectedTable: PropTypes.func.isRequired,
+  tableOptions: PropTypes.array.isRequired,
 };
 
-export default BolsistasTable;
+export default EditalTable;

@@ -78,10 +78,11 @@ export const getAllEditalWithBolsista = async () => {
   return data;
 };
 
-export const vincularBolsista = async (id, bolsistas) => {
+export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
   console.log([bolsistas]);
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
+    data_vinculo
   });
 
   return data;

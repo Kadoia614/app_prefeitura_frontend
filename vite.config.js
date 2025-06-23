@@ -22,14 +22,15 @@ export default defineConfig({
     strictPort: true, // Garante que use a porta 5173
     proxy: {
       "/api": {
-        target: "http://192.168.16.80:3000",
-        //target: "http://192.168.16.13:3000",
+        // target: "http://192.168.16.80:3000",
+        target: "http://192.168.16.13:3000",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace("/api", ""),
       },
       "/ft/": {
-        target: "http://192.168.16.80:3007",
+        // target: "http://192.168.16.80:3007",
+        target: "http://192.168.16.13:3007",
         changeOrigin: true,
         secure: false,
       },
