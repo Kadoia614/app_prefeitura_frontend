@@ -34,7 +34,7 @@ console.log(fileUploadRef)
       showToast("success", "Sucesso", "Upload realizado com sucesso");
     } catch (error) {
       fileUploadRef.current?.onError?.();
-      showToast("error", "Erro", "Erro ao fazer upload: " + error.message);
+      showToast("error", "Erro", "Erro ao fazer upload: " + error.response.data.message);
     }
   };
 

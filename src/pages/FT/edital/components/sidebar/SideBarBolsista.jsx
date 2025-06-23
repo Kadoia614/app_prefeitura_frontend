@@ -25,7 +25,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
       setData(data.archives);
       setTypes(data.types);
     } catch (error) {
-      showToast("error", "Error", "Erro ao buscar documentos " + error);
+      showToast("error", "Error", "Erro ao buscar documentos " + error.response.data.message);
     }
   };
 

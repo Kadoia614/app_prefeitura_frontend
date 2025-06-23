@@ -54,7 +54,11 @@ const FT_Bolsista_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar bolsista " + error);
+      showToast(
+        "error",
+        "Error",
+        "Erro ao salvar bolsista " + error.response.data.message
+      );
       return;
     } finally {
       setIsLoading(false);
@@ -130,6 +134,17 @@ const FT_Bolsista_Modal = ({
                   editableItem("pagador", e.target.value);
                 }}
               />
+            </div>
+
+            <div className="mt-1 col-span-4">
+              <fieldset className="mt-2">
+                <label className="font-bold text-gray-700">
+                  Quantidade ativos
+                </label>
+                <div className="mt-1">
+                  <p>{modalData?.pagador && (`${pagadorOptions.find((pg) => pg.id === modalData.pagador).quantity} / ${pagadorOptions.find((pg) => pg.id === modalData.pagador).max_bolsista}`)}</p>
+                </div>
+              </fieldset>
             </div>
             {/* <div className="mt-1 col-span-4">
               <CalendarInput

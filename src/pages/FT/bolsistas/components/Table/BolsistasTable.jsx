@@ -63,7 +63,7 @@ const BolsistasTable = ({
       showToast("success", "Confirmado", "Bolsista deletado com sucesso");
       fetchData();
     } catch (err) {
-      showToast("error", "Erro", `Erro ao deletar bolsista: ${err}`);
+      showToast("error", "Erro", `Erro ao deletar bolsista: ${err.response.data.message}`);
     } finally {
       setExcludeModalOpen(false);
       setIsLoading(false);

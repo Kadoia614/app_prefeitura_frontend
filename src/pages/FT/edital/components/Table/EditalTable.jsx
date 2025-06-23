@@ -61,7 +61,7 @@ const EditalTable = ({
       showToast("success", "Confirmado", "Bolsista alterado com sucesso");
       fetchData(selectedTable);
     } catch (err) {
-      showToast("error", "Erro", `Erro ao alterar bolsista: ${err}`);
+      showToast("error", "Erro", `Erro ao alterar bolsista: ${err.response.data.message}`);
     } finally {
       setAlterModalOpen(false);
       setIsLoading(false);
@@ -99,7 +99,6 @@ const EditalTable = ({
   return (
     <>
       <TableContainer>
-        {console.log("Table Data:", tableData)}
         <EditalTableHeader
           tag={tag}
           setOpenModalEdit={setOpenModalEdit}
@@ -150,15 +149,28 @@ const EditalTable = ({
             className="text-sm text-gray-800 p-4"
           />
           <Column
-            field="createdAt"
-            header="Criação"
+            field="BolsistasEdital.data_vinculo"
+            header="Vinculo"
             sortable
             filter
             filterPlaceholder="Pesquisar data"
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
             body={(rowData) =>
-              new Date(rowData.createdAt).toLocaleDateString("pt-BR")
+              new Date(rowData.BolsistasEdital.data_vinculo).toLocaleDateString("pt-BR")
+            }
+          />
+
+                    <Column
+            field="BolsistasEdital.data_vinculo"
+            header="Encerramento"
+            sortable
+            filter
+            filterPlaceholder="Pesquisar data"
+            filterMatchMode="contains"
+            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            body={(rowData) =>
+              !rowData.BolsistasEdital.prorrogado ? new Date(rowData.BolsistasEdital.data_vencimento).toLocaleDateString("pt-BR") : <p className='text-green-500 font-bold'>Prorrogado</p>
             }
           />
 
@@ -190,7 +202,6 @@ EditalTable.propTypes = {
   setOpenModalEdit: PropTypes.func.isRequired,
   setIsEditalModalOpen: PropTypes.func,
   setIsVincularModalOpen: PropTypes.func.isRequired,
-  setModalData: PropTypes.func.isRequired,
   setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   selectedTable: PropTypes.any,

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
 import { UserContext } from "@/context/UserContextFile";
@@ -8,8 +8,6 @@ import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
 
 import {
   getBolsista,
-  getEdital,
-  getEditalWithBolsista,
 } from "@/service/ft_appServices";
 
 const Bolsista = () => {
@@ -19,44 +17,32 @@ const Bolsista = () => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
   const [tableData, setTableData] = useState([]);
-  const [tableOptions, setTableOptions] = useState([]);
   const [pagadorOptions, setPagadorOptions] = useState([]);
-  const [selectedTable, setSelectedTable] = useState();
   const [modalData, setModalData] = useState({});
 
   const { scopo } = useContext(UserContext);
 
-  const fetchData = useCallback(
-    async (selectedTable) => {
-      try {
-        setIsLoading(true);
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
 
-        if (!selectedTable) {
-          const { bolsista, pagador, uploadToken } = await getBolsista();
-          
-          const { edital } = await getEdital();
-          setTableOptions(edital);
-          setTableData(bolsista);
-          setPagadorOptions(pagador)
-          localStorage.setItem("upload_token", uploadToken);
-          return;
-        }
-        
-        const data = await getEditalWithBolsista(selectedTable);
-        console.log(data)
-        setTableData(data.bolsista);
-      } catch (error) {
-        setError(error.status);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [setIsLoading]
-  );
+      const { bolsista, pagador, uploadToken } = await getBolsista();
+      console.log(pagador);
+
+      setTableData(bolsista);
+      setPagadorOptions(pagador);
+      localStorage.setItem("upload_token", uploadToken);
+      return;
+    } catch (error) {
+      setError(error.status);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchData(selectedTable);
-  }, [fetchData, selectedTable]);
+    fetchData();
+  }, []);
 
   // gerenciamento de erros para caso algo de errado ocorra durante as requisições
   if (error) {
@@ -67,9 +53,6 @@ const Bolsista = () => {
     <div id="Bolsistas" className="content">
       <div>
         <BolsistasTable
-          selectedTable={selectedTable}
-          setSelectedTable={setSelectedTable}
-          tableOptions={tableOptions}
           tableData={tableData}
           fetchData={fetchData}
           setOpenModalEdit={setOpenModalEdit}

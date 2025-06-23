@@ -44,7 +44,7 @@ const PainelServices = ({setIsLoading}) => {
       setSetor(response.data.setores);
     } catch (error) {
       setError(error.status);
-      showToast("error", "Failed to load services: " + error.message); // Show toast on error
+      showToast("error", "Failed to load services: " + error.response.data.message); // Show toast on error
     }
   };
 
@@ -71,7 +71,7 @@ const PainelServices = ({setIsLoading}) => {
       setOpenModalEdit(false);
     } catch (error) {
       console.error("Error saving item:", error);
-      showToast("error", "Failed to save service: " + error.message); // Show toast on error
+      showToast("error", "Failed to save service: " + error.response.data.message); // Show toast on error
     }
   };
 
@@ -112,7 +112,7 @@ const PainelServices = ({setIsLoading}) => {
       showToast("success", "Service deleted successfully!"); // Show success toast
     } catch (error) {
       console.error("Error deleting item:", error);
-      showToast("error", "Failed to delete service: " + error.message); // Show toast on error
+      showToast("error", "Failed to delete service: " + error.response.data.message); // Show toast on error
     } finally {
       setExcludeModalOpen(false);
     }

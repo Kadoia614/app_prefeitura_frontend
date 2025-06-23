@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import TableHeader from "@/components/shared/table/TableHeader";
 import SelectField from "@/components/shared/input/SelectField";
 
-import { FaUnlink, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
+import { FaLink, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
 
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from 'primereact/tooltip';
@@ -40,7 +40,7 @@ const EditalTableHeader = ({
     },
     {
       label: "Vincular Bolsista",
-      icon: <FaUnlink />,
+      icon: <FaLink />,
       disabled: status === "inativo" || !selectedTable,
       className: "vinculate-bolsista-edital-btn bg-green-600/70 hover:bg-green-700/70",
       command: () => {

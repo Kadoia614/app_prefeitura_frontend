@@ -55,7 +55,7 @@ const Edital_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar Edital " + error);
+      showToast("error", "Error", `Erro ao salvar Edital ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
       return;
     } finally {
       setIsLoading(false);
