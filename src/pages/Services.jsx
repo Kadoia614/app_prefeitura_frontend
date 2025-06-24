@@ -15,7 +15,7 @@ function Services() {
       const response = await API.get("/service/user");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
-      console.log(error.data.message);
+      console.log(error.response.data.message);
       setError(error);
       return []; // Retorna um array vazio em caso de erro
     }

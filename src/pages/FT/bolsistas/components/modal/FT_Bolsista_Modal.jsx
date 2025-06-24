@@ -4,7 +4,10 @@ import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 import Modal from "@/components/shared/modal/Modal";
 import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
+import InputField from "@/components/shared/input/inputfield/InputField";
+import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
 import SelectField from "@/components/shared/input/SelectField";
+// import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
@@ -37,6 +40,7 @@ const FT_Bolsista_Modal = ({
         pagador: modalData.pagador,
         nome: modalData.nome,
         bolsa: modalData.bolsa,
+        data_inicio: modalData.data_inicio,
         cpf: modalData.cpf.split(".").join("").split("-").join(""),
         local: modalData.local,
       };
@@ -52,7 +56,11 @@ const FT_Bolsista_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar bolsista " + error);
+      showToast(
+        "error",
+        "Error",
+        "Erro ao salvar bolsista " + error.response.data.message
+      );
       return;
     } finally {
       setIsLoading(false);
@@ -101,11 +109,13 @@ const FT_Bolsista_Modal = ({
             {/* CPF */}
             <div className="mt-1 col-span-2 sm:col-span-4">
               <InputFieldMask
+              <InputFieldMask
                 invalid={modalData?.cpf ? false : true}
                 id="CPF"
                 keyfilter="num"
                 inputClass="w-full"
                 label="CPF"
+                mask={"999.999.999-99"}
                 mask={"999.999.999-99"}
                 value={modalData?.cpf || ""}
                 onChange={(e) => {
@@ -129,6 +139,31 @@ const FT_Bolsista_Modal = ({
                 }}
               />
             </div>
+
+            <div className="mt-1 col-span-4">
+              <fieldset className="mt-2">
+                <label className="font-bold text-gray-700">
+                  Quantidade ativos
+                </label>
+                <div className="mt-1">
+                  <p>{modalData?.pagador && (`${pagadorOptions.find((pg) => pg.id === modalData.pagador).quantity} / ${pagadorOptions.find((pg) => pg.id === modalData.pagador).max_bolsista}`)}</p>
+                </div>
+              </fieldset>
+            </div>
+            {/* <div className="mt-1 col-span-4">
+              <CalendarInput
+                invalid={modalData?.data_inicio ? false : true}
+                label={"Inicia em:"}
+                inputClass="w-full"
+                value={modalData?.data_inicio || ""}
+                onChange={(e) => {
+                  editableItem("data_inicio", e.target.value);
+                }}
+                format={"dd-mm-yy"}
+                view="date"
+                showIcon
+              />
+            </div> */}
 
             {/* Local */}
             <div className="mt-1 col-span-full">
@@ -241,7 +276,9 @@ FT_Bolsista_Modal.propTypes = {
     local: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     pagador: PropTypes.any,
+    data_inicio: PropTypes.string,
   }),
+  pagadorOptions: PropTypes.arrayOf(PropTypes.any),
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
@@ -249,4 +286,4 @@ FT_Bolsista_Modal.propTypes = {
   fetchData: PropTypes.func.isRequired,
 };
 
-export default FT_Bolsista_Modal; // export default FT_Bolsista_Modal;  //
+export default FT_Bolsista_Modal;

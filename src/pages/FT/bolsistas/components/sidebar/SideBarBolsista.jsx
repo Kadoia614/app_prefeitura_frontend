@@ -25,7 +25,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
       setData(data.archives);
       setTypes(data.types);
     } catch (error) {
-      showToast("error", "Error", "Erro ao buscar documentos " + error);
+      showToast("error", "Error", "Erro ao buscar documentos " + error.response.data.message);
     }
   };
 
@@ -40,7 +40,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
         { imageUrl, type: archive.type_id, mime },
       ]);
     } catch (err) {
-      console.error("Erro ao carregar imagem:", err);
+      console.error("Erro ao carregar imagem:", err.response.data.message);
     }
   };
 

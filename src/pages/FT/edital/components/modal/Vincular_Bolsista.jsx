@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
-import { Accordion, AccordionTab } from "primereact/accordion";
+// import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
+
+import { Divider } from 'primereact/divider';
+        
 import PropTypes from "prop-types";
+import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import {
   getBolsista,
@@ -22,6 +26,7 @@ const Vincular_Bolsista = ({
   const [bolsistasData, setBolsistasData] = useState([]);
   const [editalData, setEditalData] = useState([]);
   const [bolsistaSelecionado, setBolsistaSelecionado] = useState([]);
+  const [dataVinculo, setDataVinculo] = useState(null)
 
   const { showToast } = useToast();
 
@@ -30,7 +35,6 @@ const Vincular_Bolsista = ({
       getBolsista(),
       getEditalWithBolsista(selectedTable),
     ]);
-    console.log(bolsista, bolsista_edital);
     setEditalData(bolsista_edital);
     setBolsistasData(bolsista);
   };
@@ -46,21 +50,21 @@ const Vincular_Bolsista = ({
   // apaga os dados do modal
   const clearModal = () => {
     setBolsistaSelecionado([]);
+    setDataVinculo(null);
   };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async () => {
-    console.log(setBolsistaSelecionado);
     try {
       setIsLoading(true);
-      await vincularBolsista(selectedTable, bolsistaSelecionado);
+      await vincularBolsista(selectedTable, bolsistaSelecionado, dataVinculo);
 
       setIsVincularModalOpen(false);
       clearModal();
       showToast("success", "Confirmed", "Edital salvo com sucesso");
       fetchData(selectedTable);
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar Edital " + error);
+      showToast("error", "Error", `Erro ao vincular Bolsista ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
       return;
     } finally {
       setIsLoading(false);
@@ -70,7 +74,6 @@ const Vincular_Bolsista = ({
   const toggleBolsista = (bolsistaId) => {
     setBolsistaSelecionado((prev) => {
       const isIncluded = prev.includes(bolsistaId);
-      console.log(isIncluded);
       if (isIncluded) {
         return prev.filter((item) => item !== bolsistaId);
       }
@@ -99,7 +102,22 @@ const Vincular_Bolsista = ({
         onShow={() => getData()}
       >
         <div id="EditalData">
-          <div id="Data" className="flex flex-col">
+          <div className="mt-1">
+            <CalendarInput
+              invalid={dataVinculo ? false : true}
+              label={"Inicia em:"}
+
+              value={dataVinculo || ""}
+              onChange={(e) => {
+                setDataVinculo(e.target.value);
+              }}
+              format={"dd-mm-yy"}
+              view="date"
+              showIcon
+            />
+          </div>
+          <Divider />
+          <div id="Data" className="flex flex-col mt-6">
             {bolsistasData.map((bolsista) => (
               <div key={bolsista.id} className="flex items-center mb-2">
                 <Checkbox
@@ -135,6 +153,7 @@ Vincular_Bolsista.propTypes = {
   isVincularModalOpen: PropTypes.bool.isRequired,
   setIsVincularModalOpen: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
+  selectedTable: PropTypes.string,
   setIsLoading: PropTypes.func.isRequired,
 };
 

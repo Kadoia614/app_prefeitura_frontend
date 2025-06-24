@@ -31,9 +31,7 @@ const Edital_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      console.log(setIsLoading);
       setIsLoading(true);
-      console.log(editalData.data_publicacao)
       let payload = {
         edital: {
           name: editalData.name,
@@ -55,7 +53,7 @@ const Edital_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", "Erro ao salvar Edital " + error);
+      showToast("error", "Error", `Erro ao salvar Edital ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
       return;
     } finally {
       setIsLoading(false);
@@ -66,7 +64,7 @@ const Edital_Modal = ({
     <>
       {/* Modal to create/ edit a Edital */}
       <Modal
-        id="EditBolsista"
+        id="EditalModal"
         title={editalData?.id ? "Atualizar Edital" : "Cadastrar Edital"}
         acept={() => {
           saveItem(editalData?.id || null);

@@ -30,7 +30,7 @@ const RolesPainel = ({setIsLoading}) => {
       setTableData(response.data.roles);
     } catch (error) {
       setError(error.status);
-      showToast("error", "Failed to load sectors: " + error.message);
+      showToast("error", "Failed to load sectors: " + error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +54,7 @@ const RolesPainel = ({setIsLoading}) => {
       clearModal();
       setOpenModalEdit(false);
     } catch (error) {
-      showToast("error", "Failed to save sector: " + error.message);
+      showToast("error", "Failed to save sector: " + error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +67,7 @@ const RolesPainel = ({setIsLoading}) => {
       showToast("success", "Sector deleted successfully!");
       loadTable();
     } catch (error) {
-      showToast("error", "Failed to delete sector: " + error.message);
+      showToast("error", "Failed to delete sector: " + error.response.data.message);
     } finally {
       setExcludeModalOpen(false);
       setIsLoading(false);
