@@ -1,18 +1,7 @@
-import { useState } from "react";
-import { UserContext } from "./UserContextFile";
+import { createContext, useContext } from "react";
 
-export const UserProvider = ({ children }) => {
-  let [scopo, setScopo] = useState(null);
-  let [auth, setAuth] = useState(false);
-  let [userServices, setUserServices] = useState([]);
+export const UserContext = createContext();
 
-  const AttAuth = (value) => {
-    setAuth = value
-  }
-
-  return (
-    <UserContext.Provider value={{ scopo, setScopo, auth, setAuth, userServices, setUserServices }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
+export const useUserContext = () => {
+  return useContext(UserContext);
+}

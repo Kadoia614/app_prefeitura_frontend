@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
-import { UserProvider } from "./context/UserContext.jsx";
+import { UserProvider } from "./context/UserProvider.jsx";
 import { ToastProvider } from "./components/shared/toast/ToastProvider.jsx";
 import { PrimeReactProvider } from "primereact/api";
 import "tailwindcss/index";
