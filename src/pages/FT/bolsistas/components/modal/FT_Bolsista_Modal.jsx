@@ -4,6 +4,8 @@ import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 import Modal from "@/components/shared/modal/Modal";
 import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
+import InputField from "@/components/shared/input/inputfield/InputField";
+import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
 import SelectField from "@/components/shared/input/SelectField";
 // import CalendarInput from "@/components/shared/input/CalendarInput";
 
@@ -107,11 +109,13 @@ const FT_Bolsista_Modal = ({
             {/* CPF */}
             <div className="mt-1 col-span-2 sm:col-span-4">
               <InputFieldMask
+              <InputFieldMask
                 invalid={modalData?.cpf ? false : true}
                 id="CPF"
                 keyfilter="num"
                 inputClass="w-full"
                 label="CPF"
+                mask={"999.999.999-99"}
                 mask={"999.999.999-99"}
                 value={modalData?.cpf || ""}
                 onChange={(e) => {

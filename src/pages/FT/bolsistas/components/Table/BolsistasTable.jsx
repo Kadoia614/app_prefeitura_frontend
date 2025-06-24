@@ -85,6 +85,7 @@ const BolsistasTable = ({
     <div className="flex flex-wrap gap-2">
       <TableButton
         tooltip={`Editar`}
+        tooltip={`Editar`}
         icon={<FaEdit />}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
@@ -94,6 +95,7 @@ const BolsistasTable = ({
         }}
       />
       <TableButton
+        tooltip={`Documentos`}
         tooltip={`Documentos`}
         icon={<IoIosDocument />}
         iconPos="left"
@@ -106,6 +108,7 @@ const BolsistasTable = ({
 
       {(scopo == 1 || scopo == 2) && (
         <TableButton
+          tooltip={`Excluir`}
           icon={<FaTrash />}
           color="text-red-500 bg-white border-none"
           onClick={() => confirmDelete(rowData.id)}
