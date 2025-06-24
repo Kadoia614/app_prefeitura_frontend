@@ -31,9 +31,7 @@ const Edital_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      console.log(setIsLoading);
       setIsLoading(true);
-      console.log(editalData.data_publicacao)
       let payload = {
         edital: {
           name: editalData.name,

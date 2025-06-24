@@ -35,7 +35,6 @@ const Vincular_Bolsista = ({
       getBolsista(),
       getEditalWithBolsista(selectedTable),
     ]);
-    console.log(bolsista, bolsista_edital);
     setEditalData(bolsista_edital);
     setBolsistasData(bolsista);
   };
