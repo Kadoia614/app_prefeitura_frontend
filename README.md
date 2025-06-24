@@ -32,7 +32,7 @@ Aplicação web desenvolvida em React + Vite para gestão de demandas, usuários
 
 1. **Clone o repositório:**
    ```sh
-   git clone <url-do-repositorio>
+   git clone git@github.com:DevItapecerica/Prefeitura_APP.git
    cd Prefeitura-APP
    ```
 
@@ -42,7 +42,7 @@ Aplicação web desenvolvida em React + Vite para gestão de demandas, usuários
    ```
 
 3. **Configure a API:**
-   - Certifique-se de que a API está online e acessível no endereço configurado em `vite.config.js` (por padrão: http://192.168.16.13:3000).
+   - Certifique-se de que a API está online e acessível no endereço configurado em `vite.config.js` (por padrão: http://192.168.16.80:3000).
    - Ajuste o proxy se necessário.
 
 4. **Inicie o projeto:**
