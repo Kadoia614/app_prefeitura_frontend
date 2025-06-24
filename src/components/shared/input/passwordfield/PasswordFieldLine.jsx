@@ -1,33 +1,32 @@
-import { Password } from "primereact/password";
+import { Password } from 'primereact/password';
 
 import PropTypes from "prop-types";
 
 const PasswordFieldLine = ({
   id,
+  icon,
   value,
-  label,
   onChange,
+  inputClass,
   placeHolder,
   disabled,
   invalid,
   widthField,
-  feedback,
+  feedback
 }) => (
-  <fieldset className={`mt-2 ${widthField}`}>
-    <label htmlFor={id} className="font-bold text-gray-700">
-      {label}
-    </label>
-    <div className="mt-1">
-      <Password
-        id={id}
-        placeholder={placeHolder || "Password"}
-        value={value || ""}
-        disabled={disabled}
-        invalid={invalid}
-        onChange={onChange}
-        feedback={feedback}
-      />
-    </div>
+  <fieldset className={`flex mt-2 ${widthField}`}>
+    <span className={`p-inputgroup-addon ${inputClass}`}>
+      {icon}
+    </span>
+    <Password
+      id={id}
+      placeholder={placeHolder || "Password"}
+      value={value}
+      disabled={disabled}
+      invalid={invalid}
+      onChange={onChange}
+      feedback={feedback}
+    />
   </fieldset>
 );
 PasswordFieldLine.propTypes = {

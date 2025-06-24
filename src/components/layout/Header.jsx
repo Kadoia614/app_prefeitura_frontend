@@ -1,14 +1,16 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
-import { useContext, useEffect, useState } from "react";
-import logo from "../../assets/img/logo.png"
 
-import { UserContext } from "/src/context/UserContextFile";
+import { useEffect, useState } from "react";
+import logo from "../../assets/img/logo.png"
+import { useUserContext } from "@/context/UserContext";
+
+
 import API from "../../service/API";
 
 const Header = () => {
-  const { auth, setAuth, setUserServices } = useContext(UserContext);
+  const { auth, AttAuth, AttUserServices } = useUserContext();
   const [groupedServices, setGroupedServices] = useState({});
   const navigate = useNavigate();
 
@@ -17,7 +19,7 @@ const Header = () => {
       const response = await API.get("/service/user");
       const services = response.data.services;
 
-      setUserServices(services);
+      AttUserServices(services);
 
       const grouped = services.reduce((acc, curr) => {
         const tag = curr.tag || "Outros";
@@ -39,7 +41,7 @@ const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    setAuth(false);
+    AttAuth(false);
     navigate("/login");
   };
 
@@ -83,10 +85,10 @@ const Header = () => {
               </MenuButton>
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+                  <a href="/config" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                  <a href="/config" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
                 </MenuItem>
                 <MenuItem>
                   <a

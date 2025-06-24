@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import API from "../../service/API";
 import HanlerError from "../../middleware/HandleError";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import { UserContext } from "/src/context/UserContextFile";
+import { useUserContext } from "../../context/UserContext";
 
 import {
   Dialog,
@@ -15,7 +15,7 @@ import {
 } from "@headlessui/react";
 
 const UserDemandas = () => {
-  let { scopo } = useContext(UserContext);
+  let { scopo } = useUserContext();
 
   let [tableData, setTableData] = useState([]);
   let [error, setError] = useState(false);

@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
-import { UserContext } from "@/context/UserContextFile";
+import { useUserContext } from "@/context/UserContext";
 
 import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
@@ -20,7 +20,7 @@ const Bolsista = () => {
   const [pagadorOptions, setPagadorOptions] = useState([]);
   const [modalData, setModalData] = useState({});
 
-  const { scopo } = useContext(UserContext);
+  const { scopo } = useUserContext();
 
   const fetchData = async () => {
     try {
