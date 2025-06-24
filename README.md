@@ -33,7 +33,7 @@ Aplicação web desenvolvida em React + Vite para gestão de demandas, usuários
 1. **Clone o repositório:**
    ```sh
    git clone git@github.com:DevItapecerica/Prefeitura_APP.git
-   cd Prefeitura-APP
+   cd Prefeitura_APP
    ```
 
 2. **Instale as dependências:**
