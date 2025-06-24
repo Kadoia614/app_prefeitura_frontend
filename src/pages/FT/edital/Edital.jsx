@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
 
@@ -18,9 +18,6 @@ const Edital = () => {
   const [isVincularModalOpen, setIsVincularModalOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState();
 
-  const [toProrrogate, setToProrrogate] = useState([]);
-  const [isProrrogateOpen, setIsProrrogateOpen] = useState(false);
-
   const fetchData = useCallback(
     async (selectedTable) => {
       try {
@@ -32,14 +29,8 @@ const Edital = () => {
           return;
         }
 
-        const {bolsista_edital, prorrogate} = await getEditalWithBolsista(selectedTable);
-        const bolsistas = bolsista_edital.bolsistas
-        setTableData(bolsistas);
-
-        if (prorrogate) {
-          setToProrrogate(prorrogate);
-          setIsProrrogateOpen(true);
-        }
+        const data = await getEditalWithBolsista(selectedTable);
+        setTableData(data.bolsista_edital.bolsistas);
       } catch (error) {
         setError(error.status);
       } finally {
