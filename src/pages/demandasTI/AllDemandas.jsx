@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import API from "../../service/API";
 import HanlerError from "../../middleware/HandleError";
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import {
   getDemandas,
@@ -27,7 +27,7 @@ import InputField from "../../components/shared/input/InputField";
 import SelectField from "../../components/shared/input/SelectField";
 
 const AllDemandas = () => {
-  let { scopo } = useContext(UserContext);
+  let { scopo } = useUserContext();
   const toast = useRef(null);
 
   let [tableData, setTableData] = useState([]);

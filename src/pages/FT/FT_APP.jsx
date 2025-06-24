@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import Title from "@/components/shared/title/Title";
 
@@ -29,7 +29,7 @@ const FTAPP = () => {
   const [selectedTable, setSelectedTable] = useState();
   const [modalData, setModalData] = useState({});
 
-  const { scopo } = useContext(UserContext);
+  const { scopo } = useUserContext();
 
   const fetchData = useCallback(
     async (selectedTable) => {

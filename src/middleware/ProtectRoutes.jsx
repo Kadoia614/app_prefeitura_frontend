@@ -1,13 +1,13 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import API from "../service/API";
 import Loading from "../components/layout/Loading";
 import Error from "./HandleError";
 
 const ProtectRoutes = () => {
-  let { setAuth, setScopo } = useContext(UserContext);
+  let { AttAuth, AttScopo } = useUserContext();
   let [isLoading, setIsLoading] = useState(true); // Para controlar a exibição enquanto carrega
   let [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ const ProtectRoutes = () => {
       const response = await API.get("/auth");
       let responseScopo = response.data.user.role;
       console.log("user autenticado");
-      setScopo(responseScopo);
-      setAuth(true);
+      AttScopo(responseScopo);
+      AttAuth(true);
     } catch (err) {
       if (err.status === 401) {
-        setAuth(false);
+        AttAuth(false);
         localStorage.removeItem("token");
         navigate("/login");
       } else {

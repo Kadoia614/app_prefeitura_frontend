@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -16,7 +16,7 @@ import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import { deleteBolsista, toggleBolsista } from "@/service/ft_appServices";
 
@@ -57,7 +57,7 @@ const BolsistasTable = ({
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { showToast } = useToast();
-  const { scopo } = useContext(UserContext);
+  const { scopo } = useUserContext();
 
   const confirmDelete = (id) => {
     setExcludeId(id);

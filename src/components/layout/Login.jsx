@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Toast } from "primereact/toast";
 
 import API from "../../service/API";
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import { InputText } from "primereact/inputtext";
 import { MdOutlinePassword } from "react-icons/md";
@@ -16,7 +16,7 @@ const Login = () => {
   let [password, setPassword] = useState("");
   let [loading, setLoading] = useState(false);
 
-  let { setAuth, setScopo, scopo } = useContext(UserContext);
+  let { AttAuth, AttScopo, scopo } = useUserContext();
 
   const navigate = useNavigate();
   const toast = useRef(null);
@@ -33,8 +33,8 @@ const Login = () => {
       let token = response.data.token;
       await localStorage.setItem("token", token);
       console.log("Authenticado com sucesso");
-      setAuth(true);
-      setScopo(response.data.scopo);
+      AttAuth(true);
+      AttScopo(response.data.scopo);
       console.log("scopo", scopo);
       navigate("/");
     } catch (error) {
@@ -53,7 +53,7 @@ const Login = () => {
           life: 3000,
         });
       }
-      setAuth(false);
+      AttAuth(false);
     }
   };
 
@@ -68,9 +68,9 @@ const Login = () => {
       if (response.status === 200) {
         navigate("/");
       }
-      setAuth(true);
+      AttAuth(true);
     } catch (error) {
-      setAuth(false);
+      AttAuth(false);
 
       if (error.response?.status === 401) {
         localStorage.removeItem("token");

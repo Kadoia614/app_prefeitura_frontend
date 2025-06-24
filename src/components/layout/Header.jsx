@@ -1,14 +1,14 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { UserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import API from "../../service/API";
 
 const Header = () => {
-  const { auth, setAuth, setUserServices } = useContext(UserContext);
+  const { auth, AttAuth, AttUserServices } = useUserContext();
   const [groupedServices, setGroupedServices] = useState({});
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const Header = () => {
       const response = await API.get("/service/user");
       const services = response.data.services;
 
-      setUserServices(services);
+      AttUserServices(services);
 
       const grouped = services.reduce((acc, curr) => {
         const tag = curr.tag || "Outros";
@@ -39,7 +39,7 @@ const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    setAuth(false);
+    AttAuth(false);
     navigate("/login");
   };
 
