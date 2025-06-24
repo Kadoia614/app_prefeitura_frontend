@@ -1,12 +1,8 @@
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 
-import { useRef, useState } from "react";
-
 import { FileUpload } from "primereact/fileupload";
 import { useToast } from "@/components/shared/toast/ToastProvider";
-import { Tooltip } from "primereact/tooltip";
-import { ProgressBar } from "primereact/progressbar";
 
 import { CiImageOn } from "react-icons/ci";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -14,15 +10,8 @@ import { CiBookmarkRemove } from "react-icons/ci";
 import { Tooltip } from "primereact/tooltip";
 import { ProgressBar } from "primereact/progressbar";
 
-import { CiImageOn } from "react-icons/ci";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { CiBookmarkRemove } from "react-icons/ci";
-
-const FileUploader = ({ type, maxSize, label, upload }) => {
 const FileUploader = ({ type, maxSize, label, upload }) => {
   const { showToast } = useToast();
-  const [totalSize, setTotalSize] = useState(0);
-  const fileUploadRef = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
   const fileUploadRef = useRef(null);
 

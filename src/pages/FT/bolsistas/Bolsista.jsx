@@ -27,6 +27,7 @@ const Bolsista = () => {
       setIsLoading(true);
 
       const { bolsista, pagador, uploadToken } = await getBolsista();
+      console.log(pagador);
 
       setTableData(bolsista);
       setPagadorOptions(pagador);
