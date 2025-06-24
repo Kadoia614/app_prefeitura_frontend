@@ -55,7 +55,7 @@ const Edital_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", `Erro ao salvar Edital ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
+      showToast("error", "Error", "Erro ao salvar Edital " + error.response.data.message);
       return;
     } finally {
       setIsLoading(false);
@@ -66,7 +66,7 @@ const Edital_Modal = ({
     <>
       {/* Modal to create/ edit a Edital */}
       <Modal
-        id="EditalModal"
+        id="EditBolsista"
         title={editalData?.id ? "Atualizar Edital" : "Cadastrar Edital"}
         acept={() => {
           saveItem(editalData?.id || null);

@@ -22,11 +22,6 @@ const tag = {
     icon: <GiConfirmed />,
     label: "Ativo",
   },
-  concluido: {
-    style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <GiConfirmed />,
-    label: "Concluido",
-  },
   inativo: {
     style: "bg-amber-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
     icon: <CiWarning />,
@@ -66,11 +61,7 @@ const EditalTable = ({
       showToast("success", "Confirmado", "Bolsista alterado com sucesso");
       fetchData(selectedTable);
     } catch (err) {
-      showToast(
-        "error",
-        "Erro",
-        `Erro ao alterar bolsista: ${err.response.data.message}`
-      );
+      showToast("error", "Erro", `Erro ao alterar bolsista: ${err.response.data.message}`);
     } finally {
       setAlterModalOpen(false);
       setIsLoading(false);
@@ -166,13 +157,11 @@ const EditalTable = ({
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
             body={(rowData) =>
-              new Date(rowData.BolsistasEdital.data_vinculo).toLocaleDateString(
-                "pt-BR"
-              )
+              new Date(rowData.BolsistasEdital.data_vinculo).toLocaleDateString("pt-BR")
             }
           />
 
-          <Column
+                    <Column
             field="BolsistasEdital.data_vinculo"
             header="Encerramento"
             sortable
@@ -181,13 +170,7 @@ const EditalTable = ({
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
             body={(rowData) =>
-              !rowData.BolsistasEdital.prorrogado ? (
-                new Date(
-                  rowData.BolsistasEdital.data_vencimento
-                ).toLocaleDateString("pt-BR")
-              ) : (
-                <p className="text-green-500 font-bold">Prorrogado</p>
-              )
+              !rowData.BolsistasEdital.prorrogado ? new Date(rowData.BolsistasEdital.data_vencimento).toLocaleDateString("pt-BR") : <p className='text-green-500 font-bold'>Prorrogado</p>
             }
           />
 
@@ -209,6 +192,7 @@ const EditalTable = ({
           poderão ser recuperados.
         </p>
       </Modal>
+
     </>
   );
 };
