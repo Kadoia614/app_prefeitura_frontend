@@ -5,18 +5,13 @@ import { Toast } from "primereact/toast";
 import API from "../../service/API";
 import { useUserContext } from "@/context/UserContext";
 
-import { InputText } from "primereact/inputtext";
 import { MdOutlinePassword } from "react-icons/md";
 
 import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
-import { MdOutlinePassword } from "react-icons/md";
 
-import PasswordField from "../shared/input/passwordfield/PasswordField";
+import PasswordFieldLine from "../shared/input/passwordfield/PasswordFieldLine";
 import InputFieldLine from "../shared/input/inputfield/InputFieldLine";
-import { UserContext } from "/src/context/UserContextFile";
-
-import API from "../../service/API";
 
 const Login = () => {
   let [email, setEmail] = useState("");
@@ -120,7 +115,7 @@ const Login = () => {
               />
 
               <div className="flex my-4">
-                <PasswordField icon={<MdOutlinePassword />}
+                <PasswordFieldLine icon={<MdOutlinePassword />}
                   placeholder="Senha"
                   id="Pwd"
                   value={password}
