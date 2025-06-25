@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import API from "../../../service/API";
 import HandleError from "../../../middleware/HandleError";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { Checkbox } from "primereact/checkbox";
-import { InputSwitch } from 'primereact/inputswitch';
-        
+import { InputSwitch } from "primereact/inputswitch";
+
+import { useToast } from "@/components/shared/toast/ToastProvider";
+import ServicesTable from "./table/ServicesTable";
+
 import InputField from "../../../components/shared/input/inputfield/InputField";
 import {
   Dialog,
@@ -17,9 +17,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import { Toast } from "primereact/toast";
-
-const PainelServices = ({setIsLoading}) => {
+const PainelServices = ({ setIsLoading }) => {
   const [tableData, setTableData] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -33,7 +31,8 @@ const PainelServices = ({setIsLoading}) => {
   const [setor, setSetor] = useState([false]);
 
   const [error, setError] = useState(null);
-  const toast = useRef(null); // Create a ref for the toast
+
+  const { showToast } = useToast();
 
   const fetchData = async () => {
     try {
@@ -44,7 +43,10 @@ const PainelServices = ({setIsLoading}) => {
       setSetor(response.data.setores);
     } catch (error) {
       setError(error.status);
-      showToast("error", "Failed to load services: " + error.response.data.message); // Show toast on error
+      showToast(
+        "error",
+        "Failed to load services: " + error.response.data.message
+      ); // Show toast on error
     }
   };
 
@@ -53,10 +55,6 @@ const PainelServices = ({setIsLoading}) => {
   };
 
   //#region EDIT / CREATE ITEMS
-  const toSave = (item) => {
-    setModalData(item);
-    setOpenModalEdit(true);
-  };
 
   const saveItem = async (id) => {
     try {
@@ -66,12 +64,16 @@ const PainelServices = ({setIsLoading}) => {
         await API.put(`/service/${id}`, { service: modalData });
       }
       loadTable();
-      clearModal();
+          setModalData({});
+;
       showToast("success", "Service saved successfully!"); // Show success toast
       setOpenModalEdit(false);
     } catch (error) {
       console.error("Error saving item:", error);
-      showToast("error", "Failed to save service: " + error.response.data.message); // Show toast on error
+      showToast(
+        "error",
+        "Failed to save service: " + error.response.data.message
+      ); // Show toast on error
     }
   };
 
@@ -100,10 +102,6 @@ const PainelServices = ({setIsLoading}) => {
   //#endregion EDIT ITEMS
 
   //#region REMOVE ITEMS
-  const toRemove = (item) => {
-    setExcludeModal(item.id);
-    setExcludeModalOpen(true);
-  };
 
   const removeItem = async (id) => {
     try {
@@ -112,26 +110,15 @@ const PainelServices = ({setIsLoading}) => {
       showToast("success", "Service deleted successfully!"); // Show success toast
     } catch (error) {
       console.error("Error deleting item:", error);
-      showToast("error", "Failed to delete service: " + error.response.data.message); // Show toast on error
+      showToast(
+        "error",
+        "Failed to delete service: " + error.response.data.message
+      ); // Show toast on error
     } finally {
       setExcludeModalOpen(false);
     }
   };
   //#endregion REMOVE ITEMS
-
-  const clearModal = () => {
-    setModalData({});
-  };
-
-  const showToast = (severity, detail) => {
-    toast.current.show({
-      severity,
-      summary: severity.charAt(0).toUpperCase() + severity.slice(1),
-      detail,
-      life: 3000,
-    });
-  };
-
   useEffect(() => {
     loadTable();
   }, []);
@@ -142,51 +129,14 @@ const PainelServices = ({setIsLoading}) => {
 
   return (
     <div id="PainelServices">
-      <Toast ref={toast} /> {/* Add Toast component here */}
-      <Button
-        label="Cadastrar Serviço"
-        className="btn-primary mb-4"
-        onClick={() => {
-          clearModal();
-          setOpenModalEdit(true);
-        }}
-      />
-      <DataTable
-        value={tableData}
-        size="large"
-        rowHover
-        stripedRows
-        tableClassName="mt-4"
-        paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50]}
-        tableStyle={{ minWidth: "40rem" }}
-      >
-        <Column field="id" header="#" />
-        <Column field="name" header="Nome" />
-        <Column field="description" header="Descrição" />
-        <Column field="url" header="Url" />
-        <Column
-          header="Editar"
-          body={(rowData) => (
-            <Button
-              className="btn-primary"
-              label={<FaEdit />}
-              onClick={() => toSave(rowData)}
-            />
-          )}
-        />
-        <Column
-          header="Excluir"
-          body={(rowData) => (
-            <Button
-              className="btn-danger"
-              label={<FaTrash />}
-              onClick={() => toRemove(rowData)}
-            />
-          )}
-        />
-      </DataTable>
+      <ServicesTable
+        tableData={tableData}
+        setOpenModalEdit={setOpenModalEdit}
+        setModalData={setModalData}
+        setExcludeModalOpen={setExcludeModalOpen}
+        setExcludeModal={setExcludeModal}
+      ></ServicesTable>
+
       {/* MODAL REGION */}
       <Dialog
         open={openModalEdit}
@@ -366,7 +316,12 @@ const PainelServices = ({setIsLoading}) => {
                         <div
                           id="ServiceVisibility"
                           className={`mt-6 bg-gray-100 rounded-sm ring-gray-300 ring-1 hover:ring-primary transition ${
-                            modalData ? (dropdownService ? "h-full" : "h-15") : "hidden"} overflow-hidden`}
+                            modalData
+                              ? dropdownService
+                                ? "h-full"
+                                : "h-15"
+                              : "hidden"
+                          } overflow-hidden`}
                         >
                           <div
                             className="flex justify-between items-center px-4 py-4 cursor-pointer"
@@ -384,7 +339,7 @@ const PainelServices = ({setIsLoading}) => {
                           <div>
                             {modalData?.visibility
                               ? modalData.visibility.map((visibility) => {
-                                console.log(visibility)
+                                  console.log(visibility);
                                   return (
                                     <div
                                       key={visibility.id}
@@ -398,7 +353,15 @@ const PainelServices = ({setIsLoading}) => {
                                           )?.name
                                         }
                                       </h3>
-                                      <InputSwitch checked={visibility.visibility} onChange={(e) => editableVisibility(visibility.id, e.value)} />
+                                      <InputSwitch
+                                        checked={visibility.visibility}
+                                        onChange={(e) =>
+                                          editableVisibility(
+                                            visibility.id,
+                                            e.value
+                                          )
+                                        }
+                                      />
                                     </div>
                                   );
                                 })
@@ -420,7 +383,8 @@ const PainelServices = ({setIsLoading}) => {
                   label="Cancelar"
                   onClick={() => {
                     setOpenModalEdit(false);
-                    clearModal();
+                        setModalData({});
+;
                   }}
                   className="btn-cancel mr-3"
                 />

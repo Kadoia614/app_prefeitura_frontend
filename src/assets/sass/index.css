@@ -15,7 +15,7 @@
   --color-primary-800: #084259;
   --color-primary-900: #04212c;
 
-  --animate-jump: jump .5s ease-in-out;
+  --animate-jump: jump 0.5s ease-in-out;
 }
 
 #root {
@@ -25,27 +25,22 @@
 }
 
 #Main {
-  background-image: url("/public/bg.png");
+  background-image: url("/bg.png");
   background-size: cover;
   background-attachment: fixed;
 }
 
-.login-image {
-  background-image: url("/public/login.jpg");
-  background-size: cover;
-  background-position: center;
+.input .p-calendar,
+input {
+  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500;
 }
 
-.input .p-calendar, input {
-  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 ;
+.p-speeddial-button {
+  @apply h-[48px] w-[48px] bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2;
 }
 
-.p-speeddial-button{
-  @apply h-[48px] w-[48px] bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2
-}
-
-.p-speeddial-list{
-  @apply top-[110%] absolute
+.p-speeddial-list {
+  @apply top-[110%] absolute;
 }
 
 .btn-primary {
@@ -61,11 +56,15 @@
 }
 
 .content {
-  @apply  w-full mb-10 py-5 overflow-auto relative;
+  @apply w-full mb-10 py-5 overflow-auto relative;
 }
 
 .p-datepicker-trigger {
-  @apply bg-primary-500 p-0
+  @apply bg-primary-500 p-0;
+}
+
+.p-password.w-full input{
+  @apply w-full;
 }
 
 @keyframes jump {

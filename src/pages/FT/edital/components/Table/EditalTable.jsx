@@ -124,7 +124,6 @@ const EditalTable = ({
           rows={25}
           stripedRows
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-          className="min-w-full p-4"
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
           <Column

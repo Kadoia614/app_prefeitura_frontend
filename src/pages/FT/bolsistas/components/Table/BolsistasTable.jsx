@@ -85,7 +85,6 @@ const BolsistasTable = ({
     <div className="flex flex-wrap gap-2">
       <TableButton
         tooltip={`Editar`}
-        tooltip={`Editar`}
         icon={<FaEdit />}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
@@ -95,7 +94,6 @@ const BolsistasTable = ({
         }}
       />
       <TableButton
-        tooltip={`Documentos`}
         tooltip={`Documentos`}
         icon={<IoIosDocument />}
         iconPos="left"
@@ -132,7 +130,6 @@ const BolsistasTable = ({
           rows={25}
           stripedRows
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-          className="min-w-full p-4"
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
           <Column

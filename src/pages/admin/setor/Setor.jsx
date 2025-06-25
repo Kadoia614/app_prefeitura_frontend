@@ -101,7 +101,7 @@ const Setor = ({setIsLoading}) => {
         />
         <DataTable
           value={tableData}
-          size="large"
+          size="small"
           rowHover
           stripedRows
           tableClassName="mt-4"

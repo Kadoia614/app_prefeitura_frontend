@@ -5,7 +5,6 @@ import { UserProvider } from "./context/UserProvider.jsx";
 import { ToastProvider } from "./components/shared/toast/ToastProvider.jsx";
 import { PrimeReactProvider } from "primereact/api";
 import "tailwindcss/index";
-
 import "./assets/sass/index.css";
 
 import App from "./App.jsx";

@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router";
 import { TabView, TabPanel } from "primereact/tabview";
 import { useState } from "react";
 import Roles from "./roles/Roles";
-import Services from "./services/Services";
+import Services from "./services_user/Services";
 import Setor from "./setor/Setor";
 import User from "./users/Users";
 
