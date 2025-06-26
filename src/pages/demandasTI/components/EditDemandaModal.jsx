@@ -24,11 +24,11 @@ const EditDemandaModal = ({ visible, onHide, demanda, fetchData, toast }) => {
     <Modal
       id="edit-demanda-modal"
       title="Editar Demanda"
-      acept={handleUpdate}
+      onAcept={handleUpdate}
       aceptLabel="Salvar"
-      refuse={onHide}
+      onRefuse={onHide}
       typeAction="p-button-success"
-      open={visible}
+      isOpen={visible}
       onClose={onHide}
     >
       <div className="w-full">

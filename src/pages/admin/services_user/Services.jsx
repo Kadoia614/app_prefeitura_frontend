@@ -64,8 +64,7 @@ const PainelServices = ({ setIsLoading }) => {
         await API.put(`/service/${id}`, { service: modalData });
       }
       loadTable();
-          setModalData({});
-;
+      clearModal();
       showToast("success", "Service saved successfully!"); // Show success toast
       setOpenModalEdit(false);
     } catch (error) {
@@ -119,6 +118,11 @@ const PainelServices = ({ setIsLoading }) => {
     }
   };
   //#endregion REMOVE ITEMS
+
+  const clearModal = () => {
+    setModalData({});
+  };
+
   useEffect(() => {
     loadTable();
   }, []);
@@ -383,8 +387,7 @@ const PainelServices = ({ setIsLoading }) => {
                   label="Cancelar"
                   onClick={() => {
                     setOpenModalEdit(false);
-                        setModalData({});
-;
+                    clearModal();
                   }}
                   className="btn-cancel mr-3"
                 />

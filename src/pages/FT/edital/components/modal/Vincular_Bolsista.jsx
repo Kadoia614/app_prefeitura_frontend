@@ -94,11 +94,11 @@ const Vincular_Bolsista = ({
       <Modal
         id="VincularBolsista"
         title={"Vincular Bolsista ao Edital"}
-        acept={() => saveItem()}
+        onAcept={() => saveItem()}
         aceptLabel={"Salvar"}
-        refuse={() => CloseModal()}
+        onRefuse={() => CloseModal()}
         typeAction={"btn-primary"}
-        open={isVincularModalOpen}
+        isOpen={isVincularModalOpen}
         onShow={() => getData()}
       >
         <div id="EditalData">

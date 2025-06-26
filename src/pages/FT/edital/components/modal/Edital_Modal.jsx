@@ -66,16 +66,16 @@ const Edital_Modal = ({
       <Modal
         id="EditalModal"
         title={editalData?.id ? "Atualizar Edital" : "Cadastrar Edital"}
-        acept={() => {
+        onAcept={() => {
           saveItem(editalData?.id || null);
         }}
         aceptLabel={"Salvar"}
-        refuse={() => {
+        onRefuse={() => {
           setIsEditalModalOpen(false);
           clearModal();
         }}
         typeAction={"btn-primary"}
-        open={isEditalModalOpen}
+        isOpen={isEditalModalOpen}
         onClose={setIsEditalModalOpen}
       >
         <div id="EditalData">

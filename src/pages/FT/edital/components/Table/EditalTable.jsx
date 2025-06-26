@@ -197,11 +197,11 @@ const EditalTable = ({
       <Modal
         id="ToggleBolsista"
         title="Alterar Status do Bolsista?"
-        acept={() => handleToggle(alterId)}
+        onAcept={() => handleToggle(alterId)}
         aceptLabel="Alterar"
-        refuse={() => setAlterModalOpen(false)}
+        onRefuse={() => setAlterModalOpen(false)}
         typeAction="btn-danger"
-        open={alterModalOpen}
+        isOpen={alterModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
           Tem certeza que deseja alterar esse item? Os dados alterados não

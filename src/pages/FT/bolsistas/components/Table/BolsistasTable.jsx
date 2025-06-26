@@ -182,11 +182,11 @@ const BolsistasTable = ({
       <Modal
         id="ExcludeModalBolsista"
         title="Excluir Bolsista?"
-        acept={() => handleDelete(excludeId)}
+        onAcept={() => handleDelete(excludeId)}
         aceptLabel="Excluir"
-        refuse={() => setExcludeModalOpen(false)}
+        onRefuse={() => setExcludeModalOpen(false)}
         typeAction="btn-danger"
-        open={excludeModalOpen}
+        isOpen={excludeModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
           Tem certeza que deseja excluir esse item? Os dados excluídos não

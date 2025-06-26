@@ -74,7 +74,7 @@ const ServicesTable = ({
         <Column field="url" header="Url" />
         <Column
           header="Actions"
-          headerClassName="min-w-36"
+          headerClassName="w-36"
           body={(rowData) => renderActions(rowData)}
         />
       </DataTable>

@@ -145,11 +145,11 @@ const Setor = ({setIsLoading}) => {
         <Modal
           id={"ModalEdit"}
           title={modalData.id ? "Atualizar Setor" : "Cadastrar Setor"}
-          open={openModalEdit}
+          isOpen={openModalEdit}
           onClose={() => setOpenModalEdit(false)}
-          acept={() => handleSave(modalData.id || null)}
+          onAcept={() => handleSave(modalData.id || null)}
           aceptLabel={"Salvar"}
-          refuse={() => {
+          onRefuse={() => {
             setOpenModalEdit(false);
             clearModal();
           }}
@@ -180,11 +180,11 @@ const Setor = ({setIsLoading}) => {
         <Modal
           id={"ExcludeModalSetor"}
           title={"Excluir Setor?"}
-          acept={() => handleRemove(excludeModal)}
+          onAcept={() => handleRemove(excludeModal)}
           aceptLabel={"Excluir"}
-          refuse={() => setExcludeModalOpen(false)}
+          onRefuse={() => setExcludeModalOpen(false)}
           typeAction={"btn-danger"}
-          open={excludeModalOpen}
+          isOpen={excludeModalOpen}
           onClose={() => setExcludeModalOpen(false)}
         >
           <p className="text-red-500 font-bold mt-2">

@@ -76,16 +76,16 @@ const FT_Bolsista_Modal = ({
       <Modal
         id="EditBolsista"
         title={modalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
-        acept={() => {
+        onAcept={() => {
           saveItem(modalData?.id || null);
         }}
         aceptLabel={"Salvar"}
-        refuse={() => {
+        onRefuse={() => {
           setOpenModalEdit(false);
           clearModal();
         }}
         typeAction={"btn-primary"}
-        open={openModalEdit}
+        isOpen={openModalEdit}
         onClose={setOpenModalEdit}
       >
         <div id="BolsistaData">
