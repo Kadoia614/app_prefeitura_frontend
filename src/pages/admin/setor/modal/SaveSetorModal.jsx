@@ -28,11 +28,11 @@ const SaveSetorModal = ({
       await onSave(modalData.id);
       showToast(
         "success",
-        modalData.id ? "Role updated successfully!" : "Role saved successfully!"
+        modalData.id ? "Setor updated successfully!" : "Setor saved successfully!"
       );
       setModalData({});
     } catch (error) {
-      showToast("error", "Failed to save role: " + error.response.data.message);
+      showToast("error", "Failed to save Setor: " + error.response.data.message);
     } finally {
       loadTable();
     }

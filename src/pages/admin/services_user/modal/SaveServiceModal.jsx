@@ -40,11 +40,11 @@ const SaveServiceModal = ({
       await onSave(modalData.id);
       showToast(
         "success",
-        modalData.id ? "Role updated successfully!" : "Role saved successfully!"
+        modalData.id ? "Service updated successfully!" : "Service saved successfully!"
       );
       setModalData({});
     } catch (error) {
-      showToast("error", "Failed to save role: " + error.response.data.message);
+      showToast("error", "Failed to save Service: " + error.response.data.message);
     } finally {
       loadTable();
     }

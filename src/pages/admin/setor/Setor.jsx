@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import API from "@/service/API";
 
+import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
+import SetorTable from "./table/SetorTable";
 import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 import SaveSetorModal from "./modal/SaveSetorModal";
-import SetorTable from "./table/SetorTable";
 
 const Setor = () => {
   const [tableData, setTableData] = useState([]);
@@ -13,9 +14,12 @@ const Setor = () => {
   const [modalData, setModalData] = useState({});
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
   const [excludeModal, setExcludeModal] = useState(null);
+
   const { showToast } = useToast();
+  const { attIsLoading } = useLoadingContext();
 
   const fetchData = async () => {
+    attIsLoading(true);
     try {
       const { data } = await API.get("/setor");
       setTableData(data.setores);
@@ -24,6 +28,8 @@ const Setor = () => {
         "error",
         "Failed to load sectors: " + error.response.data.message
       );
+    } finally {
+      attIsLoading(false);
     }
   };
 
