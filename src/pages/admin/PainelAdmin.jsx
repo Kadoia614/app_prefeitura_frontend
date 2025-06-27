@@ -13,7 +13,6 @@ const Admin = () => {
   const [searchParams] = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(searchParams.get("tab") ? parseInt(searchParams.get("tab")) : 0);
 
-  console.log(searchParams.get("tab"));
   return (
     <div id="Admin">
       <Title>Com grandes poderes vêm grandes responsabilidades</Title>

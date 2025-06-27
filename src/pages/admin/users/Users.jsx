@@ -4,7 +4,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import { useOutletContext } from "react-router";
+import { useLoadingContext } from "@/context/loading/LoadingContext";
+
 import {
   Dialog,
   DialogBackdrop,
@@ -32,7 +33,7 @@ const MESSAGES = {
   },
 };
 
-const PainelAdmin = ({ setIsLoading }) => {
+const PainelAdmin = () => {
   const [tableData, setTableData] = useState([]);
   const [roles, setRoles] = useState([]);
   const [setores, setSetores] = useState([]);
@@ -42,19 +43,19 @@ const PainelAdmin = ({ setIsLoading }) => {
   const [excludeModal, setExcludeModal] = useState(null);
   const [error, setError] = useState(null);
   const toast = useRef(null);
+const { attIsLoading } = useLoadingContext();
 
   const fetchData = async () => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       const response = await API.get(API_ENDPOINTS.USERS);
-      console.log(response.data);
       setTableData(response.data.users);
       setRoles(response.data.roles);
       setSetores(response.data.setores);
     } catch (error) {
       setError(error.status);
     } finally {
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 
@@ -65,7 +66,7 @@ const PainelAdmin = ({ setIsLoading }) => {
 
   const removeItem = async () => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       await API.delete(`${API_ENDPOINTS.USERS}/${excludeModal}`);
       showToast("success", MESSAGES.SUCCESS.DELETE);
       setExcludeModalOpen(false);
@@ -75,7 +76,7 @@ const PainelAdmin = ({ setIsLoading }) => {
         MESSAGES.ERROR.OPERATION_CANCELLED(error.response.data.message)
       );
     } finally {
-      setIsLoading(false);
+      attIsLoading(false);
       setExcludeModal(null);
       fetchData();
     }
@@ -91,7 +92,7 @@ const PainelAdmin = ({ setIsLoading }) => {
     const url = id ? `${API_ENDPOINTS.USERS}/${id}` : API_ENDPOINTS.USERS;
 
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       await method(url, { user: modalData });
       showToast("success", MESSAGES.SUCCESS.SAVE);
       clearModal();
@@ -103,7 +104,7 @@ const PainelAdmin = ({ setIsLoading }) => {
       );
     } finally {
       fetchData();
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 

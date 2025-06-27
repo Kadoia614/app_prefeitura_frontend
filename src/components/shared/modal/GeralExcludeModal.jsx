@@ -18,10 +18,12 @@ const GeralExcludeModal = ({
 
   const handleConfirm = async () => {
     try {
+
       await API.delete(`${url}/${targetId}`);
       showToast("success", "Deletado com sucesso!");
       loadTable();
     } catch (error) {
+      alert(JSON.stringify(error.response.data))
       showToast(
         "error",
         "Falha ao deletar: " + error.response.data.message
@@ -31,7 +33,7 @@ const GeralExcludeModal = ({
     }
   };
 
-  const handleRefuse = async () => {
+  const handleRefuse = () => {
     setIsOpen(false);
     setTargetID(null);
     showToast("info", "Operação cancelada");
@@ -42,10 +44,11 @@ const GeralExcludeModal = ({
       id={id}
       title={`Excluir Role?`}
       isOpen={isOpen}
-      onShow={() => onShow}
+      onShow={onShow}
+      setIsOpen={setIsOpen}
       aceptLabel={`Excluir`}
-      onAcept={() => handleConfirm()}
-      onRefuse={() => handleRefuse()}
+      onAcept={handleConfirm}
+      onRefuse={handleRefuse}
       typeAction="btn-danger"
       typeCancel="btn-cancel"
     >

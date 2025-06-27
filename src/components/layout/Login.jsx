@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Toast } from "primereact/toast";
 
 import API from "../../service/API";
+import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useUserContext } from "@/context/UserContext";
+import { useToast } from "@/components/shared/toast/ToastProvider";
 
 import { MdOutlinePassword } from "react-icons/md";
 
@@ -17,13 +18,17 @@ const Login = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
 
-  let { AttAuth, AttScopo, scopo } = useUserContext();
+  const { AttAuth, AttScopo, scopo } = useUserContext();
+  const { attIsLoading } = useLoadingContext();
+  const { showToast } = useToast();
 
   const navigate = useNavigate();
-  const toast = useRef(null);
 
   const Login = async (data) => {
+
     try {
+    attIsLoading(true);
+    
       let response = await API.post("/auth/login", {
         credentials: {
           password: data.password,
@@ -39,22 +44,13 @@ const Login = () => {
       console.log("scopo", scopo);
       navigate("/");
     } catch (error) {
-      if (error.status === 401) {
-        toast.current.show({
-          severity: "error",
-          summary: "Error Message",
-          detail: "Invalid credentials ",
-          life: 3000,
-        });
-      } else {
-        toast.current.show({
-          severity: "error",
-          summary: "Error Message",
-          detail: "Error ao realizar login",
-          life: 3000,
-        });
-      }
+      showToast(
+        "error",
+        "Credenciais inválidas",
+        `Erro ao realizar login: ${JSON.stringify(error.response.data.message)}`
+      );
       AttAuth(false);
+      attIsLoading(false);
     }
   };
 
@@ -160,7 +156,11 @@ const Login = () => {
           </div>
 
           <div className="login-image overflow-hidden md:block hidden md:w-1/2">
-            <img src="/public/login.jpg" alt="Login IMG" className="h-90 w-90" />
+            <img
+              src="/public/login.jpg"
+              alt="Login IMG"
+              className="h-90 w-90"
+            />
           </div>
         </div>
 
@@ -177,7 +177,6 @@ const Login = () => {
           </p>
         </div>
       </div>
-      <Toast ref={toast} />
     </div>
   );
 };

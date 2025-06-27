@@ -13,9 +13,10 @@ const InputFieldLine = ({
   invalid,
   widthField,
   spanClass,
+  ...props
 }) => (
   <fieldset className={`flex mt-2 ${widthField}`}>
-    <span className={`p-inputgroup-addon  ${spanClass}`}>{icon}</span>
+    {icon && <span className={`p-inputgroup-addon  ${spanClass}`}>{icon}</span>}
     <InputText
       id={id}
       className={`w-full ${inputClass || ""}`}
@@ -24,6 +25,7 @@ const InputFieldLine = ({
       disabled={disabled}
       invalid={invalid}
       onChange={onChange}
+      {...props}
     />
   </fieldset>
 );
