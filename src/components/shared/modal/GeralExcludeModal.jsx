@@ -61,7 +61,8 @@ GeralExcludeModal.propTypes = {
   id: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  targetId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  // oneOfType([PropTypes.string, PropTypes.number])
+  targetId: PropTypes.any,
   setTargetID: PropTypes.func.isRequired,
   onShow: PropTypes.func,
   loadTable: PropTypes.func.isRequired,

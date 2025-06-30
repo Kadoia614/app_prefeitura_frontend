@@ -11,7 +11,9 @@ import { useSearchParams } from "react-router";
 const Admin = () => {
   const { setIsLoading } = useOutletContext();
   const [searchParams] = useSearchParams();
-  const [activeIndex, setActiveIndex] = useState(searchParams.get("tab") ? parseInt(searchParams.get("tab")) : 0);
+  const [activeIndex, setActiveIndex] = useState(
+    searchParams.get("tab") ? parseInt(searchParams.get("tab")) : 0
+  );
 
   return (
     <div id="Admin">
@@ -20,19 +22,18 @@ const Admin = () => {
         <TabView
           activeIndex={activeIndex}
           onTabChange={(e) => setActiveIndex(e.index)}
-          lazy
         >
           <TabPanel header="Users">
-            <User setIsLoading={setIsLoading} />
+            <User setIsLoading={setIsLoading} lazy/>
           </TabPanel>
           <TabPanel header="Setores">
-            <Setor setIsLoading={setIsLoading} />
+            <Setor setIsLoading={setIsLoading} lazy/>
           </TabPanel>
           <TabPanel header="Serviços">
-            <Services setIsLoading={setIsLoading} />
+            <Services setIsLoading={setIsLoading} lazy/>
           </TabPanel>
           <TabPanel header="Permissões">
-            <Roles setIsLoading={setIsLoading} />
+            <Roles setIsLoading={setIsLoading} lazy/>
           </TabPanel>
         </TabView>
       </div>

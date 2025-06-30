@@ -79,7 +79,7 @@ const Vincular_Bolsista = ({
 
   const isChecked = (bolsistaId) => {
     return (
-      editalData.bolsistas?.includes(bolsistaId) ||
+      editalData.bolsistas?.some((b)=>b.id == bolsistaId) ||
       bolsistaSelecionado.includes(bolsistaId)
     );
   };
@@ -121,7 +121,7 @@ const Vincular_Bolsista = ({
                 <Checkbox
                   disabled={
                     bolsista.status === "pendente" ||
-                    editalData.bolsistas.includes(bolsista.id)
+                    editalData.bolsistas.some((b)=>b.id === bolsista.id)
                   }
                   inputId={`cb-${editalData.id}-${bolsista.id}`}
                   checked={isChecked(bolsista.id)}

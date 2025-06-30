@@ -45,7 +45,6 @@ const Modal = ({
 
   const footer = (
     <div className="flex justify-end gap-2">
-    {console.log(isDisabled)}
       <Button
         label={aceptLabel}
         onClick={handdleAcept}
@@ -93,6 +92,7 @@ Modal.propTypes = {
   typeAction: PropTypes.string,
   typeCancel: PropTypes.string,
   children: PropTypes.node,
+  isDisabled: PropTypes.bool,
 };
 
 export default Modal;

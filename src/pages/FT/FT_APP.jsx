@@ -1,4 +1,3 @@
-
 import { TabView, TabPanel } from "primereact/tabview";
 
 import Title from "@/components/shared/title/Title";
@@ -13,12 +12,12 @@ const FTAPP = () => {
 
       <div>
         <TabView>
-          <TabPanel header="Bolsistas" lazy>
-            <Bolsista />
+          <TabPanel header="Bolsistas" >
+            <Bolsista lazy/>
           </TabPanel>
 
-          <TabPanel header="Editais" lazy>
-            <Edital />
+          <TabPanel header="Editais" >
+            <Edital lazy/>
           </TabPanel>
         </TabView>
       </div>
