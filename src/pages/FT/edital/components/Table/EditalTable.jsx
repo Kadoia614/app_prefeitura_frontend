@@ -120,6 +120,7 @@ const EditalTable = ({
         <DataTable
           id="BolsistaTable"
           value={tableData}
+        size="small"
           paginator
           rows={25}
           stripedRows
