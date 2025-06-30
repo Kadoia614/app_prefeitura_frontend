@@ -1,22 +1,24 @@
 import { useState, useCallback } from "react";
 import { useOutletContext } from "react-router";
-import HanlerError from "@/middleware/HandleError";
 
 import EditalTable from "./components/Table/EditalTable";
 import Edital_Modal from "./components/modal/Edital_Modal";
 import Vincular_Bolsista from "./components/modal/Vincular_Bolsista";
 
 import { getEdital, getEditalWithBolsista } from "@/service/ft_appServices";
+import { useToast } from "@/components/shared/toast/ToastProvider";
 
 const Edital = () => {
   const { setIsLoading } = useOutletContext();
-  const [error, setError] = useState(false);
 
   const [tableData, setTableData] = useState([]);
   const [tableOptions, setTableOptions] = useState([]);
+
   const [isEditalModalOpen, setIsEditalModalOpen] = useState(false);
   const [isVincularModalOpen, setIsVincularModalOpen] = useState(false);
+
   const [selectedTable, setSelectedTable] = useState();
+  const { showToast } = useToast();
 
   const fetchData = useCallback(
     async (selectedTable) => {
@@ -32,7 +34,8 @@ const Edital = () => {
         const data = await getEditalWithBolsista(selectedTable);
         setTableData(data.bolsista_edital.bolsistas);
       } catch (error) {
-        setError(error.status);
+        console.error(error);
+        showToast("error", "error", "Erro ao buscar dados");
       } finally {
         setIsLoading(false);
       }
@@ -40,25 +43,19 @@ const Edital = () => {
     [setIsLoading]
   );
 
-  // gerenciamento de erros para caso algo de errado ocorra durante as requisições
-  if (error) {
-    return <HanlerError error={error} />;
-  }
-
   return (
     <div id="Bolsistas" className="content">
-      <div>
-        <EditalTable
-          selectedTable={selectedTable}
-          setIsEditalModalOpen={setIsEditalModalOpen}
-          setIsVincularModalOpen={setIsVincularModalOpen}
-          setSelectedTable={setSelectedTable}
-          tableOptions={tableOptions}
-          tableData={tableData}
-          fetchData={fetchData}
-          setIsLoading={setIsLoading}
-        />
-      </div>
+      <EditalTable
+        selectedTable={selectedTable}
+        setIsEditalModalOpen={setIsEditalModalOpen}
+        setIsVincularModalOpen={setIsVincularModalOpen}
+        setSelectedTable={setSelectedTable}
+        tableOptions={tableOptions}
+        tableData={tableData}
+        fetchData={fetchData}
+
+        setIsLoading={setIsLoading}
+      />
 
       <Edital_Modal
         isEditalModalOpen={isEditalModalOpen}

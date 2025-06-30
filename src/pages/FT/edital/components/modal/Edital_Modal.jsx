@@ -76,7 +76,7 @@ const Edital_Modal = ({
         }}
         typeAction={"btn-primary"}
         isOpen={isEditalModalOpen}
-        onClose={setIsEditalModalOpen}
+        setIsOpen={setIsEditalModalOpen}
       >
         <div id="EditalData">
           <div id="Data" className="grid grid-cols-1 sm:grid-cols-8 gap-4">

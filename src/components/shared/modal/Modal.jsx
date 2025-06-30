@@ -17,28 +17,39 @@ const Modal = ({
   isOpen,
   setIsOpen,
   children,
+  isDisabled = false
 }) => {
   const { attIsLoading } = useLoadingContext();
 
   const handdleAcept = async () => {
-    attIsLoading(true);
-    await onAcept();
-    setIsOpen(false);
-    attIsLoading(false);
+    try {
+      attIsLoading(true);
+      await onAcept();
+      setIsOpen(false);
+      attIsLoading(false);
+    } catch {
+      attIsLoading(false);
+    }
   };
 
   const handdleRefuse = async () => {
-    attIsLoading(true);
-    await onRefuse();
-    setIsOpen(false);
-    attIsLoading(false);
+    try {
+      attIsLoading(true);
+      await onRefuse();
+      setIsOpen(false);
+      attIsLoading(false);
+    } catch {
+      attIsLoading(false);
+    }
   };
 
   const footer = (
     <div className="flex justify-end gap-2">
+    {console.log(isDisabled)}
       <Button
         label={aceptLabel}
         onClick={handdleAcept}
+        disabled={isDisabled}
         className={typeAction}
       />
       <Button

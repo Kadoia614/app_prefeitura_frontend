@@ -5,6 +5,7 @@ import { useUserContext } from "@/context/UserContext";
 
 import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
+import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 
 import {
   getBolsista,
@@ -19,6 +20,9 @@ const Bolsista = () => {
   const [tableData, setTableData] = useState([]);
   const [pagadorOptions, setPagadorOptions] = useState([]);
   const [modalData, setModalData] = useState({});
+
+  const [excludeModalOpen, setExcludeModalOpen] = useState(false);
+  const [excludeModal, setExcludeModal] = useState(false);
 
   const { scopo } = useUserContext();
 
@@ -58,6 +62,8 @@ const Bolsista = () => {
           setOpenModalEdit={setOpenModalEdit}
           setModalData={setModalData}
           setIsLoading={setIsLoading}
+          setExcludeModal={setExcludeModal}
+          setExcludeModalOpen={setExcludeModalOpen}
         />
       </div>
 
@@ -71,6 +77,16 @@ const Bolsista = () => {
         scopo={scopo}
         pagadorOptions={pagadorOptions}
         setIsLoading={setIsLoading}
+      />
+            {/* Exclude Confirmation Dialog */}
+      <GeralExcludeModal
+        id="ExcludeModalUser"
+        url="/ft/bolsista/"
+        isOpen={excludeModalOpen}
+        setIsOpen={setExcludeModalOpen}
+        targetId={excludeModal}
+        setTargetID={setExcludeModal}
+        loadTable={fetchData}
       />
     </div>
   );
