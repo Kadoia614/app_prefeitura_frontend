@@ -53,7 +53,6 @@ const Edital = () => {
         tableOptions={tableOptions}
         tableData={tableData}
         fetchData={fetchData}
-
         setIsLoading={setIsLoading}
       />
 

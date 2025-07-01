@@ -57,7 +57,7 @@ const BolsistasTable = ({
   };
 
   const renderActions = (rowData) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex gap-2">
       <TableButton
         tooltip={`Editar`}
         icon={<FaEdit />}
