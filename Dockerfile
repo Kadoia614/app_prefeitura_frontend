@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=builder /usr/src/app/dist usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist usr/share/nginx/app_prefeitura
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
