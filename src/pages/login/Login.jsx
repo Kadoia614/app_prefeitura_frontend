@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 import API from "../../service/API";
 import { useLoadingContext } from "@/context/loading/LoadingContext";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/user/UserContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
 import { MdOutlinePassword } from "react-icons/md";
@@ -11,8 +11,8 @@ import { MdOutlinePassword } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
 
-import PasswordFieldLine from "../shared/input/passwordfield/PasswordFieldLine";
-import InputFieldLine from "../shared/input/inputfield/InputFieldLine";
+import PasswordFieldLine from "../../components/shared/input/passwordfield/PasswordFieldLine";
+import InputFieldLine from "../../components/shared/input/inputfield/InputFieldLine";
 
 const Login = () => {
   let [email, setEmail] = useState("");
@@ -25,10 +25,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const Login = async (data) => {
-
     try {
-    attIsLoading(true);
-    
+      attIsLoading(true);
+
       let response = await API.post("/auth/login", {
         credentials: {
           password: data.password,
@@ -42,6 +41,7 @@ const Login = () => {
       AttAuth(true);
       AttScopo(response.data.scopo);
       console.log("scopo", scopo);
+      attIsLoading(false);
       navigate("/");
     } catch (error) {
       showToast(
@@ -50,7 +50,6 @@ const Login = () => {
         `Erro ao realizar login: ${JSON.stringify(error.response.data.message)}`
       );
       AttAuth(false);
-      attIsLoading(false);
     }
   };
 

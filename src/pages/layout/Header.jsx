@@ -3,9 +3,8 @@ import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 
 import { useEffect, useState } from "react";
-import logo from "../../assets/img/logo.png"
-import { useUserContext } from "@/context/UserContext";
-
+import logo from "../../assets/img/logo.png";
+import { useUserContext } from "@/context/user/UserContext";
 
 import API from "../../service/API";
 
@@ -61,8 +60,10 @@ const Header = () => {
                   <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white pb-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
                     {Object.entries(groupedServices).map(([tag, services]) => (
                       <div key={tag}>
-                        <div className="px-4 py-2 text-xs font-semibold bg-gray-500/10 text-gray-500 uppercase">{tag}</div>
-                        {services.map(service => (
+                        <div className="px-4 py-2 text-xs font-semibold bg-gray-500/10 text-gray-500 uppercase">
+                          {tag}
+                        </div>
+                        {services.map((service) => (
                           <MenuItem key={service.id}>
                             <a
                               href={service.url}
@@ -85,10 +86,20 @@ const Header = () => {
               </MenuButton>
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
                 <MenuItem>
-                  <a href="/config" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+                  <a
+                    href="/config"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Perfil
+                  </a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="/config" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                  <a
+                    href="/config"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Configurações
+                  </a>
                 </MenuItem>
                 <MenuItem>
                   <a

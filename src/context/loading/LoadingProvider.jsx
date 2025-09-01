@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LoadingContext } from "./LoadingContext";
-import Loading from "@/components/layout/Loading";
+import Loading from "../../pages/layout/Loading";
 import PropTypes from "prop-types";
 
 export const LoadingProvider = ({ children }) => {

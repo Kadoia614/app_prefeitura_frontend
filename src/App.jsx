@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
 
-import Header from "./components/layout/Header";
-import Login from "./components/layout/Login";
+import Header from "./pages/layout/Header";
+import Login from "./pages/login/Login";
 
 import ServicesCards from "./pages/Services";
 
@@ -16,7 +16,7 @@ import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
 import UserConfig from "./pages/user/UserConfig";
-import Footer from "./components/layout/Footer";
+import Footer from "./pages/layout/Footer";
 
 function App() {
   return (

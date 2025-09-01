@@ -5,7 +5,7 @@ import HanlerError from "../../middleware/HandleError";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../context/user/UserContext";
 
 import {
   Dialog,
@@ -28,7 +28,7 @@ const UserDemandas = () => {
       let response = await API.get("/demandas/history");
       setTableData(response.data.demandas);
       setSetores(response.data.setores);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       setError(error.status);
     }
@@ -246,7 +246,10 @@ const UserDemandas = () => {
                         >
                           <fieldset className="mt-2 flex md:flex-row flex-col gap-4">
                             <div className="w-full">
-                              <label htmlFor="Setor responsável" className="font-bold">
+                              <label
+                                htmlFor="Setor responsável"
+                                className="font-bold"
+                              >
                                 Patrimônio
                               </label>
                               <div className="mt-1">
@@ -254,7 +257,11 @@ const UserDemandas = () => {
                                   type="text"
                                   id="Setor"
                                   className="input"
-                                  placeholder={setores.find(setor => {return setor.id === modalData.setor_id})?.name}
+                                  placeholder={
+                                    setores.find((setor) => {
+                                      return setor.id === modalData.setor_id;
+                                    })?.name
+                                  }
                                   required
                                   disabled={"disabled"}
                                 />
@@ -288,7 +295,6 @@ const UserDemandas = () => {
                                 placeholder="Descrição do chamado"
                                 value={modalData.description || ""}
                                 disabled={"disabled"}
-
                               />
                             </div>
                           </fieldset>

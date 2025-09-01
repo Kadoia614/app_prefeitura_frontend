@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/user/UserContext";
 
 import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
 import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 
-import {
-  getBolsista,
-} from "@/service/ft_appServices";
+import { getBolsista } from "@/service/ft_appServices";
 
 const Bolsista = () => {
   const { setIsLoading } = useOutletContext();
@@ -77,7 +75,7 @@ const Bolsista = () => {
         pagadorOptions={pagadorOptions}
         setIsLoading={setIsLoading}
       />
-            {/* Exclude Confirmation Dialog */}
+      {/* Exclude Confirmation Dialog */}
       <GeralExcludeModal
         id="ExcludeModalUser"
         url="/ft/bolsista/"

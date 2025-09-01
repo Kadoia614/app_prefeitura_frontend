@@ -13,7 +13,7 @@ import SideBarBolsista from "../sidebar/SideBarBolsista";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/user/UserContext";
 
 const tag = {
   ativo: {
@@ -40,7 +40,6 @@ const BolsistasTable = ({
   setExcludeModal,
   setExcludeModalOpen,
 }) => {
-
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { scopo } = useUserContext();
@@ -84,7 +83,9 @@ const BolsistasTable = ({
           tooltip={`Excluir`}
           icon={<FaTrash />}
           color="text-red-500 bg-white border-none"
-          onClick={() => {setExcludeModal(rowData.id), setExcludeModalOpen(true)}}
+          onClick={() => {
+            setExcludeModal(rowData.id), setExcludeModalOpen(true);
+          }}
         />
       )}
     </div>
