@@ -1,6 +1,6 @@
 import InputField from "@/components/shared/input/inputfield/InputField";
 
-import API from "@/service/API";
+import API from "@api/API";
 
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider";

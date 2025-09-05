@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/img/logo.png";
 import { useUserContext } from "@/context/user/UserContext";
 
-import API from "../../service/API";
+import API from "../../api/API";
 
 const Header = () => {
   const { auth, AttAuth, AttUserServices } = useUserContext();

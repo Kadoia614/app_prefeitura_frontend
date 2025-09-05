@@ -1,5 +1,5 @@
-import API from "./API";
-import { APIBolsistaImage } from "./API";
+import API from "@api/API";
+import { APIBolsistaImage } from "@api/API";
 
 // bolsistas
 export const getBolsista = async (url) => {
@@ -82,7 +82,7 @@ export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
   console.log([bolsistas]);
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
-    data_vinculo
+    data_vinculo,
   });
 
   return data;

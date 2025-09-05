@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import API from "../../service/API";
+import API from "../../api/API";
 import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useUserContext } from "@/context/user/UserContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";
@@ -13,6 +13,7 @@ import { Button } from "primereact/button";
 
 import PasswordFieldLine from "../../components/shared/input/passwordfield/PasswordFieldLine";
 import InputFieldLine from "../../components/shared/input/inputfield/InputFieldLine";
+import login from "../../service/login";
 
 const Login = () => {
   let [email, setEmail] = useState("");
@@ -24,22 +25,16 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const Login = async (data) => {
+  const Login = async (credentials) => {
     try {
       attIsLoading(true);
+      let data = await login(credentials.email, credentials.password);
 
-      let response = await API.post("/auth/login", {
-        credentials: {
-          password: data.password,
-          email: data.email,
-        },
-      });
-
-      let token = response.data.token;
+      let token = data.token;
       await localStorage.setItem("token", token);
       console.log("Authenticado com sucesso");
       AttAuth(true);
-      AttScopo(response.data.scopo);
+      AttScopo(data.scopo);
       console.log("scopo", scopo);
       attIsLoading(false);
       navigate("/");
@@ -47,9 +42,10 @@ const Login = () => {
       showToast(
         "error",
         "Credenciais inválidas",
-        `Erro ao realizar login: ${JSON.stringify(error.response.data.message)}`
+        `${JSON.stringify(error.response.data.message)}`
       );
       AttAuth(false);
+      attIsLoading(false);
     }
   };
 

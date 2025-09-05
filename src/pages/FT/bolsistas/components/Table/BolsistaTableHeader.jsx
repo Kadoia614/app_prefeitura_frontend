@@ -24,9 +24,11 @@ const BolsistaTableHeader = ({ setOpenModalEdit }) => {
       <Tooltip target=".add-bolsista-btn" position="bottom" />
 
       <TableHeader
-        center={<div>
-          <h2 className="text-2xl font-semibold">Bolsistas</h2>
-        </div>}
+        center={
+          <div>
+            <h2 className="text-2xl font-semibold">Bolsistas</h2>
+          </div>
+        }
         end={
           <div className="overflow-visible">
             <SpeedDial

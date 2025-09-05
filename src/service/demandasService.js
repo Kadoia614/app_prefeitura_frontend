@@ -1,7 +1,7 @@
-import API from "./API";
+import API from "@api/API";
 
 export const getDemandas = async (url) => {
-  const response = await API.get( url? url : "/demandas");
+  const response = await API.get(url ? url : "/demandas");
   return response.data;
 };
 
@@ -16,5 +16,3 @@ export const createDemanda = async (data) => {
 export const assumeDemanda = async (id) => {
   return await API.put(`/demandas/${id}/assume`);
 };
-
-

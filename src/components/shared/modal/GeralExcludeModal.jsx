@@ -1,7 +1,7 @@
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
-import API from "@/service/API";
+import API from "@api/API";
 import PropTypes from "prop-types";
 
 const GeralExcludeModal = ({
@@ -13,21 +13,18 @@ const GeralExcludeModal = ({
   onShow,
   loadTable,
   url,
+  message = "Tem certeza que deseja Excluir esse item? Essa ação pode ser desfeita.",
 }) => {
   const { showToast } = useToast();
 
   const handleConfirm = async () => {
     try {
-
       await API.delete(`${url}/${targetId}`);
       showToast("success", "Deletado com sucesso!");
       loadTable();
     } catch (error) {
-      alert(JSON.stringify(error.response.data))
-      showToast(
-        "error",
-        "Falha ao deletar: " + error.response.data.message
-      );
+      alert(JSON.stringify(error.response.data));
+      showToast("error", "Falha ao deletar: " + error.response.data.message);
     } finally {
       setIsOpen(false);
     }
@@ -42,17 +39,17 @@ const GeralExcludeModal = ({
   return (
     <Modal
       id={id}
-      title={`Excluir Role?`}
+      title={`Excluir`}
       isOpen={isOpen}
-      onShow={onShow}
       setIsOpen={setIsOpen}
-      aceptLabel={`Excluir`}
+      onShow={onShow}
+      aceptLabel={`Confirmar`}
       onAcept={handleConfirm}
       onRefuse={handleRefuse}
       typeAction="btn-danger"
       typeCancel="btn-cancel"
     >
-      <p className="text-red-500 font-bold">Tem certeza que deseja Excluir esse item? <br /> Essa ação pode ser desfeita.</p>
+      <p className="text-red-500 font-bold">{message}</p>
     </Modal>
   );
 };
@@ -67,6 +64,7 @@ GeralExcludeModal.propTypes = {
   onShow: PropTypes.func,
   loadTable: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
+  message: PropTypes.string,
 };
 
 export default GeralExcludeModal;

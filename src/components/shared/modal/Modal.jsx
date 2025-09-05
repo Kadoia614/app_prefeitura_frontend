@@ -17,7 +17,7 @@ const Modal = ({
   isOpen,
   setIsOpen,
   children,
-  isDisabled = false
+  isDisabled = false,
 }) => {
   const { attIsLoading } = useLoadingContext();
 
@@ -44,7 +44,7 @@ const Modal = ({
   };
 
   const footer = (
-    <div className="flex justify-end gap-2">
+    <div className="flex justify-end gap-2 mt-4">
       <Button
         label={aceptLabel}
         onClick={handdleAcept}

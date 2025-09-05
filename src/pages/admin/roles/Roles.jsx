@@ -6,7 +6,7 @@ import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 import SaveRolesModal from "./modal/SaveRolesModal";
 import { useLoadingContext } from "@/context/loading/LoadingContext";
 
-import API from "@/service/API";
+import API from "@api/API";
 
 const RolesPainel = () => {
   const [tableData, setTableData] = useState([]);

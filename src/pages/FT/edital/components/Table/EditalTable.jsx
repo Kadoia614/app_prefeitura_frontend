@@ -120,7 +120,7 @@ const EditalTable = ({
         <DataTable
           id="BolsistaTable"
           value={tableData}
-        size="small"
+          size="small"
           paginator
           rows={25}
           stripedRows
@@ -181,10 +181,10 @@ const EditalTable = ({
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
             body={(rowData) =>
-              !rowData.BolsistasEdital.prorrogado ? (
-                new Date(
-                  rowData.BolsistasEdital.data_vencimento
-                ).toLocaleDateString("pt-BR")
+              !rowData.BolsistasEdital.prorrogated ? (
+                new Date(rowData.BolsistasEdital.expire_at).toLocaleDateString(
+                  "pt-BR"
+                )
               ) : (
                 <p className="text-green-500 font-bold">Prorrogado</p>
               )

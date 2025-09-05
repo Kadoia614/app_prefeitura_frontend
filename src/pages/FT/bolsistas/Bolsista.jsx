@@ -52,17 +52,15 @@ const Bolsista = () => {
 
   return (
     <div id="Bolsistas" className="content">
-      <div>
-        <BolsistasTable
-          tableData={tableData}
-          fetchData={fetchData}
-          setOpenModalEdit={setOpenModalEdit}
-          setModalData={setModalData}
-          setIsLoading={setIsLoading}
-          setExcludeModal={setExcludeModal}
-          setExcludeModalOpen={setExcludeModalOpen}
-        />
-      </div>
+      <BolsistasTable
+        tableData={tableData}
+        fetchData={fetchData}
+        setOpenModalEdit={setOpenModalEdit}
+        setModalData={setModalData}
+        setIsLoading={setIsLoading}
+        setExcludeModal={setExcludeModal}
+        setExcludeModalOpen={setExcludeModalOpen}
+      />
 
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal

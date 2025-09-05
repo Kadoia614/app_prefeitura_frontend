@@ -7,7 +7,7 @@ import UserTable from "./table/UserTable";
 import SaveUserModal from "./modal/SaveUserModal";
 import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 
-import API from "../../../service/API";
+import API from "../../../api/API";
 
 const API_ENDPOINTS = {
   USERS: "/user",

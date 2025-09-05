@@ -2,7 +2,7 @@ import { useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 import InputField from "@/components/shared/input/inputfield/InputField";
-import InputFieldMoney from "@/components/shared/input/InputFieldMoney";
+import InputFieldMoney from "@/components/shared/input/inputField/InputFieldMoney";
 import { postEdital, updateEdital } from "@/service/ft_appServices";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 import PropTypes from "prop-types";
@@ -53,7 +53,13 @@ const Edital_Modal = ({
       clearModal();
       fetchData();
     } catch (error) {
-      showToast("error", "Error", `Erro ao salvar Edital ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
+      showToast(
+        "error",
+        "Error",
+        `Erro ao salvar Edital ${
+          error.status == 400 ? "Dados inválidos" : error.response.data.message
+        }`
+      );
       return;
     } finally {
       setIsLoading(false);

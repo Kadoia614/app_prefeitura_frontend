@@ -5,10 +5,10 @@ import Login from "./pages/login/Login";
 
 import ServicesCards from "./pages/Services";
 
-import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
-import Demandas from "./pages/demandasTI/AllDemandas";
-import UserDemandas from "./pages/demandasTI/UserDemandas";
-import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
+// import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
+// import Demandas from "./pages/demandasTI/AllDemandas";
+// import UserDemandas from "./pages/demandasTI/UserDemandas";
+// import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
 
 import FT_APP from "./pages/FT/FT_APP";
 
@@ -32,11 +32,11 @@ function App() {
               <Route path="/config" element={<UserConfig />} />
               <Route path="admin" element={<Admin />} />
 
-              <Route path="demandasti" element={<DemandasTi />}>
+              {/* <Route path="demandasti" element={<DemandasTi />}>
                 <Route index element={<Demandas />} />
                 <Route path="userdemandas" element={<UserDemandas />} />
                 <Route path="history" element={<HistoryDemandas />} />
-              </Route>
+              </Route> */}
               <Route path="/ft-app" element={<FT_APP />}></Route>
             </Route>
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "@/service/API";
+import API from "@api/API";
 
 import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";

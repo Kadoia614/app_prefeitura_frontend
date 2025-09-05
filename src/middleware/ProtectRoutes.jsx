@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 
 import { useUserContext } from "@/context/user/UserContext";
-import API from "../service/API";
+import API from "../api/API";
 import Error from "./HandleError";
 
 const ProtectRoutes = () => {

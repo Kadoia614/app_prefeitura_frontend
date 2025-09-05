@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../../../service/API";
+import API from "../../../api/API";
 
 import ServicesTable from "./table/ServicesTable";
 import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
@@ -18,7 +18,6 @@ const PainelServices = () => {
   const [roles, setRoles] = useState([]);
 
   const [setor, setSetor] = useState([false]);
-
 
   const { attIsLoading } = useLoadingContext();
   const { showToast } = useToast();
