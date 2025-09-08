@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
 import Modal from "@/components/shared/modal/Modal";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { Button } from "primereact/button";
@@ -13,6 +13,8 @@ import SelectField from "@/components/shared/input/SelectField";
 // import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
+import { Divider } from "primereact/divider";
+import { Checkbox } from "primereact/checkbox";
 
 const FT_Bolsista_Modal = ({
   modalData,
@@ -25,6 +27,7 @@ const FT_Bolsista_Modal = ({
 }) => {
   const { showToast } = useToast();
   const stepperRef = useRef(null);
+  const [accept, setAccept] = useState(false);
   // sómente para gerenciar os valore dos inputs
   const editableItem = (key, value) => {
     setModalData((e) => ({ ...e, [key]: value }));
@@ -89,6 +92,7 @@ const FT_Bolsista_Modal = ({
       <Modal
         id="EditBolsista"
         title={modalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
+        isDisabled={!accept}
         onAcept={() => {
           saveItem(modalData?.id || null);
         }}
@@ -297,9 +301,72 @@ const FT_Bolsista_Modal = ({
             </div>
           </StepperPanel>
           <StepperPanel header="Confirmação">
-            <div className="flex flex-column h-12rem">
-              <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                Confirmação
+            <div className="flex flex-column h-12rem  w-full">
+              <div className="font-medium w-full">
+                <h2 className="text-2xl">Confirmação</h2>
+                <Divider></Divider>
+                <div className="flex gap-2 items-start mt-3 flex-col">
+                  <div>
+                    <span className="font-bold">Nome:</span>
+                    <p>{modalData?.nome}</p>
+                  </div>
+                  <div>
+                    <span className="font-bold">CPF:</span>
+                    <p>{modalData?.cpf}</p>
+                  </div>
+                  <div>
+                    <span className="font-bold">Local de Trabalho:</span>
+                    <p>{modalData?.local}</p>
+                  </div>
+                  <div className="flex gap-2 items-start mt-3 flex-col">
+                    <span className="font-bold">Informações de pagamento:</span>
+                    <div>
+                      <span className="font-bold">Pagador:</span>
+                      <p>
+                        {
+                          pagadorOptions.find(
+                            (pg) => pg.id == modalData.payment_info?.pagador_id
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Banco:</span>
+                      <p>{modalData.payment_info?.bco}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Agencia:</span>
+                      <p>{modalData.payment_info?.ag}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Dígito Agencia:</span>
+                      <p>{modalData.payment_info?.dig_ag}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Conta:</span>
+                      <p>{modalData.payment_info?.conta}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Digito Conta:</span>
+                      <p>{modalData.payment_info?.dig_conta}</p>
+                    </div>
+                  </div>
+                </div>
+                <Divider></Divider>
+                <div>
+                  <Checkbox
+                    inputId="Accept"
+                    name="confirm_data"
+                    value={false}
+                    onChange={(e) => {
+                      setAccept(e.checked);
+                    }}
+                    checked={accept}
+                  ></Checkbox>
+                  <label htmlFor="Accept" className="ml-2">
+                    Confirmar Dados
+                  </label>
+                </div>
               </div>
             </div>
             <div className="flex justify-start gap-2 mt-4">
