@@ -3,6 +3,7 @@ import { BolsistaContext } from "./bolsistaContext";
 
 const BolsistaProvider = (children) => {
   const [bolsista, setBolsista] = useState(null);
+  const [targetBolsista, setTargetBolsista] = useState(null);
 
   const getBolsista = (value) => {
     setBolsista(value);
@@ -29,6 +30,8 @@ const BolsistaProvider = (children) => {
         getBolsista,
         removeBolsista,
         adcBolsista,
+        setTargetBolsista,
+        targetBolsista,
         attBolsista,
       }}
     >

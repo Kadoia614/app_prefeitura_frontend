@@ -32,6 +32,7 @@ const Bolsista = () => {
 
       setTableData(bolsista);
       setPagadorOptions(pagador);
+
       localStorage.setItem("upload_token", uploadToken);
       return;
     } catch (error) {

@@ -29,23 +29,31 @@ const FT_Bolsista_Modal = ({
   const editableItem = (key, value) => {
     setModalData((e) => ({ ...e, [key]: value }));
   };
+  const editablePayment = (key, value) => {
+    setModalData((e) => ({
+      ...e,
+      payment_info: { ...e.payment_info, [key]: value },
+    }));
+  };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
       setIsLoading(true);
       let payload = {
-        bco: modalData.bco,
-        ag: modalData.ag,
-        dig_ag: modalData.dig_ag,
-        conta: modalData.conta,
-        dig_conta: modalData.dig_conta,
-        pagador: modalData.pagador,
-        nome: modalData.nome,
-        bolsa: modalData.bolsa,
-        data_inicio: modalData.data_inicio,
-        cpf: modalData.cpf.split(".").join("").split("-").join(""),
-        local: modalData.local,
+        bolsista: {
+          nome: modalData.nome,
+          cpf: modalData.cpf.split(".").join("").split("-").join(""),
+          local: modalData.local,
+          payment_info: {
+            bco: modalData.payment_info.bco,
+            ag: modalData.payment_info.ag,
+            dig_ag: modalData.payment_info.dig_ag,
+            conta: modalData.payment_info.conta,
+            dig_conta: modalData.payment_info.dig_conta,
+            pagador_id: modalData.payment_info.pagador_id,
+          },
+        },
       };
 
       if (id) {
@@ -78,7 +86,6 @@ const FT_Bolsista_Modal = ({
   return (
     <>
       {/* Modal to create/ edit a bolsista */}
-      {console.log(pagadorOptions)}
       <Modal
         id="EditBolsista"
         title={modalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
@@ -170,7 +177,7 @@ const FT_Bolsista_Modal = ({
                       options={pagadorOptions}
                       value={modalData?.payment_info?.pagador_id || ""}
                       onChange={(e) => {
-                        editableItem("pagador_id", e.target.value);
+                        editablePayment("pagador_id", e.target.value);
                       }}
                     />
                   </div>
@@ -181,14 +188,16 @@ const FT_Bolsista_Modal = ({
                       </label>
                       <div className="mt-1">
                         <p>
-                          {modalData?.pagador &&
+                          {modalData?.payment_info?.pagador_id &&
                             `${
                               pagadorOptions.find(
-                                (pg) => pg.id === modalData.pagador
+                                (pg) =>
+                                  pg.id == modalData.payment_info?.pagador_id
                               ).quantity
                             } / ${
                               pagadorOptions.find(
-                                (pg) => pg.id === modalData.pagador
+                                (pg) =>
+                                  pg.id === modalData.payment_info?.pagador_id
                               ).max_bolsista
                             }`}
                         </p>
@@ -205,7 +214,7 @@ const FT_Bolsista_Modal = ({
                       label="Banco"
                       value={modalData?.payment_info?.bco || ""}
                       onChange={(e) => {
-                        editableItem("bco", e.target.value);
+                        editablePayment("bco", e.target.value);
                       }}
                       maxLength={3}
                     />
@@ -221,7 +230,7 @@ const FT_Bolsista_Modal = ({
                         label="Agência"
                         value={modalData?.payment_info?.ag || ""}
                         onChange={(e) => {
-                          editableItem("ag", e.target.value);
+                          editablePayment("ag", e.target.value);
                         }}
                         maxLength={4}
                       />
@@ -234,7 +243,7 @@ const FT_Bolsista_Modal = ({
                         label="Dg"
                         value={modalData?.payment_info?.dig_ag || ""}
                         onChange={(e) => {
-                          editableItem("dig_ag", e.target.value);
+                          editablePayment("dig_ag", e.target.value);
                         }}
                         maxLength={1}
                       />
@@ -250,7 +259,7 @@ const FT_Bolsista_Modal = ({
                         label="Conta"
                         value={modalData?.payment_info?.conta || ""}
                         onChange={(e) => {
-                          editableItem("conta", e.target.value);
+                          editablePayment("conta", e.target.value);
                         }}
                         maxLength={11}
                       />
@@ -265,7 +274,7 @@ const FT_Bolsista_Modal = ({
                         label="Dg"
                         value={modalData?.payment_info?.dig_conta || ""}
                         onChange={(e) => {
-                          editableItem("dig_conta", e.target.value);
+                          editablePayment("dig_conta", e.target.value);
                         }}
                         maxLength={1}
                       />
@@ -309,19 +318,20 @@ const FT_Bolsista_Modal = ({
 
 FT_Bolsista_Modal.propTypes = {
   modalData: PropTypes.shape({
-    bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    dig_ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    dig_conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    payment_info: PropTypes.shape({
+      bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      dig_ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      dig_conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      pagador_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
     nome: PropTypes.string,
     bolsa: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     vencimento: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     local: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    pagador: PropTypes.any,
-    data_inicio: PropTypes.string,
   }),
   pagadorOptions: PropTypes.arrayOf(PropTypes.any),
   setModalData: PropTypes.func.isRequired,
