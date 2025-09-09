@@ -12,7 +12,7 @@ const InputField = ({
   placeHolder,
   disabled,
   invalid,
-  widthField
+  widthField,
 }) => (
   <fieldset className={`mt-2 ${widthField}`}>
     <label htmlFor={id} className="font-bold text-gray-700">
@@ -39,14 +39,14 @@ InputField.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   maxLength: PropTypes.number,
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
-  widthField: PropTypes.string
+  widthField: PropTypes.string,
 };
 
 export default InputField;

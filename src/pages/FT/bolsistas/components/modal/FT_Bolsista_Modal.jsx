@@ -46,8 +46,15 @@ const FT_Bolsista_Modal = ({
       let payload = {
         bolsista: {
           nome: modalData.nome,
-          cpf: modalData.cpf.split(".").join("").split("-").join(""),
+          cpf: modalData.cpf.replace(/\D/g, ""),
+          telefone: modalData.telefone.replace(/\D/g, ""),
           local: modalData.local,
+          cep: modalData.cep,
+          numero: modalData.numero,
+          logradouro: modalData.logradouro,
+          bairro: modalData.bairro,
+          cidade: modalData.cidade,
+          uf: modalData.uf,
           payment_info: {
             bco: modalData.payment_info.bco,
             ag: modalData.payment_info.ag,
@@ -84,6 +91,22 @@ const FT_Bolsista_Modal = ({
   // apaga os dados do modal
   const clearModal = () => {
     setModalData({});
+  };
+
+  const getCep = (cep) => {
+    if (cep.length < 8) return;
+    fetch(`https://viacep.com.br/ws/${cep}//json/`)
+      .then((res) => res.json())
+      .then((data) => {
+        editableItem("cep", data.cep.replace(/\D/g, ""));
+        editableItem("logradouro", data.logradouro);
+        editableItem("bairro", data.bairro);
+        editableItem("cidade", data.localidade);
+        editableItem("uf", data.uf);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -140,6 +163,19 @@ const FT_Bolsista_Modal = ({
                       maxLength={11}
                     />
                   </div>
+                  <div className="mt-1 lg:col-span-3 col-span-full">
+                    <InputFieldMask
+                      invalid={modalData?.telefone ? false : true}
+                      id="Telefone"
+                      inputClass="w-full"
+                      label="Telefone"
+                      mask={"(99)99999-9999"}
+                      value={modalData?.telefone || ""}
+                      onChange={(e) => {
+                        editableItem("telefone", e.target.value);
+                      }}
+                    />
+                  </div>
 
                   {/* Local */}
                   <div className="mt-1 col-span-full">
@@ -147,11 +183,78 @@ const FT_Bolsista_Modal = ({
                       invalid={modalData?.local ? false : true}
                       id="Local"
                       inputClass="w-full"
-                      label="Local"
+                      label="Local de trabalho"
                       value={modalData?.local || ""}
                       onChange={(e) => {
                         editableItem("local", e.target.value);
                       }}
+                    />
+                  </div>
+
+                  <div className="mt-1 col-span-full flex flex-row">
+                    <div className="mr-2">
+                      <InputFieldMask
+                        invalid={modalData?.cep ? false : true}
+                        mask="99.999-999"
+                        maxLength={8}
+                        placeholder="__.___-___"
+                        id="CEP"
+                        inputClass="w-33"
+                        label="CEP"
+                        value={modalData?.cep || ""}
+                        onChange={(e) => {
+                          getCep(e.target.value.replace(/\D/g, ""));
+                        }}
+                      />
+                    </div>
+                    <div className="ml-2">
+                      <InputField
+                        invalid={modalData?.numero ? false : true}
+                        placeHolder="99"
+                        id="Number"
+                        inputClass="w-50"
+                        label="Número da residência"
+                        value={modalData?.numero || ""}
+                        onChange={(e) => {
+                          editableItem("numero", e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-1 col-span-5 md:col-span-4 lg:col-span-3">
+                    <InputField
+                      id="Logradouro"
+                      inputClass="w-full"
+                      label="Logradouro"
+                      value={modalData?.logradouro || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-5 md:col-span-3 lg:col-span-2">
+                    <InputField
+                      id="Bairro"
+                      inputClass="w-full"
+                      label="Bairro"
+                      value={modalData?.bairro || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-4 md:col-span-3 lg:col-span-3">
+                    <InputField
+                      id="Cidade"
+                      inputClass="w-full"
+                      label="Cidade"
+                      value={modalData?.cidade || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-2 md:col-span-2 lg:col-span-1">
+                    <InputField
+                      id="UF"
+                      inputClass="w-full"
+                      label="UF"
+                      value={modalData?.uf || ""}
+                      disabled
                     />
                   </div>
                 </div>
@@ -397,7 +500,14 @@ FT_Bolsista_Modal.propTypes = {
     bolsa: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     vencimento: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    telefone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     local: PropTypes.string,
+    cep: PropTypes.string,
+    numero: PropTypes.string,
+    logradouro: PropTypes.string,
+    bairro: PropTypes.string,
+    cidade: PropTypes.string,
+    uf: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   pagadorOptions: PropTypes.arrayOf(PropTypes.any),
