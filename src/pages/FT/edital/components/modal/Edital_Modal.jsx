@@ -2,7 +2,7 @@ import { useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 import InputField from "@/components/shared/input/inputfield/InputField";
-import InputFieldMoney from "@/components/shared/input/inputField/InputFieldMoney";
+import InputFieldMoney from "@/components/shared/input/inputfield/InputFieldMoney";
 import { postEdital, updateEdital } from "@/service/ft_appServices";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 import PropTypes from "prop-types";
