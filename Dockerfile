@@ -1,8 +1,8 @@
 FROM node:lts-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json ./
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 
 RUN npm install --silent
 
@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=builder /usr/src/app/dist usr/share/nginx/app_prefeitura
+COPY --from=builder /app/dist usr/share/nginx/app_prefeitura
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
