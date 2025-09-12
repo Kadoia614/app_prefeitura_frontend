@@ -151,11 +151,7 @@ const Login = () => {
           </div>
 
           <div className="login-image overflow-hidden md:block hidden md:w-1/2">
-            <img
-              src="/public/login.jpg"
-              alt="Login IMG"
-              className="h-90 w-90"
-            />
+            <img src="/login.jpg" alt="Login IMG" className="h-90 w-90" />
           </div>
         </div>
 
