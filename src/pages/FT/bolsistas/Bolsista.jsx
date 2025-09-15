@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router";
 import HanlerError from "@/middleware/HandleError";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/user/UserContext";
 
 import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
+import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 
-import {
-  getBolsista,
-} from "@/service/ft_appServices";
+import { getBolsista } from "@/service/ft_appServices";
 
 const Bolsista = () => {
   const { setIsLoading } = useOutletContext();
@@ -20,6 +19,9 @@ const Bolsista = () => {
   const [pagadorOptions, setPagadorOptions] = useState([]);
   const [modalData, setModalData] = useState({});
 
+  const [excludeModalOpen, setExcludeModalOpen] = useState(false);
+  const [excludeModal, setExcludeModal] = useState(false);
+
   const { scopo } = useUserContext();
 
   const fetchData = async () => {
@@ -27,10 +29,10 @@ const Bolsista = () => {
       setIsLoading(true);
 
       const { bolsista, pagador, uploadToken } = await getBolsista();
-      console.log(pagador);
 
       setTableData(bolsista);
       setPagadorOptions(pagador);
+
       localStorage.setItem("upload_token", uploadToken);
       return;
     } catch (error) {
@@ -51,15 +53,15 @@ const Bolsista = () => {
 
   return (
     <div id="Bolsistas" className="content">
-      <div>
-        <BolsistasTable
-          tableData={tableData}
-          fetchData={fetchData}
-          setOpenModalEdit={setOpenModalEdit}
-          setModalData={setModalData}
-          setIsLoading={setIsLoading}
-        />
-      </div>
+      <BolsistasTable
+        tableData={tableData}
+        fetchData={fetchData}
+        setOpenModalEdit={setOpenModalEdit}
+        setModalData={setModalData}
+        setIsLoading={setIsLoading}
+        setExcludeModal={setExcludeModal}
+        setExcludeModalOpen={setExcludeModalOpen}
+      />
 
       {/* Modal para edição e cadastro de bolsistas */}
       <FT_Bolsista_Modal
@@ -71,6 +73,16 @@ const Bolsista = () => {
         scopo={scopo}
         pagadorOptions={pagadorOptions}
         setIsLoading={setIsLoading}
+      />
+      {/* Exclude Confirmation Dialog */}
+      <GeralExcludeModal
+        id="ExcludeModalUser"
+        url="/ft/bolsista/"
+        isOpen={excludeModalOpen}
+        setIsOpen={setExcludeModalOpen}
+        targetId={excludeModal}
+        setTargetID={setExcludeModal}
+        loadTable={fetchData}
       />
     </div>
   );

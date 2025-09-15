@@ -1,5 +1,5 @@
-import API from "./API";
-import { APIBolsistaImage } from "./API";
+import API from "@api/API";
+import { APIBolsistaImage } from "@api/API";
 
 // bolsistas
 export const getBolsista = async (url) => {
@@ -15,9 +15,9 @@ export const postBolsista = async (data) => {
   return await API.post(`/ft/bolsista`, { ...data });
 };
 
-export const deleteBolsista = async (id) => {
-  return await API.delete(`/ft/bolsista/${id}`);
-};
+// export const deleteBolsista = async (id) => {
+//   return await API.delete(`/ft/bolsista/${id}`);
+// };
 
 export const getBolsistaEdital = async (id) => {
   const { data } = await API.get(`/ft/bolsista/edital/${id}`);
@@ -82,7 +82,7 @@ export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
   console.log([bolsistas]);
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
-    data_vinculo
+    data_vinculo,
   });
 
   return data;

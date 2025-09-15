@@ -120,11 +120,11 @@ const EditalTable = ({
         <DataTable
           id="BolsistaTable"
           value={tableData}
+          size="small"
           paginator
           rows={25}
           stripedRows
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-          className="min-w-full p-4"
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
           <Column
@@ -181,10 +181,10 @@ const EditalTable = ({
             filterMatchMode="contains"
             className="text-sm text-gray-800 p-4 whitespace-nowrap"
             body={(rowData) =>
-              !rowData.BolsistasEdital.prorrogado ? (
-                new Date(
-                  rowData.BolsistasEdital.data_vencimento
-                ).toLocaleDateString("pt-BR")
+              !rowData.BolsistasEdital.prorrogated ? (
+                new Date(rowData.BolsistasEdital.expire_at).toLocaleDateString(
+                  "pt-BR"
+                )
               ) : (
                 <p className="text-green-500 font-bold">Prorrogado</p>
               )
@@ -198,11 +198,11 @@ const EditalTable = ({
       <Modal
         id="ToggleBolsista"
         title="Alterar Status do Bolsista?"
-        acept={() => handleToggle(alterId)}
+        onAcept={() => handleToggle(alterId)}
         aceptLabel="Alterar"
-        refuse={() => setAlterModalOpen(false)}
+        onRefuse={() => setAlterModalOpen(false)}
         typeAction="btn-danger"
-        open={alterModalOpen}
+        isOpen={alterModalOpen}
       >
         <p className="text-red-500 font-bold mt-2">
           Tem certeza que deseja alterar esse item? Os dados alterados não

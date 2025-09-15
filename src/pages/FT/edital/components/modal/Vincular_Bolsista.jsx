@@ -21,7 +21,6 @@ const Vincular_Bolsista = ({
   isVincularModalOpen,
   setIsVincularModalOpen,
   fetchData,
-  setIsLoading,
 }) => {
   const [bolsistasData, setBolsistasData] = useState([]);
   const [editalData, setEditalData] = useState([]);
@@ -56,7 +55,6 @@ const Vincular_Bolsista = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async () => {
     try {
-      setIsLoading(true);
       await vincularBolsista(selectedTable, bolsistaSelecionado, dataVinculo);
 
       setIsVincularModalOpen(false);
@@ -66,8 +64,6 @@ const Vincular_Bolsista = ({
     } catch (error) {
       showToast("error", "Error", `Erro ao vincular Bolsista ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
       return;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -83,7 +79,7 @@ const Vincular_Bolsista = ({
 
   const isChecked = (bolsistaId) => {
     return (
-      editalData.bolsistas?.includes(bolsistaId) ||
+      editalData.bolsistas?.some((b)=>b.id == bolsistaId) ||
       bolsistaSelecionado.includes(bolsistaId)
     );
   };
@@ -94,12 +90,14 @@ const Vincular_Bolsista = ({
       <Modal
         id="VincularBolsista"
         title={"Vincular Bolsista ao Edital"}
-        acept={() => saveItem()}
+        onAcept={() => saveItem()}
         aceptLabel={"Salvar"}
-        refuse={() => CloseModal()}
+        onRefuse={() => CloseModal()}
         typeAction={"btn-primary"}
-        open={isVincularModalOpen}
+        isOpen={isVincularModalOpen}
+        setIsOpen={setIsVincularModalOpen}
         onShow={() => getData()}
+        isDisabled={bolsistaSelecionado && dataVinculo ? false : true} 
       >
         <div id="EditalData">
           <div className="mt-1">
@@ -123,7 +121,7 @@ const Vincular_Bolsista = ({
                 <Checkbox
                   disabled={
                     bolsista.status === "pendente" ||
-                    editalData.bolsistas.includes(bolsista.id)
+                    editalData.bolsistas.some((b)=>b.id === bolsista.id)
                   }
                   inputId={`cb-${editalData.id}-${bolsista.id}`}
                   checked={isChecked(bolsista.id)}

@@ -12,15 +12,17 @@ const PasswordFieldLine = ({
   disabled,
   invalid,
   widthField,
-  feedback
+  feedback,
+  spanClass
 }) => (
   <fieldset className={`flex mt-2 ${widthField}`}>
-    <span className={`p-inputgroup-addon ${inputClass}`}>
+    <span className={`p-inputgroup-addon ${spanClass}`}>
       {icon}
     </span>
     <Password
       id={id}
       placeholder={placeHolder || "Password"}
+      className={`${inputClass}`}
       value={value}
       disabled={disabled}
       invalid={invalid}
@@ -31,12 +33,13 @@ const PasswordFieldLine = ({
 );
 PasswordFieldLine.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
   maxLength: PropTypes.number,
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
+  spanClass: PropTypes.string,
   placeHolder: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,

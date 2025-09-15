@@ -1,25 +1,19 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
-import { UserProvider } from "./context/UserProvider.jsx";
-import { ToastProvider } from "./components/shared/toast/ToastProvider.jsx";
-import { PrimeReactProvider } from "primereact/api";
-import "tailwindcss/index";
 
+import "tailwindcss/index";
 import "./assets/sass/index.css";
 
 import App from "./App.jsx";
+import Provider from "./context/Provider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
+    <Provider>
       <BrowserRouter>
-        <ToastProvider>
-          <PrimeReactProvider>
-            <App />
-          </PrimeReactProvider>
-        </ToastProvider>
+        <App />
       </BrowserRouter>
-    </UserProvider>
+    </Provider>
   </StrictMode>
 );

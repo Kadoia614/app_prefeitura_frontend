@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 
-import { useUserContext } from "@/context/UserContext";
-import API from "../service/API";
-import Loading from "../components/layout/Loading";
+import { useUserContext } from "@/context/user/UserContext";
+import API from "../api/API";
 import Error from "./HandleError";
 
 const ProtectRoutes = () => {
@@ -42,11 +41,8 @@ const ProtectRoutes = () => {
 
   return (
     <>
-      {isLoading && <Loading></Loading>}
-      <div className="content h-full">
-        <div className="container mx-auto bg-gray-100">
-          <Outlet context={{ setIsLoading }} />
-        </div>
+      <div className="container mx-auto my-4 bg-gray-100">
+        <Outlet context={{ setIsLoading }} />
       </div>
     </>
   );

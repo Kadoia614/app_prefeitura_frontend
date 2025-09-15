@@ -1,9 +1,9 @@
-import API from "../service/API";
+import API from "../api/API";
 import { useEffect, useState } from "react";
 import HanlerError from "../middleware/HandleError";
 
 import { Card } from "primereact/card";
-import { Button } from 'primereact/button';
+import { Button } from "primereact/button";
 
 // eslint-disable-next-line react/prop-types
 function Services() {

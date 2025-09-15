@@ -10,14 +10,10 @@ import { CiWarning } from "react-icons/ci";
 import { AiOutlineExclamation } from "react-icons/ai";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
-import { useToast } from "@/components/shared/toast/ToastProvider";
-import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
-import { useUserContext } from "@/context/UserContext";
-
-import { deleteBolsista } from "@/service/ft_appServices";
+import { useUserContext } from "@/context/user/UserContext";
 
 const tag = {
   ativo: {
@@ -41,34 +37,12 @@ const BolsistasTable = ({
   tableData,
   setOpenModalEdit,
   setModalData,
-  fetchData,
-  setIsLoading,
+  setExcludeModal,
+  setExcludeModalOpen,
 }) => {
-  const [excludeModalOpen, setExcludeModalOpen] = useState(false);
-  const [excludeId, setExcludeId] = useState(null);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
-  const { showToast } = useToast();
   const { scopo } = useUserContext();
-
-  const confirmDelete = (id) => {
-    setExcludeId(id);
-    setExcludeModalOpen(true);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      setIsLoading(true);
-      await deleteBolsista(`${id}`);
-      showToast("success", "Confirmado", "Bolsista deletado com sucesso");
-      fetchData();
-    } catch (err) {
-      showToast("error", "Erro", `Erro ao deletar bolsista: ${err.response.data.message}`);
-    } finally {
-      setExcludeModalOpen(false);
-      setIsLoading(false);
-    }
-  };
 
   const renderStatus = ({ status }) => {
     const item = tag[status];
@@ -82,9 +56,8 @@ const BolsistasTable = ({
   };
 
   const renderActions = (rowData) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex gap-2">
       <TableButton
-        tooltip={`Editar`}
         tooltip={`Editar`}
         icon={<FaEdit />}
         iconPos="left"
@@ -95,7 +68,6 @@ const BolsistasTable = ({
         }}
       />
       <TableButton
-        tooltip={`Documentos`}
         tooltip={`Documentos`}
         icon={<IoIosDocument />}
         iconPos="left"
@@ -111,7 +83,9 @@ const BolsistasTable = ({
           tooltip={`Excluir`}
           icon={<FaTrash />}
           color="text-red-500 bg-white border-none"
-          onClick={() => confirmDelete(rowData.id)}
+          onClick={() => {
+            setExcludeModal(rowData.id), setExcludeModalOpen(true);
+          }}
         />
       )}
     </div>
@@ -120,19 +94,16 @@ const BolsistasTable = ({
   return (
     <>
       <TableContainer>
-        <BolsistaTableHeader
-          tag={tag}
-          setOpenModalEdit={setOpenModalEdit}
-        />
+        <BolsistaTableHeader tag={tag} setOpenModalEdit={setOpenModalEdit} />
 
         <DataTable
           id="BolsistaTable"
           value={tableData}
+          size="small"
           paginator
           rows={25}
           stripedRows
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-          className="min-w-full p-4"
           rowClassName="hover:bg-gray-100 transition duration-200"
         >
           <Column
@@ -182,21 +153,6 @@ const BolsistasTable = ({
         </DataTable>
       </TableContainer>
 
-      <Modal
-        id="ExcludeModalBolsista"
-        title="Excluir Bolsista?"
-        acept={() => handleDelete(excludeId)}
-        aceptLabel="Excluir"
-        refuse={() => setExcludeModalOpen(false)}
-        typeAction="btn-danger"
-        open={excludeModalOpen}
-      >
-        <p className="text-red-500 font-bold mt-2">
-          Tem certeza que deseja excluir esse item? Os dados excluídos não
-          poderão ser recuperados.
-        </p>
-      </Modal>
-
       <SideBarBolsista
         sideBarStatus={sideBarOpen}
         setSideBarStatus={setSideBarOpen}
@@ -210,6 +166,8 @@ BolsistasTable.propTypes = {
   tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
   setModalData: PropTypes.func.isRequired,
+  setExcludeModal: PropTypes.func,
+  setExcludeModalOpen: PropTypes.func,
   setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
 };

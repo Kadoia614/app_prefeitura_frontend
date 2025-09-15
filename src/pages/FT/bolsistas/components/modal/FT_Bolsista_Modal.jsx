@@ -2,12 +2,19 @@ import PropTypes from "prop-types";
 import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
 import Modal from "@/components/shared/modal/Modal";
+import { useRef, useState } from "react";
+import { Stepper } from "primereact/stepper";
+import { StepperPanel } from "primereact/stepperpanel";
+import { Button } from "primereact/button";
+
 import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask";
 import SelectField from "@/components/shared/input/SelectField";
 // import CalendarInput from "@/components/shared/input/CalendarInput";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
+import { Divider } from "primereact/divider";
+import { Checkbox } from "primereact/checkbox";
 
 const FT_Bolsista_Modal = ({
   modalData,
@@ -19,10 +26,17 @@ const FT_Bolsista_Modal = ({
   pagadorOptions,
 }) => {
   const { showToast } = useToast();
-
+  const stepperRef = useRef(null);
+  const [accept, setAccept] = useState(false);
   // sómente para gerenciar os valore dos inputs
   const editableItem = (key, value) => {
     setModalData((e) => ({ ...e, [key]: value }));
+  };
+  const editablePayment = (key, value) => {
+    setModalData((e) => ({
+      ...e,
+      payment_info: { ...e.payment_info, [key]: value },
+    }));
   };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
@@ -30,17 +44,26 @@ const FT_Bolsista_Modal = ({
     try {
       setIsLoading(true);
       let payload = {
-        bco: modalData.bco,
-        ag: modalData.ag,
-        dig_ag: modalData.dig_ag,
-        conta: modalData.conta,
-        dig_conta: modalData.dig_conta,
-        pagador: modalData.pagador,
-        nome: modalData.nome,
-        bolsa: modalData.bolsa,
-        data_inicio: modalData.data_inicio,
-        cpf: modalData.cpf.split(".").join("").split("-").join(""),
-        local: modalData.local,
+        bolsista: {
+          nome: modalData.nome,
+          cpf: modalData.cpf.replace(/\D/g, ""),
+          telefone: modalData.telefone.replace(/\D/g, ""),
+          local: modalData.local,
+          cep: modalData.cep,
+          numero: modalData.numero,
+          logradouro: modalData.logradouro,
+          bairro: modalData.bairro,
+          cidade: modalData.cidade,
+          uf: modalData.uf,
+          payment_info: {
+            bco: modalData.payment_info.bco,
+            ag: modalData.payment_info.ag,
+            dig_ag: modalData.payment_info.dig_ag,
+            conta: modalData.payment_info.conta,
+            dig_conta: modalData.payment_info.dig_conta,
+            pagador_id: modalData.payment_info.pagador_id,
+          },
+        },
       };
 
       if (id) {
@@ -70,189 +93,394 @@ const FT_Bolsista_Modal = ({
     setModalData({});
   };
 
+  const getCep = (cep) => {
+    if (cep.length < 8) return;
+    fetch(`https://viacep.com.br/ws/${cep}//json/`)
+      .then((res) => res.json())
+      .then((data) => {
+        editableItem("cep", data.cep.replace(/\D/g, ""));
+        editableItem("logradouro", data.logradouro);
+        editableItem("bairro", data.bairro);
+        editableItem("cidade", data.localidade);
+        editableItem("uf", data.uf);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       {/* Modal to create/ edit a bolsista */}
       <Modal
         id="EditBolsista"
         title={modalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
-        acept={() => {
+        isDisabled={!accept}
+        onAcept={() => {
           saveItem(modalData?.id || null);
         }}
         aceptLabel={"Salvar"}
-        refuse={() => {
+        onRefuse={() => {
           setOpenModalEdit(false);
           clearModal();
         }}
         typeAction={"btn-primary"}
-        open={openModalEdit}
+        isOpen={openModalEdit}
         onClose={setOpenModalEdit}
       >
-        <div id="BolsistaData">
-          <div id="Data" className="grid grid-cols-1 sm:grid-cols-8 gap-4">
-            {/* Nome */}
-            <div className="mt-1 col-span-2 sm:col-span-4">
-              <InputField
-                invalid={modalData?.nome ? false : true}
-                id="Name"
-                inputClass="w-full"
-                label="Nome"
-                value={modalData?.nome || ""}
-                onChange={(e) => {
-                  editableItem("nome", e.target.value);
-                }}
-              />
-            </div>
+        <Stepper ref={stepperRef} linear>
+          <StepperPanel header="Bolsista">
+            <div className="flex flex-column">
+              <div className="p-4 flex-auto flex justify-content-center align-items-center">
+                <div id="Data" className="grid grid-cols-5 gap-4 w-full">
+                  {/* Nome */}
+                  <div className="mt-1 lg:col-span-3 col-span-full">
+                    <InputField
+                      invalid={modalData?.nome ? false : true}
+                      id="Name"
+                      inputClass="w-full"
+                      label="Nome"
+                      value={modalData?.nome || ""}
+                      onChange={(e) => {
+                        editableItem("nome", e.target.value);
+                      }}
+                    />
+                  </div>
 
-            {/* CPF */}
-            <div className="mt-1 col-span-2 sm:col-span-4">
-              <InputFieldMask
-                invalid={modalData?.cpf ? false : true}
-                id="CPF"
-                keyfilter="num"
-                inputClass="w-full"
-                label="CPF"
-                mask={"999.999.999-99"}
-                value={modalData?.cpf || ""}
-                onChange={(e) => {
-                  editableItem("cpf", e.target.value);
-                }}
-                maxLength={11}
-              />
-            </div>
+                  {/* CPF */}
+                  <div className="mt-1 lg:col-span-2 col-span-full">
+                    <InputFieldMask
+                      invalid={modalData?.cpf ? false : true}
+                      id="CPF"
+                      keyfilter="num"
+                      inputClass="w-full"
+                      label="CPF"
+                      mask={"999.999.999-99"}
+                      value={modalData?.cpf || ""}
+                      onChange={(e) => {
+                        editableItem("cpf", e.target.value);
+                      }}
+                      maxLength={11}
+                    />
+                  </div>
+                  <div className="mt-1 lg:col-span-3 col-span-full">
+                    <InputFieldMask
+                      invalid={modalData?.telefone ? false : true}
+                      id="Telefone"
+                      inputClass="w-full"
+                      label="Telefone"
+                      mask={"(99)99999-9999"}
+                      value={modalData?.telefone || ""}
+                      onChange={(e) => {
+                        editableItem("telefone", e.target.value);
+                      }}
+                    />
+                  </div>
 
-            {/* Local Pagador */}
-            <div className="mt-1 col-span-4">
-              <SelectField
-                invalid={modalData?.pagador ? false : true}
-                id="Pagador"
-                inputClass="w-full"
-                label="Pagador"
-                options={pagadorOptions}
-                value={modalData?.pagador || ""}
-                onChange={(e) => {
-                  editableItem("pagador", e.target.value);
-                }}
-              />
-            </div>
+                  {/* Local */}
+                  <div className="mt-1 col-span-full">
+                    <InputField
+                      invalid={modalData?.local ? false : true}
+                      id="Local"
+                      inputClass="w-full"
+                      label="Local de trabalho"
+                      value={modalData?.local || ""}
+                      onChange={(e) => {
+                        editableItem("local", e.target.value);
+                      }}
+                    />
+                  </div>
 
-            <div className="mt-1 col-span-4">
-              <fieldset className="mt-2">
-                <label className="font-bold text-gray-700">
-                  Quantidade ativos
-                </label>
-                <div className="mt-1">
-                  <p>{modalData?.pagador && (`${pagadorOptions.find((pg) => pg.id === modalData.pagador).quantity} / ${pagadorOptions.find((pg) => pg.id === modalData.pagador).max_bolsista}`)}</p>
+                  <div className="mt-1 col-span-full flex flex-row">
+                    <div className="mr-2">
+                      <InputFieldMask
+                        invalid={modalData?.cep ? false : true}
+                        mask="99.999-999"
+                        maxLength={8}
+                        placeholder="__.___-___"
+                        id="CEP"
+                        inputClass="w-33"
+                        label="CEP"
+                        value={modalData?.cep || ""}
+                        onChange={(e) => {
+                          getCep(e.target.value.replace(/\D/g, ""));
+                        }}
+                      />
+                    </div>
+                    <div className="ml-2">
+                      <InputField
+                        invalid={modalData?.numero ? false : true}
+                        placeHolder="99"
+                        id="Number"
+                        inputClass="w-50"
+                        label="Número da residência"
+                        value={modalData?.numero || ""}
+                        onChange={(e) => {
+                          editableItem("numero", e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-1 col-span-5 md:col-span-4 lg:col-span-3">
+                    <InputField
+                      id="Logradouro"
+                      inputClass="w-full"
+                      label="Logradouro"
+                      value={modalData?.logradouro || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-5 md:col-span-3 lg:col-span-2">
+                    <InputField
+                      id="Bairro"
+                      inputClass="w-full"
+                      label="Bairro"
+                      value={modalData?.bairro || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-4 md:col-span-3 lg:col-span-3">
+                    <InputField
+                      id="Cidade"
+                      inputClass="w-full"
+                      label="Cidade"
+                      value={modalData?.cidade || ""}
+                      disabled
+                    />
+                  </div>
+                  <div className="mt-1 col-span-2 md:col-span-2 lg:col-span-1">
+                    <InputField
+                      id="UF"
+                      inputClass="w-full"
+                      label="UF"
+                      value={modalData?.uf || ""}
+                      disabled
+                    />
+                  </div>
                 </div>
-              </fieldset>
-            </div>
-            {/* <div className="mt-1 col-span-4">
-              <CalendarInput
-                invalid={modalData?.data_inicio ? false : true}
-                label={"Inicia em:"}
-                inputClass="w-full"
-                value={modalData?.data_inicio || ""}
-                onChange={(e) => {
-                  editableItem("data_inicio", e.target.value);
-                }}
-                format={"dd-mm-yy"}
-                view="date"
-                showIcon
-              />
-            </div> */}
-
-            {/* Local */}
-            <div className="mt-1 col-span-full">
-              <InputField
-                invalid={modalData?.local ? false : true}
-                id="Local"
-                inputClass="w-full"
-                label="Local"
-                value={modalData?.local || ""}
-                onChange={(e) => {
-                  editableItem("local", e.target.value);
-                }}
-              />
-            </div>
-
-            {/* Banco */}
-            <div className="mt-1 col-span-full">
-              <InputField
-                invalid={modalData?.bco ? false : true}
-                id="Banco"
-                keyfilter="int"
-                inputClass="w-full sm:w-50"
-                label="Banco"
-                value={modalData?.bco || ""}
-                onChange={(e) => {
-                  editableItem("bco", e.target.value);
-                }}
-                maxLength={3}
-              />
-            </div>
-
-            {/* agencia */}
-            <div className="mt-1 col-span-3">
-              <div className="p-inputgroup">
-                <InputField
-                  id="Ag"
-                  invalid={modalData?.ag ? false : true}
-                  keyfilter="int"
-                  inputClass="w-full sm:w-33 mr-2"
-                  label="Agência"
-                  value={modalData?.ag || ""}
-                  onChange={(e) => {
-                    editableItem("ag", e.target.value);
-                  }}
-                  maxLength={4}
-                />
-
-                <InputField
-                  invalid={modalData?.dig_ag ? false : true}
-                  id="Dig_Ag"
-                  keyfilter="int"
-                  inputClass="w-full"
-                  label="Dg"
-                  value={modalData?.dig_ag || ""}
-                  onChange={(e) => {
-                    editableItem("dig_ag", e.target.value);
-                  }}
-                  maxLength={1}
-                />
               </div>
             </div>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                label="Next"
+                className={"btn-primary max-w-[50%]"}
+                onClick={() => stepperRef.current.nextCallback()}
+              />
+            </div>
+          </StepperPanel>
+          <StepperPanel header="Dados de Pagamento">
+            <div className="flex flex-column">
+              <div className="p-4 flex-auto flex justify-content-center align-items-center">
+                <div id="Data" className="grid md:grid-cols-6 gap-4  w-full">
+                  {/* Local Pagador */}
+                  <div className="mt-1 col-span-3">
+                    <SelectField
+                      invalid={
+                        modalData?.payment_info?.pagador_id ? false : true
+                      }
+                      id="Pagador"
+                      inputClass="w-full"
+                      label="Pagador"
+                      options={pagadorOptions}
+                      value={modalData?.payment_info?.pagador_id || ""}
+                      onChange={(e) => {
+                        editablePayment("pagador_id", e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mt-1 col-span-3">
+                    <fieldset className="mt-2">
+                      <label className="font-bold text-gray-700">
+                        Quantidade ativos
+                      </label>
+                      <div className="mt-1">
+                        <p>
+                          {modalData?.payment_info?.pagador_id &&
+                            `${
+                              pagadorOptions.find(
+                                (pg) =>
+                                  pg.id == modalData.payment_info?.pagador_id
+                              ).quantity
+                            } / ${
+                              pagadorOptions.find(
+                                (pg) =>
+                                  pg.id === modalData.payment_info?.pagador_id
+                              ).max_bolsista
+                            }`}
+                        </p>
+                      </div>
+                    </fieldset>
+                  </div>
+                  {/* Banco */}
+                  <div className="mt-1 col-span-full">
+                    <InputField
+                      invalid={modalData?.payment_info?.bco ? false : true}
+                      id="Banco"
+                      keyfilter="int"
+                      inputClass="w-full sm:w-50"
+                      label="Banco"
+                      value={modalData?.payment_info?.bco || ""}
+                      onChange={(e) => {
+                        editablePayment("bco", e.target.value);
+                      }}
+                      maxLength={3}
+                    />
+                  </div>
+                  {/* agencia */}
+                  <div className="mt-1 lg:col-span-3 col-span-full">
+                    <div className="p-inputgroup">
+                      <InputField
+                        id="Ag"
+                        invalid={modalData?.payment_info?.ag ? false : true}
+                        keyfilter="int"
+                        inputClass="w-full sm:w-33 mr-2"
+                        label="Agência"
+                        value={modalData?.payment_info?.ag || ""}
+                        onChange={(e) => {
+                          editablePayment("ag", e.target.value);
+                        }}
+                        maxLength={4}
+                      />
 
-            <div className="mt-1 col-span-3">
-              <div className="p-inputgroup">
-                <InputField
-                  invalid={modalData?.conta ? false : true}
-                  keyfilter="int"
-                  id="Conta"
-                  inputClass="w-full sm:w-33 mr-2"
-                  label="Conta"
-                  value={modalData?.conta || ""}
-                  onChange={(e) => {
-                    editableItem("conta", e.target.value);
-                  }}
-                  maxLength={6}
-                />
+                      <InputField
+                        invalid={modalData?.payment_info?.dig_ag ? false : true}
+                        id="Dig_Ag"
+                        keyfilter="int"
+                        inputClass="w-full"
+                        label="Dg"
+                        value={modalData?.payment_info?.dig_ag || ""}
+                        onChange={(e) => {
+                          editablePayment("dig_ag", e.target.value);
+                        }}
+                        maxLength={1}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-1 lg:col-span-3 col-span-full">
+                    <div className="p-inputgroup">
+                      <InputField
+                        invalid={modalData?.payment_info?.conta ? false : true}
+                        keyfilter="int"
+                        id="Conta"
+                        inputClass="w-full sm:w-33 mr-2"
+                        label="Conta"
+                        value={modalData?.payment_info?.conta || ""}
+                        onChange={(e) => {
+                          editablePayment("conta", e.target.value);
+                        }}
+                        maxLength={11}
+                      />
 
-                <InputField
-                  invalid={modalData?.dig_conta ? false : true}
-                  keyfilter="int"
-                  id="Dig_Conta"
-                  inputClass="w-full"
-                  label="Dg"
-                  value={modalData?.dig_conta || ""}
-                  onChange={(e) => {
-                    editableItem("dig_conta", e.target.value);
-                  }}
-                  maxLength={1}
-                />
+                      <InputField
+                        invalid={
+                          modalData?.payment_info?.dig_conta ? false : true
+                        }
+                        keyfilter="int"
+                        id="Dig_Conta"
+                        inputClass="w-full"
+                        label="Dg"
+                        value={modalData?.payment_info?.dig_conta || ""}
+                        onChange={(e) => {
+                          editablePayment("dig_conta", e.target.value);
+                        }}
+                        maxLength={1}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                label="Back"
+                className="btn-cancel max-w-[50%]"
+                onClick={() => stepperRef.current.prevCallback()}
+              />
+              <Button
+                label="Next"
+                className={"btn-primary max-w-[50%]"}
+                onClick={() => stepperRef.current.nextCallback()}
+              />
+            </div>
+          </StepperPanel>
+          <StepperPanel header="Confirmação">
+            <div className="flex flex-column h-12rem  w-full">
+              <div className="font-medium w-full">
+                <h2 className="text-2xl">Confirmação</h2>
+                <Divider></Divider>
+                <div className="flex gap-2 items-start mt-3 flex-col">
+                  <div>
+                    <span className="font-bold">Nome:</span>
+                    <p>{modalData?.nome}</p>
+                  </div>
+                  <div>
+                    <span className="font-bold">CPF:</span>
+                    <p>{modalData?.cpf}</p>
+                  </div>
+                  <div>
+                    <span className="font-bold">Local de Trabalho:</span>
+                    <p>{modalData?.local}</p>
+                  </div>
+                  <div className="flex gap-2 items-start mt-3 flex-col">
+                    <span className="font-bold">Informações de pagamento:</span>
+                    <div>
+                      <span className="font-bold">Pagador:</span>
+                      <p>
+                        {
+                          pagadorOptions.find(
+                            (pg) => pg.id == modalData.payment_info?.pagador_id
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Banco:</span>
+                      <p>{modalData.payment_info?.bco}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Agencia:</span>
+                      <p>{modalData.payment_info?.ag}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Dígito Agencia:</span>
+                      <p>{modalData.payment_info?.dig_ag}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Conta:</span>
+                      <p>{modalData.payment_info?.conta}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold">Digito Conta:</span>
+                      <p>{modalData.payment_info?.dig_conta}</p>
+                    </div>
+                  </div>
+                </div>
+                <Divider></Divider>
+                <div>
+                  <Checkbox
+                    inputId="Accept"
+                    name="confirm_data"
+                    value={false}
+                    onChange={(e) => {
+                      setAccept(e.checked);
+                    }}
+                    checked={accept}
+                  ></Checkbox>
+                  <label htmlFor="Accept" className="ml-2">
+                    Confirmar Dados
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-start gap-2 mt-4">
+              <Button
+                label="Back"
+                className="btn-cancel max-w-[50%]"
+                onClick={() => stepperRef.current.prevCallback()}
+              />
+            </div>
+          </StepperPanel>
+        </Stepper>
       </Modal>
     </>
   );
@@ -260,19 +488,27 @@ const FT_Bolsista_Modal = ({
 
 FT_Bolsista_Modal.propTypes = {
   modalData: PropTypes.shape({
-    bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    dig_ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    dig_conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    payment_info: PropTypes.shape({
+      bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      dig_ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      dig_conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      pagador_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
     nome: PropTypes.string,
     bolsa: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     vencimento: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    telefone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     local: PropTypes.string,
+    cep: PropTypes.string,
+    numero: PropTypes.string,
+    logradouro: PropTypes.string,
+    bairro: PropTypes.string,
+    cidade: PropTypes.string,
+    uf: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    pagador: PropTypes.any,
-    data_inicio: PropTypes.string,
   }),
   pagadorOptions: PropTypes.arrayOf(PropTypes.any),
   setModalData: PropTypes.func.isRequired,

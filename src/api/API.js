@@ -22,6 +22,9 @@ API.interceptors.request.use(
 
 export const APIBolsistaImage = axios.create({
   baseURL: "/ft",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 APIBolsistaImage.interceptors.request.use(
