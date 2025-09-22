@@ -3,25 +3,37 @@ import { UserContext } from "./UserContext";
 import PropTypes from "prop-types";
 
 export const UserProvider = ({ children }) => {
-  let [auth, setAuth] = useState(false);
-  let [scopo, setScopo] = useState(null);
-  let [userServices, setUserServices] = useState([]);
+  let [user, setUser] = useState({
+    ip: null,
+    name: null,
+    auth: false,
+    scopo: null,
+  });
 
   const AttAuth = (value) => {
-    setAuth(value);
+    setUser((e) => ({ ...e, auth: value }));
   };
 
   const AttScopo = (value) => {
-    setScopo(value);
+    setUser((e) => ({ ...e, scopo: value }));
   };
 
-  const AttUserServices = (value) => {
-    setUserServices(value);
+  const attUser = (IP, username, scopo) => {
+    setUser({
+      ip: IP,
+      name: username,
+      scopo: scopo,
+    });
   };
 
   return (
     <UserContext.Provider
-      value={{ scopo, auth, AttScopo, AttAuth, userServices, AttUserServices }}
+      value={{
+        AttScopo,
+        AttAuth,
+        attUser,
+        user,
+      }}
     >
       {children}
     </UserContext.Provider>

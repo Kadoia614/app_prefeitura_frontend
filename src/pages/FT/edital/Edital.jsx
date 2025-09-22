@@ -1,15 +1,18 @@
 import { useState, useCallback } from "react";
-import { useOutletContext } from "react-router";
 
 import EditalTable from "./components/Table/EditalTable";
+
 import Edital_Modal from "./components/modal/Edital_Modal";
+
 import Vincular_Bolsista from "./components/modal/Vincular_Bolsista";
 
 import { getEdital, getEditalWithBolsista } from "@/service/ft_appServices";
+
 import { useToast } from "@/components/shared/toast/ToastProvider";
+import { useLoadingContext } from "../../../context/loading/LoadingContext";
 
 const Edital = () => {
-  const { setIsLoading } = useOutletContext();
+  const { attIsLoading } = useLoadingContext();
 
   const [tableData, setTableData] = useState([]);
   const [tableOptions, setTableOptions] = useState([]);
@@ -23,8 +26,7 @@ const Edital = () => {
   const fetchData = useCallback(
     async (selectedTable) => {
       try {
-        setIsLoading(true);
-
+        attIsLoading(true);
         if (!selectedTable) {
           const { edital } = await getEdital();
           setTableOptions(edital);
@@ -37,10 +39,10 @@ const Edital = () => {
         console.error(error);
         showToast("error", "error", "Erro ao buscar dados");
       } finally {
-        setIsLoading(false);
+        attIsLoading(false);
       }
     },
-    [setIsLoading]
+    [selectedTable]
   );
 
   return (
@@ -53,14 +55,12 @@ const Edital = () => {
         tableOptions={tableOptions}
         tableData={tableData}
         fetchData={fetchData}
-        setIsLoading={setIsLoading}
       />
 
       <Edital_Modal
         isEditalModalOpen={isEditalModalOpen}
         setIsEditalModalOpen={setIsEditalModalOpen}
         fetchData={fetchData}
-        setIsLoading={setIsLoading}
       ></Edital_Modal>
 
       <Vincular_Bolsista
@@ -68,7 +68,6 @@ const Edital = () => {
         isVincularModalOpen={isVincularModalOpen}
         setIsVincularModalOpen={setIsVincularModalOpen}
         fetchData={fetchData}
-        setIsLoading={setIsLoading}
       ></Vincular_Bolsista>
     </div>
   );
