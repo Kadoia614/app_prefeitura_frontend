@@ -19,7 +19,7 @@ const Login = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
 
-  const { AttAuth, AttScopo, scopo } = useUserContext();
+  const { AttAuth, attUser } = useUserContext();
   const { attIsLoading } = useLoadingContext();
   const { showToast } = useToast();
 
@@ -30,12 +30,9 @@ const Login = () => {
       attIsLoading(true);
       let data = await login(credentials.email, credentials.password);
 
-      let token = data.token;
-      await localStorage.setItem("token", token);
-      console.log("Authenticado com sucesso");
-      AttAuth(true);
-      AttScopo(data.scopo);
-      console.log("scopo", scopo);
+      await localStorage.setItem("token", data.token);
+      attUser(data.ip, data.name, data.scopo);
+
       attIsLoading(false);
       navigate("/");
     } catch (error) {

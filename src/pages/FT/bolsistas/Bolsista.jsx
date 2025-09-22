@@ -10,7 +10,7 @@ import GeralExcludeModal from "@/components/shared/modal/GeralExcludeModal";
 import { getBolsista } from "@/service/ft_appServices";
 
 const Bolsista = () => {
-  const { setIsLoading } = useOutletContext();
+  const { attIsLoading } = useOutletContext();
   const [error, setError] = useState(false);
 
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -22,11 +22,12 @@ const Bolsista = () => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
   const [excludeModal, setExcludeModal] = useState(false);
 
-  const { scopo } = useUserContext();
+  const { user } = useUserContext();
+  const scopo = user.scopo;
 
   const fetchData = async () => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
 
       const { bolsista, pagador, uploadToken } = await getBolsista();
 
@@ -38,7 +39,7 @@ const Bolsista = () => {
     } catch (error) {
       setError(error.status);
     } finally {
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 
@@ -58,7 +59,7 @@ const Bolsista = () => {
         fetchData={fetchData}
         setOpenModalEdit={setOpenModalEdit}
         setModalData={setModalData}
-        setIsLoading={setIsLoading}
+        attIsLoading={attIsLoading}
         setExcludeModal={setExcludeModal}
         setExcludeModalOpen={setExcludeModalOpen}
       />
@@ -72,7 +73,7 @@ const Bolsista = () => {
         fetchData={fetchData}
         scopo={scopo}
         pagadorOptions={pagadorOptions}
-        setIsLoading={setIsLoading}
+        attIsLoading={attIsLoading}
       />
       {/* Exclude Confirmation Dialog */}
       <GeralExcludeModal

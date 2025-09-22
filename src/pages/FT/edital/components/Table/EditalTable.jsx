@@ -15,6 +15,7 @@ import TableButton from "@/components/shared/table/TableButton";
 import EditalTableHeader from "./EditalTableHeader";
 
 import { toggleBolsista } from "@/service/ft_appServices";
+import { useLoadingContext } from "../../../../../context/loading/LoadingContext";
 
 const tag = {
   ativo: {
@@ -41,15 +42,14 @@ const tag = {
 
 const EditalTable = ({
   tableData,
-  setOpenModalEdit,
   setIsEditalModalOpen,
   fetchData,
-  setIsLoading,
   selectedTable,
   setSelectedTable,
   setIsVincularModalOpen,
   tableOptions,
 }) => {
+  const { attIsLoading } = useLoadingContext();
   const [alterModalOpen, setAlterModalOpen] = useState(false);
   const [alterId, setAlterId] = useState(null);
   const { showToast } = useToast();
@@ -61,7 +61,7 @@ const EditalTable = ({
 
   const handleToggle = async (id) => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       await toggleBolsista(`${id}`, `${selectedTable}`);
       showToast("success", "Confirmado", "Bolsista alterado com sucesso");
       fetchData(selectedTable);
@@ -73,7 +73,7 @@ const EditalTable = ({
       );
     } finally {
       setAlterModalOpen(false);
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 
@@ -110,7 +110,6 @@ const EditalTable = ({
       <TableContainer>
         <EditalTableHeader
           tag={tag}
-          setOpenModalEdit={setOpenModalEdit}
           setIsEditalModalOpen={setIsEditalModalOpen}
           setIsVincularModalOpen={setIsVincularModalOpen}
           selectedTable={selectedTable}
@@ -215,10 +214,8 @@ const EditalTable = ({
 
 EditalTable.propTypes = {
   tableData: PropTypes.array.isRequired,
-  setOpenModalEdit: PropTypes.func.isRequired,
   setIsEditalModalOpen: PropTypes.func,
   setIsVincularModalOpen: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   selectedTable: PropTypes.any,
   setSelectedTable: PropTypes.func.isRequired,

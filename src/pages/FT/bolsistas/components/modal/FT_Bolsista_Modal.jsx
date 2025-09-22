@@ -22,7 +22,7 @@ const FT_Bolsista_Modal = ({
   openModalEdit,
   setOpenModalEdit,
   fetchData,
-  setIsLoading,
+  attIsLoading,
   pagadorOptions,
 }) => {
   const { showToast } = useToast();
@@ -42,7 +42,7 @@ const FT_Bolsista_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       let payload = {
         bolsista: {
           nome: modalData.nome,
@@ -84,7 +84,7 @@ const FT_Bolsista_Modal = ({
       );
       return;
     } finally {
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 
@@ -514,7 +514,7 @@ FT_Bolsista_Modal.propTypes = {
   setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
+  attIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
 };
 

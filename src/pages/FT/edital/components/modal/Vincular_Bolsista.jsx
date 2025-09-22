@@ -5,8 +5,8 @@ import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 // import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
 
-import { Divider } from 'primereact/divider';
-        
+import { Divider } from "primereact/divider";
+
 import PropTypes from "prop-types";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 
@@ -25,7 +25,7 @@ const Vincular_Bolsista = ({
   const [bolsistasData, setBolsistasData] = useState([]);
   const [editalData, setEditalData] = useState([]);
   const [bolsistaSelecionado, setBolsistaSelecionado] = useState([]);
-  const [dataVinculo, setDataVinculo] = useState(null)
+  const [dataVinculo, setDataVinculo] = useState(null);
 
   const { showToast } = useToast();
 
@@ -62,7 +62,13 @@ const Vincular_Bolsista = ({
       showToast("success", "Confirmed", "Edital salvo com sucesso");
       fetchData(selectedTable);
     } catch (error) {
-      showToast("error", "Error", `Erro ao vincular Bolsista ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`);
+      showToast(
+        "error",
+        "Error",
+        `Erro ao vincular Bolsista ${
+          error.status == 400 ? "Dados inválidos" : error.response.data.message
+        }`
+      );
       return;
     }
   };
@@ -79,7 +85,7 @@ const Vincular_Bolsista = ({
 
   const isChecked = (bolsistaId) => {
     return (
-      editalData.bolsistas?.some((b)=>b.id == bolsistaId) ||
+      editalData.bolsistas?.some((b) => b.id == bolsistaId) ||
       bolsistaSelecionado.includes(bolsistaId)
     );
   };
@@ -97,14 +103,13 @@ const Vincular_Bolsista = ({
         isOpen={isVincularModalOpen}
         setIsOpen={setIsVincularModalOpen}
         onShow={() => getData()}
-        isDisabled={bolsistaSelecionado && dataVinculo ? false : true} 
+        isDisabled={bolsistaSelecionado && dataVinculo ? false : true}
       >
         <div id="EditalData">
           <div className="mt-1">
             <CalendarInput
               invalid={dataVinculo ? false : true}
               label={"Inicia em:"}
-
               value={dataVinculo || ""}
               onChange={(e) => {
                 setDataVinculo(e.target.value);
@@ -121,7 +126,7 @@ const Vincular_Bolsista = ({
                 <Checkbox
                   disabled={
                     bolsista.status === "pendente" ||
-                    editalData.bolsistas.some((b)=>b.id === bolsista.id)
+                    editalData.bolsistas.some((b) => b.id === bolsista.id)
                   }
                   inputId={`cb-${editalData.id}-${bolsista.id}`}
                   checked={isChecked(bolsista.id)}
@@ -152,7 +157,6 @@ Vincular_Bolsista.propTypes = {
   setIsVincularModalOpen: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   selectedTable: PropTypes.string,
-  setIsLoading: PropTypes.func.isRequired,
 };
 
 export default Vincular_Bolsista;

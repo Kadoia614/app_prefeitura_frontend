@@ -30,7 +30,7 @@ export default defineConfig({
         rewrite: (path) => path.replace("/api", ""),
       },
       "/ft/": {
-        target: "http://192.168.16.13:3006",
+        target: "http://192.168.16.13:3006/ft/",
         changeOrigin: true,
         secure: false,
       },

@@ -4,19 +4,40 @@ import { Button } from "primereact/button";
 import Avatar from "../../assets/img/avatar2.svg";
 
 import { FaUser } from "react-icons/fa";
-import { useForm } from "react-hook-form";
 import { MdOutlinePassword } from "react-icons/md";
 
 import InputField from "@/components/shared/input/inputfield/InputField";
 import PasswordField from "@/components/shared/input/passwordfield/PasswordField";
+import { useUserContext } from "../../context/user/UserContext";
+
+import { alterPassword } from "../../service/alter_password";
+
+import { useLoadingContext } from "../../context/loading/LoadingContext";
+
+import { useToast } from "@/components/shared/toast/ToastProvider";
 
 const UserConfig = () => {
+  const { user } = useUserContext();
+  const { attIsLoading } = useLoadingContext();
+  const { showToast } = useToast();
+
   const [userInfo, setUserInfo] = useState({
-    username: "",
     password: "",
     new_password: "",
     confirm_new_password: "",
   });
+
+  const handleSubmit = async () => {
+    try {
+      attIsLoading(true);
+      await alterPassword(userInfo.new_password, userInfo.password);
+      showToast("success", "Sucesso", "Senha alterada com sucesso!");
+    } catch (error) {
+      showToast("error", "Erro", "Erro ao alterar senha", error.message);
+    } finally {
+      attIsLoading(false);
+    }
+  };
 
   return (
     <div id="UserConfig" className="p-15">
@@ -28,7 +49,7 @@ const UserConfig = () => {
         />
         <br />
         <div id="UserData">
-          <form className="flex flex-col gap-4 w-full py-4">
+          <div className="flex flex-col gap-4 w-full py-4">
             <div>
               <InputField
                 icon={<FaUser />}
@@ -37,17 +58,15 @@ const UserConfig = () => {
                 className="w-full input"
                 label={"Username"}
                 disabled={true}
-                value={userInfo.username}
-                onChange={(e) =>
-                  setUserInfo({ ...userInfo, username: e.target.value })
-                }
+                value={user.name}
+                onChange={() => alert("Para de graça")}
               ></InputField>
 
               <PasswordField
                 id={"PasswordAlter"}
                 icon={<MdOutlinePassword />}
-                label={"Password"}
-                placeholder="Senha"
+                label={"Senha Atual"}
+                placeholder="Senha Atual..."
                 feedback={false}
                 value={userInfo.password}
                 onChange={(e) =>
@@ -58,8 +77,8 @@ const UserConfig = () => {
               <PasswordField
                 id={"NewPassword"}
                 icon={<MdOutlinePassword />}
-                label={"New Password"}
-                placeholder="Senha"
+                label={"Nova Senha"}
+                placeholder="Nova Senha"
                 feedback={true}
                 invalid={
                   userInfo.new_password !== userInfo.confirm_new_password
@@ -73,8 +92,8 @@ const UserConfig = () => {
               <PasswordField
                 id={"ConfirmNewPassword"}
                 icon={<MdOutlinePassword />}
-                label={"Confirm New Password"}
-                placeholder="Senha"
+                label={"Confirme a Nova Senha"}
+                placeholder="Nova Senha"
                 feedback={true}
                 invalid={
                   userInfo.new_password !== userInfo.confirm_new_password
@@ -89,17 +108,16 @@ const UserConfig = () => {
               ></PasswordField>
             </div>
             <Button
-            disabled={
-              !userInfo.password ||
-              !userInfo.new_password ||
-              !userInfo.confirm_new_password ||
-              userInfo.new_password !== userInfo.confirm_new_password
-            }
-              onClick={() => alert("Falta terminar")}
+              disabled={
+                !userInfo.password ||
+                !userInfo.new_password ||
+                userInfo.new_password !== userInfo.confirm_new_password
+              }
+              onClick={() => handleSubmit()}
               label="Salvar"
               className="btn-primary w-full text-center"
             />
-          </form>
+          </div>
         </div>
       </div>
     </div>
