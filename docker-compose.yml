@@ -8,8 +8,4 @@ services:
       - "83:80"
     environment:
       NODE_ENV: development
-    networks:
-      - dokploy-network
-networks:
-  dokploy-network:
-    external: true
+
