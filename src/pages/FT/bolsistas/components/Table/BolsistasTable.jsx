@@ -42,7 +42,9 @@ const BolsistasTable = ({
 }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
-  const { scopo } = useUserContext();
+  const { user } = useUserContext();
+
+  const scopo = user.scopo;
 
   const renderStatus = ({ status }) => {
     const item = tag[status];
@@ -168,7 +170,7 @@ BolsistasTable.propTypes = {
   setModalData: PropTypes.func.isRequired,
   setExcludeModal: PropTypes.func,
   setExcludeModalOpen: PropTypes.func,
-  setIsLoading: PropTypes.func.isRequired,
+  attIsLoading: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
 };
 

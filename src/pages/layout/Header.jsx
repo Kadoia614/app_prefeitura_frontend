@@ -9,16 +9,15 @@ import { useUserContext } from "@/context/user/UserContext";
 import API from "../../api/API";
 
 const Header = () => {
-  const { auth, AttAuth, AttUserServices } = useUserContext();
+  const { user, AttAuth } = useUserContext();
   const [groupedServices, setGroupedServices] = useState({});
+
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const response = await API.get("/service/user");
       const services = response.data.services;
-
-      AttUserServices(services);
 
       const grouped = services.reduce((acc, curr) => {
         const tag = curr.tag || "Outros";
@@ -33,10 +32,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (auth) {
+    if (user.auth) {
       fetchData();
     }
-  }, [auth]);
+  }, [user]);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -51,7 +50,7 @@ const Header = () => {
       </a>
 
       <div className="flex flex-row justify-between items-center">
-        {auth ? (
+        {user.auth ? (
           <>
             <div className="flex flex-row items-center mr-10">
               {Object.keys(groupedServices).length > 0 && (

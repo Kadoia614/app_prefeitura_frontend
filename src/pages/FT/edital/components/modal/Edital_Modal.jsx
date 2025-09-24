@@ -6,13 +6,14 @@ import InputFieldMoney from "@/components/shared/input/inputfield/InputFieldMone
 import { postEdital, updateEdital } from "@/service/ft_appServices";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 import PropTypes from "prop-types";
+import { useLoadingContext } from "../../../../../context/loading/LoadingContext";
 
 const Edital_Modal = ({
   isEditalModalOpen,
   setIsEditalModalOpen,
   fetchData,
-  setIsLoading,
 }) => {
+  const { attIsLoading } = useLoadingContext();
   const [editalData, setEditalData] = useState({});
 
   const { showToast } = useToast();
@@ -31,7 +32,7 @@ const Edital_Modal = ({
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async (id) => {
     try {
-      setIsLoading(true);
+      attIsLoading(true);
       let payload = {
         edital: {
           name: editalData.name,
@@ -62,7 +63,7 @@ const Edital_Modal = ({
       );
       return;
     } finally {
-      setIsLoading(false);
+      attIsLoading(false);
     }
   };
 
@@ -178,7 +179,6 @@ Edital_Modal.propTypes = {
   isEditalModalOpen: PropTypes.bool.isRequired,
   setIsEditalModalOpen: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
 };
 
 export default Edital_Modal;
