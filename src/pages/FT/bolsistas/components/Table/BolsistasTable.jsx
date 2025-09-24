@@ -10,10 +10,10 @@ import { CiWarning } from "react-icons/ci";
 import { AiOutlineExclamation } from "react-icons/ai";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
-import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
 import { useUserContext } from "@/context/user/UserContext";
+import TableContainer from "../../../../../components/shared/table/TableContainer";
 
 const tag = {
   ativo: {

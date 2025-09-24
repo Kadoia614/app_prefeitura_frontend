@@ -17,6 +17,7 @@ import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
 import UserConfig from "./pages/user/UserConfig";
 import Footer from "./pages/layout/Footer";
+import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 
 function App() {
   return (
@@ -30,14 +31,9 @@ function App() {
             <Route path="/" element={<ProtectRoutes />}>
               <Route index element={<ServicesCards />} />
               <Route path="/config" element={<UserConfig />} />
-              <Route path="admin" element={<Admin />} />
-
-              {/* <Route path="demandasti" element={<DemandasTi />}>
-                <Route index element={<Demandas />} />
-                <Route path="userdemandas" element={<UserDemandas />} />
-                <Route path="history" element={<HistoryDemandas />} />
-              </Route> */}
+              <Route path="/admin" element={<Admin />} />
               <Route path="/ft-app" element={<FT_APP />}></Route>
+              <Route path="/iptu/certidao" element={<CertidaoIPTU></CertidaoIPTU>}></Route>
             </Route>
 
             <Route path="*" element={<HandleError />} />

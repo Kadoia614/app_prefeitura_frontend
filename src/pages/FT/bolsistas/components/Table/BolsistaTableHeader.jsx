@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 
-import TableHeader from "@/components/shared/table/TableHeader";
 
 import { FaUser } from "react-icons/fa";
 
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from "primereact/tooltip";
+import TableHeader from "../../../../../components/shared/table/TableHeader";
 
 const BolsistaTableHeader = ({ setOpenModalEdit }) => {
   const items = [
