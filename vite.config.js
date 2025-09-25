@@ -33,6 +33,7 @@ export default defineConfig({
         target: "http://192.168.16.13:3006/ft/",
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace("/ft/", ""),
       },
     },
   },
