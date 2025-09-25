@@ -300,12 +300,12 @@ const FT_Bolsista_Modal = ({
                               pagadorOptions.find(
                                 (pg) =>
                                   pg.id == modalData.payment_info?.pagador_id
-                              ).quantity
+                              )?.quantity || 'Pendente'
                             } / ${
                               pagadorOptions.find(
                                 (pg) =>
                                   pg.id === modalData.payment_info?.pagador_id
-                              ).max_bolsista
+                              )?.max_bolsista || 'Pendente'
                             }`}
                         </p>
                       </div>
