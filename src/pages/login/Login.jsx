@@ -6,9 +6,6 @@ import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useUserContext } from "@/context/user/UserContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
-import { MdOutlinePassword } from "react-icons/md";
-
-import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
 
 import PasswordFieldLine from "../../components/shared/input/passwordfield/PasswordFieldLine";
@@ -93,7 +90,7 @@ const Login = () => {
               >
                 <div className="flex flex-col my-4">
                   <InputFieldLine
-                    icon={<FaUser />}
+                    icon={<i className="pi pi-user"> </i>}
                     type="text"
                     id="User"
                     placeholder="Usuário"
@@ -105,7 +102,7 @@ const Login = () => {
                   <PasswordFieldLine
                     widthField="mt-4"
                     inputClass={"w-full"}
-                    icon={<MdOutlinePassword />}
+                    icon={<i className="pi pi-key"> </i>}
                     placeholder="Senha"
                     id="Pwd"
                     value={password}

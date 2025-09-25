@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import TableHeader from "@/components/shared/table/TableHeader";
 import SelectField from "@/components/shared/input/SelectField";
 
-import { FaLink, FaRegNewspaper, FaFileCsv } from "react-icons/fa";
-
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from 'primereact/tooltip';
 
@@ -32,7 +30,7 @@ const EditalTableHeader = ({
   const items = [
     {
       label: "Novo Edital",
-      icon: <FaRegNewspaper />,
+      icon: "pi pi-file-plus",
       className: "add-edital-btn bg-yellow-600/70 hover:bg-yellow-700/70",
       command: () => {
         setIsEditalModalOpen(true);
@@ -40,7 +38,7 @@ const EditalTableHeader = ({
     },
     {
       label: "Vincular Bolsista",
-      icon: <FaLink />,
+      icon: "pi pi-link",
       disabled: status === "inativo" || !selectedTable,
       className: "vinculate-bolsista-edital-btn bg-green-600/70 hover:bg-green-700/70",
       command: () => {
@@ -49,7 +47,7 @@ const EditalTableHeader = ({
     },
     {
       label: "Gerar Relatório",
-      icon: <FaFileCsv />,
+      icon: "pi pi-address-book",
       className: "generate-relatory",
       disabled: status === "inativo" || !selectedTable,
       command: () => {

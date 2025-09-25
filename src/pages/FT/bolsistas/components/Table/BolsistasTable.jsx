@@ -3,12 +3,6 @@ import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import { IoIosDocument } from "react-icons/io";
-import { FaTrash, FaEdit } from "react-icons/fa";
-import { GiConfirmed } from "react-icons/gi";
-import { CiWarning } from "react-icons/ci";
-import { AiOutlineExclamation } from "react-icons/ai";
-
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 import TableButton from "@/components/shared/table/TableButton";
 import BolsistaTableHeader from "./BolsistaTableHeader";
@@ -18,17 +12,17 @@ import TableContainer from "../../../../../components/shared/table/TableContaine
 const tag = {
   ativo: {
     style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <GiConfirmed />,
+    icon: <i className="pi pi-check-circle">  </i>,
     label: "Ativo",
   },
   inativo: {
     style: "bg-amber-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <CiWarning />,
+    icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Inativo",
   },
   pendente: {
     style: "bg-red-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <AiOutlineExclamation />,
+    icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Pendente",
   },
 };
@@ -61,7 +55,7 @@ const BolsistasTable = ({
     <div className="flex gap-2">
       <TableButton
         tooltip={`Editar`}
-        icon={<FaEdit />}
+        icon={"pi pi-pen-to-square"}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
         onClick={() => {
@@ -71,7 +65,7 @@ const BolsistasTable = ({
       />
       <TableButton
         tooltip={`Documentos`}
-        icon={<IoIosDocument />}
+        icon={"pi pi-file"}
         iconPos="left"
         color="text-primary-500 bg-white border-none"
         onClick={() => {
@@ -83,7 +77,7 @@ const BolsistasTable = ({
       {(scopo == 1 || scopo == 2) && (
         <TableButton
           tooltip={`Excluir`}
-          icon={<FaTrash />}
+          icon={"pi pi-trash"}
           color="text-red-500 bg-white border-none"
           onClick={() => {
             setExcludeModal(rowData.id), setExcludeModalOpen(true);

@@ -6,7 +6,6 @@ import { getDocs, getOneDoc } from "@/service/ft_appServices";
 
 import { Image } from "primereact/image";
 import { Button } from "primereact/button";
-import { FaPrint } from "react-icons/fa";
 
 import SideBar from "@/components/shared/sidebar/SidePanel";
 import UploadImage from "./UploadImage";
@@ -112,7 +111,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
                         </span>
                         <span>
                           <Button
-                            icon={<FaPrint />}
+                            icon={"pi pi-print"}
                             className="btn-primary ms-2"
                             onClick={() => {
                               const printWindow = window.open(

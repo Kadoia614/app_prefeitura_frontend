@@ -6,10 +6,6 @@ import { useToast } from "@/components/shared/toast/ToastProvider";
 import { Tooltip } from "primereact/tooltip";
 import { ProgressBar } from "primereact/progressbar";
 
-import { CiImageOn } from "react-icons/ci";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { CiBookmarkRemove } from "react-icons/ci";
-
 const FileUploader = ({ type, maxSize, label, upload }) => {
   const { showToast } = useToast();
   const [totalSize, setTotalSize] = useState(0);
@@ -107,17 +103,17 @@ console.log(fileUploadRef)
 
 
   const chooseOptions = {
-    icon: <CiImageOn />,
+    icon: "pi pi-image",
     iconOnly: true,
     className: "custom-choose-btn rounded-full bg-primary-500 hover:bg-primary-700",
   };
   const uploadOptions = {
-    icon: <IoCloudUploadOutline />,
+    icon: "pi pi-cloud",
     iconOnly: true,
     className: "custom-upload-btn rounded-full bg-green-500 hover:bg-green-700",
   };
   const cancelOptions = {
-    icon: <CiBookmarkRemove />,
+    icon: "pi pi-times",
     iconOnly: true,
     className: "custom-cancel-btn rounded-full bg-red-500 hover:bg-red-700",
   };
