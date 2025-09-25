@@ -80,7 +80,7 @@ const FT_Bolsista_Modal = ({
       showToast(
         "error",
         "Error",
-        "Erro ao salvar bolsista " + error.response.data.message
+        "Erro ao salvar bolsista " + error.response?.data?.message || error
       );
       return;
     } finally {
