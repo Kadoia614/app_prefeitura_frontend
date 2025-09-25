@@ -56,7 +56,7 @@ input {
 }
 
 .content {
-  @apply w-full mb-10 py-5 overflow-auto relative;
+  @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
 }
 
 .p-datepicker-trigger {
