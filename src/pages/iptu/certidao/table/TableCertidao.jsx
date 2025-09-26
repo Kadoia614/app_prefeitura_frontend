@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Tree } from "primereact/tree";
 import { DataTable } from "primereact/datatable";
 
 import TableContainer from "../../../../components/shared/table/TableContainer";
@@ -8,6 +7,7 @@ import InputFieldLine from "../../../../components/shared/input/inputfield/Input
 import { InputSwitch } from "primereact/inputswitch";
 import { useToast } from "../../../../components/shared/toast/ToastProvider";
 import { Column } from "primereact/column";
+import FileUploadIptu from "../FileUpload";
 const TableCertidao = () => {
   const { showToast } = useToast();
 
@@ -134,16 +134,12 @@ const TableCertidao = () => {
           </div>
           <div className="border-1 border-gray-200 rounded-md p-4 w-full max-w-70">
             {targetDocuments &&
-              targetDocuments.map((document) => (
-                <div key={document.uuid} className="text-md text-gray-400">
-                  <div>
-                    <a href={document.src} target="_blank">
-                      <i className="p-treenode-icon pi pi-file pr-2"></i>
-                      <span className="p-treenode-label">{document.name}</span>
-                    </a>
-                  </div>
+              <>
+                <div>
+                  <FileUploadIptu maxSize={2000000} type="file" className="btn-primary w-full"></FileUploadIptu>
                 </div>
-              ))}
+              </>
+              }
           </div>
         </div>
       </TableContainer>
