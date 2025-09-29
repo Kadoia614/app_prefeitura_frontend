@@ -4,31 +4,33 @@ import { useRef } from "react";
 import { FileUpload } from "primereact/fileupload";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import { Tooltip } from "primereact/tooltip";
+import { postCertidao } from "../../../../service/iptu";
+import prepareBase64 from "../../../../assets/js/prepareBase64";
 
-const FileUploadIptu = ({label }) => {
+const FileUploadIptu = ({ uuid }) => {
   const { showToast } = useToast();
   const fileUploadRef = useRef(null);
 
   const handleUpload = async (e) => {
     const file = e.files[0];
     if (!file) {
-    showToast("error", "Erro", "Nenhum arquivo selecionado");
-    return;
-  }
+      showToast("error", "Erro", "Nenhum arquivo selecionado");
+      return;
+    }
 
     try {
-      const reader = new FileReader();
+      const base64 = await prepareBase64(file)
 
-      await reader.readAsDataURL(file);
+      const payload = {
+          municipe_uuid: uuid,
+          name: base64.name,
+          archive: base64.archive,
+        };
+        await postCertidao(payload);
 
-      reader.onloadend = () => {
-        alert(reader.result);
-      };
+        showToast("success", "Sucesso", "Upload realizado com sucesso");
 
-      showToast("success", "Sucesso", "Upload realizado com sucesso");
-      fileUploadRef.current.clear();
     } catch (error) {
-        alert(error)
       fileUploadRef.current?.onError?.();
 
       showToast(
@@ -36,7 +38,15 @@ const FileUploadIptu = ({label }) => {
         "Erro",
         "Erro ao fazer upload: " + error.response?.data?.message || error
       );
+    } finally {
+      fileUploadRef.current?.clear?.();
     }
+  };
+
+  const chooseOptions = {
+    icon: "pi pi-fw pi-file-plus",
+    label: "Adicionar Arquivo",
+    className: "btn-primary custom-choose-btn w-full text-center",
   };
 
   return (
@@ -52,10 +62,10 @@ const FileUploadIptu = ({label }) => {
         name="uploadCertidao"
         mode="basic"
         customUpload
-        accept="image/*"
+        accept="application/pdf"
         maxFileSize={2000000}
+        chooseOptions={chooseOptions}
         uploadHandler={handleUpload}
-        chooseLabel={label}
         auto
       />
     </>
@@ -63,7 +73,7 @@ const FileUploadIptu = ({label }) => {
 };
 
 FileUploadIptu.propTypes = {
-  label: PropTypes.string,
+  uuid: PropTypes.string.isRequired,
 };
 
 export default FileUploadIptu;
