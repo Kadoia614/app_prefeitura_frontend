@@ -45,19 +45,24 @@ const Header = () => {
 
   return (
     <header className="bg-primary-500 text-white font-bold h-20 flex items-center justify-between flex-row py-4 px-8">
+      <div className="flex flex-row items-end">
       <a href="#" className="w-16 bg-white rounded-md">
         <img src={logo} alt="" className="h-12 m-auto p-0" />
+        
       </a>
-
+</div>
       <div className="flex flex-row justify-between items-center">
         {user.auth ? (
           <>
             <div className="flex flex-row items-center mr-10">
-              {Object.keys(groupedServices).length > 0 && (
+              
                 <Menu as="div" className="relative">
                   <MenuButton className="cursor-pointer">Serviços</MenuButton>
+                  
+                  {/* <MenuButton className="cursor-pointer"><a href="/services"><i className="pi pi-home ml-4 font-bold text-3xl"></i></a></MenuButton> */}
+
                   <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white pb-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
-                    {Object.entries(groupedServices).map(([tag, services]) => (
+                    { Object.keys(groupedServices).length > 0 && Object.entries(groupedServices).map(([tag, services]) => (
                       <div key={tag}>
                         <div className="px-4 py-2 text-xs font-semibold bg-gray-500/10 text-gray-500 uppercase">
                           {tag}
@@ -76,7 +81,7 @@ const Header = () => {
                     ))}
                   </MenuItems>
                 </Menu>
-              )}
+              
             </div>
 
             <Menu as="div" className="relative">
@@ -86,7 +91,7 @@ const Header = () => {
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
                 <MenuItem>
                   <a
-                    href="/config"
+                    href="/services/config"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Perfil
@@ -94,7 +99,7 @@ const Header = () => {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="/config"
+                    href="/services/config"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Configurações

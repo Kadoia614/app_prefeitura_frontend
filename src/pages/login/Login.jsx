@@ -31,7 +31,7 @@ const Login = () => {
       attUser(data.ip, data.name, data.scopo);
 
       attIsLoading(false);
-      navigate("/");
+      navigate("/services");
     } catch (error) {
       showToast(
         "error",
@@ -52,7 +52,7 @@ const Login = () => {
 
       let response = await API.get("/auth");
       if (response.status === 200) {
-        navigate("/");
+        navigate("/services");
       }
       AttAuth(true);
     } catch (error) {

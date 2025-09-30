@@ -21,7 +21,7 @@ const ProtectRoutes = () => {
       if (err.status === 401) {
         AttAuth(false);
         localStorage.removeItem("token");
-        navigate("/login");
+        navigate("/");
       } else {
         console.log(err.response.data.message);
         setError(err);
