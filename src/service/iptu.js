@@ -6,8 +6,12 @@ export const postCertidao = async (payload) => {
     return data
 }
 
-export const getMunicipe = async () => {
-    const {data} = await API.get(`/iptu/municipe`);
+export const getMunicipe = async (query) => {
+    const {page, limit, search} = query
+     const url = search
+    ? `/iptu/municipe?page=${page || 0}&limit=${limit || 10}&search=${search}`
+    : `/iptu/municipe?page=${page || 0}&limit=${limit || 10}`;
+    const {data} = await API.get(`${url}`);
 
     return data
 }

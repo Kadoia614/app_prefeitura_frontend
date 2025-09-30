@@ -31,7 +31,7 @@ const EditalTableHeader = ({
     {
       label: "Novo Edital",
       icon: "pi pi-file-plus",
-      className: "add-edital-btn bg-yellow-600/70 hover:bg-yellow-700/70",
+      className: "add-edital-btn bg-highlight hover:bg-highlight-hover",
       command: () => {
         setIsEditalModalOpen(true);
       },
@@ -40,7 +40,7 @@ const EditalTableHeader = ({
       label: "Vincular Bolsista",
       icon: "pi pi-link",
       disabled: status === "inativo" || !selectedTable,
-      className: "vinculate-bolsista-edital-btn bg-green-600/70 hover:bg-green-700/70",
+      className: "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
       command: () => {
         setIsVincularModalOpen(true);
       },

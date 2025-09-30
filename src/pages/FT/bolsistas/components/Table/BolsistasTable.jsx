@@ -11,17 +11,17 @@ import TableContainer from "../../../../../components/shared/table/TableContaine
 
 const tag = {
   ativo: {
-    style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    style: "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
     icon: <i className="pi pi-check-circle">  </i>,
     label: "Ativo",
   },
   inativo: {
-    style: "bg-amber-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    style: "bg-amber-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
     icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Inativo",
   },
   pendente: {
-    style: "bg-red-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
+    style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
     icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Pendente",
   },
@@ -57,7 +57,7 @@ const BolsistasTable = ({
         tooltip={`Editar`}
         icon={"pi pi-pen-to-square"}
         iconPos="left"
-        color="text-primary-500 bg-white border-none"
+        color="text-primary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
           setModalData(rowData);
@@ -67,7 +67,7 @@ const BolsistasTable = ({
         tooltip={`Documentos`}
         icon={"pi pi-file"}
         iconPos="left"
-        color="text-primary-500 bg-white border-none"
+        color="text-primary bg-white border-none"
         onClick={() => {
           setSideBarOpen(true);
           setSideBarId(rowData.id);
@@ -78,7 +78,7 @@ const BolsistasTable = ({
         <TableButton
           tooltip={`Excluir`}
           icon={"pi pi-trash"}
-          color="text-red-500 bg-white border-none"
+          color="text-danger bg-white border-none"
           onClick={() => {
             setExcludeModal(rowData.id), setExcludeModalOpen(true);
           }}
@@ -105,7 +105,7 @@ const BolsistasTable = ({
           <Column
             field="id"
             header="Id"
-            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            className="text-sm text-text-muted p-4 whitespace-nowrap"
           />
           <Column
             field="nome"
@@ -114,7 +114,7 @@ const BolsistasTable = ({
             filter
             filterPlaceholder="Pesquisar Nome"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="local"
@@ -123,14 +123,14 @@ const BolsistasTable = ({
             filter
             filterPlaceholder="Pesquisar Local"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="status"
             header="Status"
             body={renderStatus}
             sortable
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="createdAt"
@@ -139,7 +139,7 @@ const BolsistasTable = ({
             filter
             filterPlaceholder="Pesquisar data"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
               new Date(rowData.createdAt).toLocaleDateString("pt-BR")
             }

@@ -105,17 +105,17 @@ console.log(fileUploadRef)
   const chooseOptions = {
     icon: "pi pi-image",
     iconOnly: true,
-    className: "custom-choose-btn rounded-full bg-primary-500 hover:bg-primary-700",
+    className: "custom-choose-btn rounded-full bg-primary hover:bg-primary-700",
   };
   const uploadOptions = {
     icon: "pi pi-cloud",
     iconOnly: true,
-    className: "custom-upload-btn rounded-full bg-green-500 hover:bg-green-700",
+    className: "custom-upload-btn rounded-full bg-success-primary hover:bg-success-primary-hover",
   };
   const cancelOptions = {
     icon: "pi pi-times",
     iconOnly: true,
-    className: "custom-cancel-btn rounded-full bg-red-500 hover:bg-red-700",
+    className: "custom-cancel-btn rounded-full bg-danger hover:bg-red-700",
   };
 
   return (

@@ -137,7 +137,7 @@ const Vincular_Bolsista = ({
                   className={`ml-2 ${
                     bolsista.status === "pendente" ||
                     editalData.bolsistas.includes(bolsista.id)
-                      ? "text-red-500/80 font-bold capitalize"
+                      ? "text-danger/80 font-bold capitalize"
                       : ""
                   }`}
                 >

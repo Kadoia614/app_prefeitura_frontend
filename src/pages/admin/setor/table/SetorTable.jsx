@@ -20,7 +20,7 @@ const SetorTable = ({
         tooltip={`Editar`}
         icon={"pi pi-pen-to-square"}
         iconPos="left"
-        color="text-primary-500 bg-white border-none"
+        color="text-primary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
           setModalData(rowData);
@@ -31,7 +31,7 @@ const SetorTable = ({
         tooltip={`Excluir`}
         icon={"pi pi-trash"}
         iconPos="left"
-        color="text-red-500 bg-white border-none"
+        color="text-danger bg-white border-none"
         onClick={() => {
           setExcludeModalOpen(true);
           setExcludeModal(rowData.id);

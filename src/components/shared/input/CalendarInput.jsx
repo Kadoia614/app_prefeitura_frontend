@@ -14,7 +14,7 @@ const CalendarInput = ({
   invalid,
 }) => (
   <fieldset className="mt-2 border=0">
-    <label htmlFor={id} className="font-bold text-gray-700">
+    <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
     <div className="mt-1">
@@ -23,7 +23,7 @@ const CalendarInput = ({
         id={id}
         placeholder={`${placeHolder || label || ""}`}
         value={value ? value : null}
-        className={`rounded-md py-1.5 focus:border-blue-500 ${inputClass} ${
+        className={`rounded-md py-1.5 focus:border-primary ${inputClass} ${
           disabled ? "bg-gray-100" : ""
         }`}
         onChange={onChange}

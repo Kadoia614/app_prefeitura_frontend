@@ -9,7 +9,7 @@ const BolsistaTableHeader = ({ setOpenModalEdit }) => {
     {
       label: "Adicionar Bolsista",
       icon: "pi pi-user",
-      className: "add-bolsista-btn bg-primary-500/70 hover:bg-primary-700/70",
+      className: "add-bolsista-btn bg-primary/70 hover:bg-primary-700/70",
       command: () => {
         setOpenModalEdit(true);
       },

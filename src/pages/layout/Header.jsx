@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-primary-500 text-white font-bold h-20 flex items-center justify-between flex-row py-4 px-8">
+    <header className="bg-primary text-on-primary font-bold h-20 flex items-center justify-between flex-row py-4 px-8">
       <div className="flex flex-row items-end">
       <a href="#" className="w-16 bg-white rounded-md">
         <img src={logo} alt="" className="h-12 m-auto p-0" />
@@ -64,14 +64,14 @@ const Header = () => {
                   <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white pb-1 ring-1 shadow-lg ring-black/5 transition focus:outline-none">
                     { Object.keys(groupedServices).length > 0 && Object.entries(groupedServices).map(([tag, services]) => (
                       <div key={tag}>
-                        <div className="px-4 py-2 text-xs font-semibold bg-gray-500/10 text-gray-500 uppercase">
+                        <div className="px-4 py-2 text-xs font-semibold bg-secondary text-on-secondary hover:bg-secondary-hover uppercase">
                           {tag}
                         </div>
                         {services.map((service) => (
                           <MenuItem key={service.id}>
                             <a
                               href={service.url}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              className="block px-4 py-2 text-sm text-text-muted hover:bg-cancel"
                             >
                               {service.name}
                             </a>
@@ -92,7 +92,7 @@ const Header = () => {
                 <MenuItem>
                   <a
                     href="/services/config"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-text-muted hover:bg-gray-100"
                   >
                     Perfil
                   </a>
@@ -100,7 +100,7 @@ const Header = () => {
                 <MenuItem>
                   <a
                     href="/services/config"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-text-muted hover:bg-gray-100"
                   >
                     Configurações
                   </a>
