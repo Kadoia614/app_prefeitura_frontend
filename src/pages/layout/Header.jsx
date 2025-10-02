@@ -40,7 +40,7 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("token");
     AttAuth(false);
-    navigate("/login");
+    navigate("/");
   };
 
   return (

@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route path="/" index element={<Login />} />
 
-            <Route path="/services" element={<ProtectRoutes />}>
+            <Route path="/services/:id?" element={<ProtectRoutes />}>
               <Route index element={<ServicesCards />} />
               <Route path="config" element={<UserConfig />} />
               <Route path="admin" element={<Admin />} />

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { FileUpload } from "primereact/fileupload";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import { Tooltip } from "primereact/tooltip";
-import { postCertidao } from "../../../../service/iptu";
+import { IPTUCertidaoService } from "../../../../service/iptu";
 import prepareBase64 from "../../../../assets/js/prepareBase64";
 
 const FileUploadIptu = ({ uuid }) => {
@@ -26,7 +26,7 @@ const FileUploadIptu = ({ uuid }) => {
           name: base64.name,
           archive: base64.archive,
         };
-        await postCertidao(payload);
+        await IPTUCertidaoService.post(payload);
 
         showToast("success", "Sucesso", "Upload realizado com sucesso");
 
