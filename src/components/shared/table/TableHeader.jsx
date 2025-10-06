@@ -25,7 +25,7 @@ const TableHeader = ({start, center, end}) => {
   );
 
   return (
-    <div className="relative header-table">
+    <div className="relative">
       <Toolbar start={startContent} center={centerContent} end={endContent} />
     </div>
   );

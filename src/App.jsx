@@ -24,7 +24,7 @@ function App() {
     <>
       <div id="Main" className="min-h-full flex flex-col">
         <Header />
-        <div className="flex flex-col justify-between h-[100%] overflow-scroll">
+        <div className="flex flex-col justify-between h-[100%] overflow-auto">
           <Routes>
             <Route path="/" index element={<Login />} />
 

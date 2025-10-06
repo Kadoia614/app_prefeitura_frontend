@@ -15,7 +15,7 @@ const ProtectRoutes = () => {
     try {
       const { data } = await API.get("/auth");
       console.log("user autenticado");
-      attUser(data.user.ip, data.user.name, data.user.scopo);
+      attUser(data.user.ip, data.user.name, data.user.role);
       AttAuth(true);
     } catch (err) {
       if (err.status === 401) {
@@ -41,7 +41,7 @@ const ProtectRoutes = () => {
 
   return (
     <>
-      <div className="container mx-auto my-4 bg-gray-100">
+      <div className="container mx-auto my-4 bg-gray-100 rounded-md">
         <Outlet context={{ attIsLoading }} />
       </div>
     </>
