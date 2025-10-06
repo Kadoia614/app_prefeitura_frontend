@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { IPTUCertidaoService } from "../../../../service/iptu";
 import { useToast } from "../../../../components/shared/toast/ToastProvider";
 
-const Files = ({ data, sudoMode }) => {
+const Files = ({ data, sudoMode, setData, setTarget }) => {
   const { showToast } = useToast();
 
   const deleteCertidao = async (id) => {
@@ -63,6 +63,8 @@ const Files = ({ data, sudoMode }) => {
             maxSize={2000000}
             type="file"
             className="btn-primary w-full"
+            setData={setData}
+            setTarget={setTarget}
           ></FileUploadIptu>
           {data?.certs &&
             data.certs.map((c) => {
@@ -103,6 +105,8 @@ const Files = ({ data, sudoMode }) => {
 
 Files.propTypes = {
   sudoMode: PropTypes.bool,
+  setData: PropTypes.func.isRequired,
+  setTarget: PropTypes.func.isRequired,
   data: PropTypes.shape({
     uuid: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     certs: PropTypes.arrayOf(

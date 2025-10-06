@@ -153,7 +153,14 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
               ></Column>
             )}
           </DataTable>
-          {target && <Files data={target} sudoMode={sudoMode} />}
+          {target && (
+            <Files
+              data={target}
+              sudoMode={sudoMode}
+              setData={setData}
+              setTarget={setTarget}
+            />
+          )}
         </div>
         <Paginator
           first={query.page}

@@ -7,7 +7,7 @@ import { Tooltip } from "primereact/tooltip";
 import { IPTUCertidaoService } from "../../../../service/iptu";
 import prepareBase64 from "../../../../assets/js/prepareBase64";
 
-const FileUploadIptu = ({ uuid }) => {
+const FileUploadIptu = ({ uuid, setData, setTarget }) => {
   const { showToast } = useToast();
   const fileUploadRef = useRef(null);
 
@@ -19,17 +19,28 @@ const FileUploadIptu = ({ uuid }) => {
     }
 
     try {
-      const base64 = await prepareBase64(file)
+      if (!uuid) {
+        showToast("error", "Erro", "Nenhum municipe selecionado");
+      }
+      const base64 = await prepareBase64(file);
 
       const payload = {
-          municipe_uuid: uuid,
-          name: base64.name,
-          archive: base64.archive,
-        };
-        await IPTUCertidaoService.post(payload);
+        municipe_uuid: uuid,
+        name: base64.name,
+        archive: base64.archive,
+      };
 
-        showToast("success", "Sucesso", "Upload realizado com sucesso");
+      const { cert } = await IPTUCertidaoService.post(payload);
 
+      setData((prevVisitors) =>
+        prevVisitors.map((item) =>
+          item.uuid === uuid ? { ...item, certs: [...item.certs, cert] } : item
+        )
+      );
+
+      setTarget((prev) => ({ ...prev, certs: [...prev.certs, cert] }));
+
+      showToast("success", "Sucesso", "Upload realizado com sucesso");
     } catch (error) {
       fileUploadRef.current?.onError?.();
 
@@ -74,6 +85,8 @@ const FileUploadIptu = ({ uuid }) => {
 
 FileUploadIptu.propTypes = {
   uuid: PropTypes.string.isRequired,
+  setData: PropTypes.func.isRequired,
+  setTarget: PropTypes.func.isRequired,
 };
 
 export default FileUploadIptu;
