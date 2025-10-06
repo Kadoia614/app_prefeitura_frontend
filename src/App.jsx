@@ -24,16 +24,16 @@ function App() {
     <>
       <div id="Main" className="min-h-full flex flex-col">
         <Header />
-        <div className="flex flex-col justify-between h-[100%] overflow-scroll">
+        <div className="flex flex-col justify-between h-[100%] overflow-auto">
           <Routes>
-            <Route path="/login" index element={<Login />} />
+            <Route path="/" index element={<Login />} />
 
-            <Route path="/" element={<ProtectRoutes />}>
+            <Route path="/services/:id?" element={<ProtectRoutes />}>
               <Route index element={<ServicesCards />} />
-              <Route path="/config" element={<UserConfig />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/ft-app" element={<FT_APP />}></Route>
-              <Route path="/iptu/certidao" element={<CertidaoIPTU></CertidaoIPTU>}></Route>
+              <Route path="config" element={<UserConfig />} />
+              <Route path="admin" element={<Admin />} />
+              <Route path="ft-app" element={<FT_APP />}></Route>
+              <Route path="iptu/certidao" element={<CertidaoIPTU></CertidaoIPTU>}></Route>
             </Route>
 
             <Route path="*" element={<HandleError />} />

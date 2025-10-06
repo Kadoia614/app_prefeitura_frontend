@@ -290,7 +290,7 @@ const FT_Bolsista_Modal = ({
                   </div>
                   <div className="mt-1 col-span-3">
                     <fieldset className="mt-2">
-                      <label className="font-bold text-gray-700">
+                      <label className="font-bold text-text-muted">
                         Quantidade ativos
                       </label>
                       <div className="mt-1">

@@ -3,9 +3,6 @@ import { Button } from "primereact/button";
 
 import Avatar from "../../assets/img/avatar2.svg";
 
-import { FaUser } from "react-icons/fa";
-import { MdOutlinePassword } from "react-icons/md";
-
 import InputField from "@/components/shared/input/inputfield/InputField";
 import PasswordField from "@/components/shared/input/passwordfield/PasswordField";
 import { useUserContext } from "../../context/user/UserContext";
@@ -52,7 +49,6 @@ const UserConfig = () => {
           <div className="flex flex-col gap-4 w-full py-4">
             <div>
               <InputField
-                icon={<FaUser />}
                 id={"UsernameAlter"}
                 placeholder="Usuário"
                 className="w-full input"
@@ -64,7 +60,6 @@ const UserConfig = () => {
 
               <PasswordField
                 id={"PasswordAlter"}
-                icon={<MdOutlinePassword />}
                 label={"Senha Atual"}
                 placeholder="Senha Atual..."
                 feedback={false}
@@ -76,7 +71,6 @@ const UserConfig = () => {
 
               <PasswordField
                 id={"NewPassword"}
-                icon={<MdOutlinePassword />}
                 label={"Nova Senha"}
                 placeholder="Nova Senha"
                 feedback={true}
@@ -91,7 +85,6 @@ const UserConfig = () => {
 
               <PasswordField
                 id={"ConfirmNewPassword"}
-                icon={<MdOutlinePassword />}
                 label={"Confirme a Nova Senha"}
                 placeholder="Nova Senha"
                 feedback={true}

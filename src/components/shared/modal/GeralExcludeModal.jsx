@@ -49,7 +49,7 @@ const GeralExcludeModal = ({
       typeAction="btn-danger"
       typeCancel="btn-cancel"
     >
-      <p className="text-red-500 font-bold">{message}</p>
+      <p className="text-danger font-bold">{message}</p>
     </Modal>
   );
 };

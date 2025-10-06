@@ -3,11 +3,6 @@ import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import { GiConfirmed } from "react-icons/gi";
-import { CiWarning } from "react-icons/ci";
-import { AiOutlineExclamation } from "react-icons/ai";
-import { ImCross } from "react-icons/im";
-
 import { useToast } from "@/components/shared/toast/ToastProvider";
 import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
@@ -19,23 +14,23 @@ import { useLoadingContext } from "../../../../../context/loading/LoadingContext
 
 const tag = {
   ativo: {
-    style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <GiConfirmed />,
+    style: "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-check-circle"></i>,
     label: "Ativo",
   },
   concluido: {
-    style: "bg-green-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <GiConfirmed />,
+    style: "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-check-circle"></i>,
     label: "Concluido",
   },
   inativo: {
-    style: "bg-amber-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <CiWarning />,
+    style: "bg-amber-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Inativo",
   },
   pendente: {
-    style: "bg-red-200/70 text-gray-500/70 p-2 text-sm rounded-md font-bold",
-    icon: <AiOutlineExclamation />,
+    style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Pendente",
   },
 };
@@ -94,9 +89,9 @@ const EditalTable = ({
       {selectedTable && (
         <TableButton
           tooltip={`Inativar bolsista`}
-          icon={<ImCross />}
+          icon={"pi pi-times"}
           iconPos="left"
-          color="text-yellow-500 bg-white border-none"
+          color="text-danger bg-white border-none"
           onClick={() => {
             confirmToggle(rowData.id);
           }}
@@ -129,7 +124,7 @@ const EditalTable = ({
           <Column
             field="id"
             header="Id"
-            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            className="text-sm text-text-muted p-4 whitespace-nowrap"
           />
           <Column
             field="nome"
@@ -138,7 +133,7 @@ const EditalTable = ({
             filter
             filterPlaceholder="Pesquisar Nome"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="local"
@@ -147,14 +142,14 @@ const EditalTable = ({
             filter
             filterPlaceholder="Pesquisar Local"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="BolsistasEdital.status"
             header="Status"
             body={renderStatus}
             sortable
-            className="text-sm text-gray-800 p-4"
+            className="text-sm text-text-muted p-4"
           />
           <Column
             field="BolsistasEdital.data_vinculo"
@@ -163,7 +158,7 @@ const EditalTable = ({
             filter
             filterPlaceholder="Pesquisar data"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
               new Date(rowData.BolsistasEdital.data_vinculo).toLocaleDateString(
                 "pt-BR"
@@ -178,14 +173,14 @@ const EditalTable = ({
             filter
             filterPlaceholder="Pesquisar data"
             filterMatchMode="contains"
-            className="text-sm text-gray-800 p-4 whitespace-nowrap"
+            className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
               !rowData.BolsistasEdital.prorrogated ? (
                 new Date(rowData.BolsistasEdital.expire_at).toLocaleDateString(
                   "pt-BR"
                 )
               ) : (
-                <p className="text-green-500 font-bold">Prorrogado</p>
+                <p className="text-success font-bold">Prorrogado</p>
               )
             }
           />
@@ -203,7 +198,7 @@ const EditalTable = ({
         typeAction="btn-danger"
         isOpen={alterModalOpen}
       >
-        <p className="text-red-500 font-bold mt-2">
+        <p className="text-danger font-bold mt-2">
           Tem certeza que deseja alterar esse item? Os dados alterados não
           poderão ser recuperados.
         </p>

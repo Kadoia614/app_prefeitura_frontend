@@ -1,7 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { IoIosArrowDown } from "react-icons/io";
 import { Checkbox } from "primereact/checkbox";
 import { InputSwitch } from "primereact/inputswitch";
 
@@ -123,8 +122,8 @@ const SaveServiceModal = ({
               onClick={() => setRolePermission(!rolePermission)}
             >
               <h3 className="text-lg font-bold">Roles permissions</h3>
-              <IoIosArrowDown
-                className={`transition ${
+              <i
+                className={`transition pi pi-angle-down ${
                   rolePermission ? "rotate-180" : "rotate-0"
                 }`}
               />
@@ -217,8 +216,8 @@ const SaveServiceModal = ({
               onClick={() => setDropdownService(!dropdownService)}
             >
               <h3 className="text-lg font-bold">Service Visibility</h3>
-              <IoIosArrowDown
-                className={`transition ${
+              <i
+                className={`transition pi pi-angle-down ${
                   dropdownService ? "rotate-180" : "rotate-0"
                 }`}
               />

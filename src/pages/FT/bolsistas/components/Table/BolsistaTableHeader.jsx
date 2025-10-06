@@ -1,8 +1,5 @@
 import PropTypes from "prop-types";
 
-
-import { FaUser } from "react-icons/fa";
-
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from "primereact/tooltip";
 import TableHeader from "../../../../../components/shared/table/TableHeader";
@@ -11,8 +8,8 @@ const BolsistaTableHeader = ({ setOpenModalEdit }) => {
   const items = [
     {
       label: "Adicionar Bolsista",
-      icon: <FaUser />,
-      className: "add-bolsista-btn bg-primary-500/70 hover:bg-primary-700/70",
+      icon: "pi pi-user",
+      className: "add-bolsista-btn bg-primary/70 hover:bg-primary-700/70",
       command: () => {
         setOpenModalEdit(true);
       },

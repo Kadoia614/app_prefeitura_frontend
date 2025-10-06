@@ -6,9 +6,6 @@ import { useLoadingContext } from "@/context/loading/LoadingContext";
 import { useUserContext } from "@/context/user/UserContext";
 import { useToast } from "@/components/shared/toast/ToastProvider";
 
-import { MdOutlinePassword } from "react-icons/md";
-
-import { FaUser } from "react-icons/fa";
 import { Button } from "primereact/button";
 
 import PasswordFieldLine from "../../components/shared/input/passwordfield/PasswordFieldLine";
@@ -34,7 +31,7 @@ const Login = () => {
       attUser(data.ip, data.name, data.scopo);
 
       attIsLoading(false);
-      navigate("/");
+      navigate("/services");
     } catch (error) {
       showToast(
         "error",
@@ -55,7 +52,7 @@ const Login = () => {
 
       let response = await API.get("/auth");
       if (response.status === 200) {
-        navigate("/");
+        navigate("/services");
       }
       AttAuth(true);
     } catch (error) {
@@ -86,14 +83,14 @@ const Login = () => {
         <div className="flex bg-white px-5 sm:px-10 py-10 w-full">
           <div className="flex flex-col w-full md:w-1/2">
             <h1 className="text-3xl text-center">Login</h1>
-            <div className="md:border-r-1 border-primary-500 w-[100%]">
+            <div className="md:border-r-1 border-text-primary w-[100%]">
               <div
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 className="bg-white py-4 px-4 box-border"
               >
                 <div className="flex flex-col my-4">
                   <InputFieldLine
-                    icon={<FaUser />}
+                    icon={<i className="pi pi-user"> </i>}
                     type="text"
                     id="User"
                     placeholder="Usuário"
@@ -105,7 +102,7 @@ const Login = () => {
                   <PasswordFieldLine
                     widthField="mt-4"
                     inputClass={"w-full"}
-                    icon={<MdOutlinePassword />}
+                    icon={<i className="pi pi-key"> </i>}
                     placeholder="Senha"
                     id="Pwd"
                     value={password}
@@ -116,22 +113,22 @@ const Login = () => {
 
                 <div className="flex flex-col text-center gap-2 my-4">
                   <div>
-                    <p className="text-sm text-gray-500 wrap">
+                    <p className="text-sm text-text-muted wrap">
                       Não tem uma conta?{" "}
                       <a
                         href="/register"
-                        className="text-blue-500 hover:underline"
+                        className="text-primary hover:underline"
                       >
                         Solicite acesso
                       </a>
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-text-muted">
                       Esqueceu sua senha?{" "}
                       <a
                         href="/reset-password"
-                        className="text-blue-500 hover:underline"
+                        className="text-primary hover:underline"
                       >
                         Redefina sua senha
                       </a>
@@ -153,13 +150,13 @@ const Login = () => {
         </div>
 
         <div className="text-center">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-muted">
             Ao clicar em <b>Login</b>, você concorda com nossos{" "}
-            <a href="/terms" className="text-blue-500 hover:underline">
+            <a href="/terms" className="text-primary hover:underline">
               Termos de Serviço
             </a>{" "}
             e{" "}
-            <a href="/privacy" className="text-blue-500 hover:underline">
+            <a href="/privacy" className="text-primary hover:underline">
               Política de Privacidade
             </a>
           </p>

@@ -14,7 +14,7 @@ const PasswordFieldLine = ({
   feedback,
 }) => (
   <fieldset className={`mt-2 ${widthField}`}>
-    <label htmlFor={id} className="font-bold text-gray-700">
+    <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
     <div className="mt-1">

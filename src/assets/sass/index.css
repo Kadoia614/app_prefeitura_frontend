@@ -5,15 +5,43 @@
 @import "tailwindcss/theme";
 
 @theme {
-  --color-primary-100: #d0edf8;
-  --color-primary-200: #a1dbf2;
-  --color-primary-300: #72c9eb;
-  --color-primary-400: #43b7e5;
-  --color-primary-500: #14a5de;
-  --color-primary-600: #1084b2;
-  --color-primary-700: #0c6385;
-  --color-primary-800: #084259;
-  --color-primary-900: #04212c;
+  --color-primary: #007bff;
+  --color-on-primary: #FFFFFF;       /* Branco puro: alto contraste */
+  --color-primary-hover: #00a4d2;
+  --color-on-primary-muted: #F0F8FF; /* Azul gelo: suave, ainda legível */
+
+  --color-secondary: #CDE8D5;
+  --color-on-secondary: #2F4F4F;     /* Cinza esverdeado escuro */
+  --color-secondary-hover: #B3D6C0;
+  --color-on-secondary-muted: #4B4B4B; /* Cinza neutro escuro */
+
+  --color-accent: #F2E2B8;
+  --color-accent-hover: #f4f9fc;
+
+  --color-cancel: oklch(92.8% 0.006 264.531);
+  --color-on-cancel: #6a7282;
+  --color-cancel-hover: oklch(87.2% 0.01 258.338);
+
+  --color-background: #fdfdfb;
+
+  --color-text: #A6A6A6;
+  --color-text-hover: #4a4a4a;
+
+  --color-text-muted: #7a7a7a;
+  --color-text-muted-hover: #A6A6A6;
+
+  --color-danger: oklch(63.7% 0.237 25.331);
+  --color-text-on-danger: #2F4F4F;
+  --color-danger-hover: oklch(70.4% 0.191 22.216);
+
+  --color-success-primary: oklch(52.7% 0.154 150.069);
+  --color-success-primary-hover: #BFD8B8;
+
+  --color-highlight: oklch(68.1% 0.162 75.834);
+  --color-highlight-hover: oklch(79.5% 0.184 86.047);
+
+  --color-info: oklch(62.3% 0.214 259.815);
+  --color-info-hover: oklch(54.6% 0.245 262.881);
 
   --animate-jump: jump 0.5s ease-in-out;
 }
@@ -21,7 +49,7 @@
 #root {
   font-family: "Inika", serif;
   font-weight: 400;
-  @apply h-dvh text-lg flex flex-col bg-gray-200;
+  @apply h-dvh text-lg flex flex-col bg-background;
 }
 
 #Main {
@@ -32,11 +60,11 @@
 
 .input .p-calendar,
 input {
-  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500;
+  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-text-muted  placeholder:text-text-muted-hover focus:outline-2 focus:-outline-offset-2 focus:outline-primary;
 }
 
 .p-speeddial-button {
-  @apply h-[48px] w-[48px] bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2;
+  @apply h-[48px] w-[48px] bg-primary hover:bg-primary-hover cursor-pointer text-on-primary py-1 px-2;
 }
 
 .p-speeddial-list {
@@ -44,15 +72,15 @@ input {
 }
 
 .btn-primary {
-  @apply bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2 rounded;
+  @apply bg-primary text-on-primary hover:bg-primary-hover hover:text-on-primary-muted cursor-pointer  py-1 px-2 rounded;
 }
 
 .btn-cancel {
-  @apply bg-gray-200 hover:bg-gray-600 cursor-pointer text-gray-500 ring-1 ring-gray-400 py-1 px-2 rounded;
+  @apply bg-cancel hover:bg-cancel-hover cursor-pointer text-on-cancel ring-1 ring-cancel py-1 px-2 rounded;
 }
 
 .btn-danger {
-  @apply bg-red-500 hover:bg-red-600 cursor-pointer text-white py-1 px-2 rounded;
+  @apply bg-danger hover:bg-danger-hover cursor-pointer text-text-on-danger py-1 px-2 rounded;
 }
 
 .content {
@@ -60,10 +88,10 @@ input {
 }
 
 .p-datepicker-trigger {
-  @apply bg-primary-500 p-0;
+  @apply bg-primary p-0;
 }
 
-.p-password.w-full input{
+.p-password.w-full input {
   @apply w-full;
 }
 

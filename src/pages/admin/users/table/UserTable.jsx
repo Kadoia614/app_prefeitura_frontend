@@ -1,4 +1,3 @@
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
@@ -21,9 +20,9 @@ const UserTable = ({
     <div className="flex flex-wrap gap-2">
       <TableButton
         tooltip={`Editar`}
-        icon={<FaEdit />}
+        icon={"pi pi-pen-to-square"}
         iconPos="left"
-        color="text-primary-500 bg-white border-none"
+        color="text-primary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
           setModalData(rowData);
@@ -32,9 +31,9 @@ const UserTable = ({
 
       <TableButton
         tooltip={`Excluir`}
-        icon={<FaTrash />}
+        icon={"pi pi-trash"}
         iconPos="left"
-        color="text-red-500 bg-white border-none"
+        color="text-danger bg-white border-none"
         onClick={() => {
           setExcludeModalOpen(true);
           setExcludeModal(rowData.id);

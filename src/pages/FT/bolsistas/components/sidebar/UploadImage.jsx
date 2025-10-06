@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { FaUpload } from "react-icons/fa";
 import FileUploader from "@/components/shared/input/fileUploader";
 import { postDoc } from "@/service/ft_appServices";
 
@@ -20,7 +19,7 @@ const UploadImage = ({ type, id, posAction }) => {
       maxSize={2097152} // 2MB
       type={type}
       label="Subir arquivo"
-      icon={<FaUpload />}
+      icon={"pi pi-cloud-upload"}
       upload={handleUpload}
     />
   );
