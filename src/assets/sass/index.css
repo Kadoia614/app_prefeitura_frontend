@@ -5,7 +5,7 @@
 @import "tailwindcss/theme";
 
 @theme {
-  --color-primary: #007bff;
+  --color-primary: #80bdff;
   --color-on-primary: #FFFFFF;       /* Branco puro: alto contraste */
   --color-primary-hover: #00a4d2;
   --color-on-primary-muted: #F0F8FF; /* Azul gelo: suave, ainda legível */
@@ -53,7 +53,7 @@
 }
 
 #Main {
-  background-image: url("/bg.png");
+  /* background-image: url("/bg.png"); */
   background-size: cover;
   background-attachment: fixed;
 }

@@ -5,14 +5,17 @@ import { Column } from "primereact/column";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 import TableButton from "@/components/shared/table/TableButton";
-import BolsistaTableHeader from "./BolsistaTableHeader";
 import { useUserContext } from "@/context/user/UserContext";
 import TableContainer from "../../../../../components/shared/table/TableContainer";
+import { SpeedDial } from "primereact/speeddial";
+import { Tooltip } from "primereact/tooltip";
+import TableHeader from "../../../../../components/shared/table/TableHeader";
 
 const tag = {
   ativo: {
-    style: "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
-    icon: <i className="pi pi-check-circle">  </i>,
+    style:
+      "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-check-circle"> </i>,
     label: "Ativo",
   },
   inativo: {
@@ -50,6 +53,17 @@ const BolsistasTable = ({
       </div>
     );
   };
+
+  const renderItems = [
+    {
+      label: "Adicionar Bolsista",
+      icon: "pi pi-user",
+      className: "add-bolsista-btn bg-primary hover:bg-primary-hover",
+      command: () => {
+        setOpenModalEdit(true);
+      },
+    },
+  ];
 
   const renderActions = (rowData) => (
     <div className="flex gap-2">
@@ -90,8 +104,7 @@ const BolsistasTable = ({
   return (
     <>
       <TableContainer>
-        <BolsistaTableHeader tag={tag} setOpenModalEdit={setOpenModalEdit} />
-
+        <TableHeader center={"Bolsistas"}></TableHeader>
         <DataTable
           id="BolsistaTable"
           value={tableData}
@@ -101,6 +114,19 @@ const BolsistasTable = ({
           stripedRows
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
           rowClassName="hover:bg-gray-100 transition duration-200"
+          header={
+            <div className="relative flex justify-end">
+              <h1 className="font-bold absolute right-[50%] top-[50%] traslate-x-[-50%] translate-y-[-50%] text-nowrap">Painel de Munícipes</h1>
+              <Tooltip target=".add-bolsista-btn" position="bottom" />
+              <SpeedDial
+                className="relative"
+                model={renderItems}
+                direction="down"
+                type="linear"
+                style={{ right: 0 }}
+              ></SpeedDial>
+            </div>
+          }
         >
           <Column
             field="id"
