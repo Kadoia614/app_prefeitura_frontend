@@ -14,7 +14,18 @@ const Files = ({ data, sudoMode, setData, setTarget }) => {
         "success",
         "Sucesso",
         response?.message || "Deletado com sucesso!"
+      ); 
+      setData((prevVisitors) =>
+        prevVisitors.map((item) =>
+          item.uuid === data.uuid
+            ? { ...item, certs: item.certs.filter((cert) => cert.uuid !== id) }
+            : item
+        )
       );
+      setTarget((prev) => ({
+        ...prev,
+        certs: prev.certs.filter((cert) => cert.uuid !== id),
+      }));
     } catch (error) {
       showToast(
         "error",
