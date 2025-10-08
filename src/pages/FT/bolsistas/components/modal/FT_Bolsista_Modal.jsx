@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { postBolsista, updateBolsista } from "@/service/ft_appServices";
 
 import Modal from "@/components/shared/modal/Modal";
 import { useRef, useState } from "react";
@@ -12,85 +11,47 @@ import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask"
 import SelectField from "@/components/shared/input/SelectField";
 // import CalendarInput from "@/components/shared/input/CalendarInput";
 
-import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
+import { useBolsistaContext } from "../../../../../context/bolsista/BolsistaContext";
 
 const FT_Bolsista_Modal = ({
-  modalData,
-  setModalData,
-  openModalEdit,
   setOpenModalEdit,
-  fetchData,
-  attIsLoading,
-  pagadorOptions,
+  openModalEdit
 }) => {
-  const { showToast } = useToast();
+  const {
+    target,
+    setTarget,
+    pagadorOptions,
+    attBolsista,
+    addBolsista,
+  } = useBolsistaContext();
+
   const stepperRef = useRef(null);
   const [accept, setAccept] = useState(false);
   // sómente para gerenciar os valore dos inputs
   const editableItem = (key, value) => {
-    setModalData((e) => ({ ...e, [key]: value }));
+    setTarget((e) => ({ ...e, [key]: value }));
   };
   const editablePayment = (key, value) => {
-    setModalData((e) => ({
+    setTarget((e) => ({
       ...e,
       payment_info: { ...e.payment_info, [key]: value },
     }));
   };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
-  const saveItem = async (id) => {
-    try {
-      attIsLoading(true);
-      let payload = {
-        bolsista: {
-          nome: modalData.nome,
-          cpf: modalData.cpf.replace(/\D/g, ""),
-          telefone: modalData.telefone.replace(/\D/g, ""),
-          local: modalData.local,
-          cep: modalData.cep,
-          numero: modalData.numero,
-          logradouro: modalData.logradouro,
-          bairro: modalData.bairro,
-          cidade: modalData.cidade,
-          uf: modalData.uf,
-          payment_info: {
-            bco: modalData.payment_info.bco,
-            ag: modalData.payment_info.ag,
-            dig_ag: modalData.payment_info.dig_ag,
-            conta: modalData.payment_info.conta,
-            dig_conta: modalData.payment_info.dig_conta,
-            pagador_id: modalData.payment_info.pagador_id,
-          },
-        },
-      };
-
-      if (id) {
-        await updateBolsista(`${id}`, payload);
+  const saveItem = async () => {
+      if (target.id) {
+        attBolsista();
       } else {
-        await postBolsista(payload);
+        addBolsista()
       }
-
-      showToast("success", "Confirmed", "Bolsista salvo com sucesso");
-      setOpenModalEdit(false);
-      clearModal();
-      fetchData();
-    } catch (error) {
-      showToast(
-        "error",
-        "Error",
-        "Erro ao salvar bolsista " + error.response?.data?.message || error
-      );
-      return;
-    } finally {
-      attIsLoading(false);
-    }
   };
 
   // apaga os dados do modal
   const clearModal = () => {
-    setModalData({});
+    setTarget({});
   };
 
   const getCep = (cep) => {
@@ -114,10 +75,11 @@ const FT_Bolsista_Modal = ({
       {/* Modal to create/ edit a bolsista */}
       <Modal
         id="EditBolsista"
-        title={modalData?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
+        title={target?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
         isDisabled={!accept}
         onAcept={() => {
-          saveItem(modalData?.id || null);
+          saveItem(target?.id || null);
+          setOpenModalEdit(false);
         }}
         aceptLabel={"Salvar"}
         onRefuse={() => {
@@ -136,11 +98,11 @@ const FT_Bolsista_Modal = ({
                   {/* Nome */}
                   <div className="mt-1 lg:col-span-3 col-span-full">
                     <InputField
-                      invalid={modalData?.nome ? false : true}
+                      invalid={target?.nome ? false : true}
                       id="Name"
                       inputClass="w-full"
                       label="Nome"
-                      value={modalData?.nome || ""}
+                      value={target?.nome || ""}
                       onChange={(e) => {
                         editableItem("nome", e.target.value);
                       }}
@@ -150,13 +112,13 @@ const FT_Bolsista_Modal = ({
                   {/* CPF */}
                   <div className="mt-1 lg:col-span-2 col-span-full">
                     <InputFieldMask
-                      invalid={modalData?.cpf ? false : true}
+                      invalid={target?.cpf ? false : true}
                       id="CPF"
                       keyfilter="num"
                       inputClass="w-full"
                       label="CPF"
                       mask={"999.999.999-99"}
-                      value={modalData?.cpf || ""}
+                      value={target?.cpf || ""}
                       onChange={(e) => {
                         editableItem("cpf", e.target.value);
                       }}
@@ -165,12 +127,12 @@ const FT_Bolsista_Modal = ({
                   </div>
                   <div className="mt-1 lg:col-span-3 col-span-full">
                     <InputFieldMask
-                      invalid={modalData?.telefone ? false : true}
+                      invalid={target?.telefone ? false : true}
                       id="Telefone"
                       inputClass="w-full"
                       label="Telefone"
                       mask={"(99)99999-9999"}
-                      value={modalData?.telefone || ""}
+                      value={target?.telefone || ""}
                       onChange={(e) => {
                         editableItem("telefone", e.target.value);
                       }}
@@ -180,11 +142,11 @@ const FT_Bolsista_Modal = ({
                   {/* Local */}
                   <div className="mt-1 col-span-full">
                     <InputField
-                      invalid={modalData?.local ? false : true}
+                      invalid={target?.local ? false : true}
                       id="Local"
                       inputClass="w-full"
                       label="Local de trabalho"
-                      value={modalData?.local || ""}
+                      value={target?.local || ""}
                       onChange={(e) => {
                         editableItem("local", e.target.value);
                       }}
@@ -194,14 +156,14 @@ const FT_Bolsista_Modal = ({
                   <div className="mt-1 col-span-full flex flex-row">
                     <div className="mr-2">
                       <InputFieldMask
-                        invalid={modalData?.cep ? false : true}
+                        invalid={target?.cep ? false : true}
                         mask="99.999-999"
                         maxLength={8}
                         placeholder="__.___-___"
                         id="CEP"
                         inputClass="w-33"
                         label="CEP"
-                        value={modalData?.cep || ""}
+                        value={target?.cep || ""}
                         onChange={(e) => {
                           getCep(e.target.value.replace(/\D/g, ""));
                         }}
@@ -209,12 +171,12 @@ const FT_Bolsista_Modal = ({
                     </div>
                     <div className="ml-2">
                       <InputField
-                        invalid={modalData?.numero ? false : true}
+                        invalid={target?.numero ? false : true}
                         placeHolder="99"
                         id="Number"
                         inputClass="w-50"
                         label="Número da residência"
-                        value={modalData?.numero || ""}
+                        value={target?.numero || ""}
                         onChange={(e) => {
                           editableItem("numero", e.target.value);
                         }}
@@ -226,7 +188,7 @@ const FT_Bolsista_Modal = ({
                       id="Logradouro"
                       inputClass="w-full"
                       label="Logradouro"
-                      value={modalData?.logradouro || ""}
+                      value={target?.logradouro || ""}
                       disabled
                     />
                   </div>
@@ -235,7 +197,7 @@ const FT_Bolsista_Modal = ({
                       id="Bairro"
                       inputClass="w-full"
                       label="Bairro"
-                      value={modalData?.bairro || ""}
+                      value={target?.bairro || ""}
                       disabled
                     />
                   </div>
@@ -244,7 +206,7 @@ const FT_Bolsista_Modal = ({
                       id="Cidade"
                       inputClass="w-full"
                       label="Cidade"
-                      value={modalData?.cidade || ""}
+                      value={target?.cidade || ""}
                       disabled
                     />
                   </div>
@@ -253,7 +215,7 @@ const FT_Bolsista_Modal = ({
                       id="UF"
                       inputClass="w-full"
                       label="UF"
-                      value={modalData?.uf || ""}
+                      value={target?.uf || ""}
                       disabled
                     />
                   </div>
@@ -276,13 +238,13 @@ const FT_Bolsista_Modal = ({
                   <div className="mt-1 col-span-3">
                     <SelectField
                       invalid={
-                        modalData?.payment_info?.pagador_id ? false : true
+                        target?.payment_info?.pagador_id ? false : true
                       }
                       id="Pagador"
                       inputClass="w-full"
                       label="Pagador"
                       options={pagadorOptions}
-                      value={modalData?.payment_info?.pagador_id || ""}
+                      value={target?.payment_info?.pagador_id || ""}
                       onChange={(e) => {
                         editablePayment("pagador_id", e.target.value);
                       }}
@@ -295,16 +257,16 @@ const FT_Bolsista_Modal = ({
                       </label>
                       <div className="mt-1">
                         <p>
-                          {modalData?.payment_info?.pagador_id &&
+                          {target?.payment_info?.pagador_id &&
                             `${
                               pagadorOptions.find(
                                 (pg) =>
-                                  pg.id == modalData.payment_info?.pagador_id
+                                  pg.id == target.payment_info?.pagador_id
                               )?.quantity || 'Pendente'
                             } / ${
                               pagadorOptions.find(
                                 (pg) =>
-                                  pg.id === modalData.payment_info?.pagador_id
+                                  pg.id === target.payment_info?.pagador_id
                               )?.max_bolsista || 'Pendente'
                             }`}
                         </p>
@@ -314,12 +276,12 @@ const FT_Bolsista_Modal = ({
                   {/* Banco */}
                   <div className="mt-1 col-span-full">
                     <InputField
-                      invalid={modalData?.payment_info?.bco ? false : true}
+                      invalid={target?.payment_info?.bco ? false : true}
                       id="Banco"
                       keyfilter="int"
                       inputClass="w-full sm:w-50"
                       label="Banco"
-                      value={modalData?.payment_info?.bco || ""}
+                      value={target?.payment_info?.bco || ""}
                       onChange={(e) => {
                         editablePayment("bco", e.target.value);
                       }}
@@ -331,11 +293,11 @@ const FT_Bolsista_Modal = ({
                     <div className="p-inputgroup">
                       <InputField
                         id="Ag"
-                        invalid={modalData?.payment_info?.ag ? false : true}
+                        invalid={target?.payment_info?.ag ? false : true}
                         keyfilter="int"
                         inputClass="w-full sm:w-33 mr-2"
                         label="Agência"
-                        value={modalData?.payment_info?.ag || ""}
+                        value={target?.payment_info?.ag || ""}
                         onChange={(e) => {
                           editablePayment("ag", e.target.value);
                         }}
@@ -343,12 +305,12 @@ const FT_Bolsista_Modal = ({
                       />
 
                       <InputField
-                        invalid={modalData?.payment_info?.dig_ag ? false : true}
+                        invalid={target?.payment_info?.dig_ag ? false : true}
                         id="Dig_Ag"
                         keyfilter="int"
                         inputClass="w-full"
                         label="Dg"
-                        value={modalData?.payment_info?.dig_ag || ""}
+                        value={target?.payment_info?.dig_ag || ""}
                         onChange={(e) => {
                           editablePayment("dig_ag", e.target.value);
                         }}
@@ -359,12 +321,12 @@ const FT_Bolsista_Modal = ({
                   <div className="mt-1 lg:col-span-3 col-span-full">
                     <div className="p-inputgroup">
                       <InputField
-                        invalid={modalData?.payment_info?.conta ? false : true}
+                        invalid={target?.payment_info?.conta ? false : true}
                         keyfilter="int"
                         id="Conta"
                         inputClass="w-full sm:w-33 mr-2"
                         label="Conta"
-                        value={modalData?.payment_info?.conta || ""}
+                        value={target?.payment_info?.conta || ""}
                         onChange={(e) => {
                           editablePayment("conta", e.target.value);
                         }}
@@ -373,13 +335,13 @@ const FT_Bolsista_Modal = ({
 
                       <InputField
                         invalid={
-                          modalData?.payment_info?.dig_conta ? false : true
+                          target?.payment_info?.dig_conta ? false : true
                         }
                         keyfilter="int"
                         id="Dig_Conta"
                         inputClass="w-full"
                         label="Dg"
-                        value={modalData?.payment_info?.dig_conta || ""}
+                        value={target?.payment_info?.dig_conta || ""}
                         onChange={(e) => {
                           editablePayment("dig_conta", e.target.value);
                         }}
@@ -411,15 +373,15 @@ const FT_Bolsista_Modal = ({
                 <div className="flex gap-2 items-start mt-3 flex-col">
                   <div>
                     <span className="font-bold">Nome:</span>
-                    <p>{modalData?.nome}</p>
+                    <p>{target?.nome}</p>
                   </div>
                   <div>
                     <span className="font-bold">CPF:</span>
-                    <p>{modalData?.cpf}</p>
+                    <p>{target?.cpf}</p>
                   </div>
                   <div>
                     <span className="font-bold">Local de Trabalho:</span>
-                    <p>{modalData?.local}</p>
+                    <p>{target?.local}</p>
                   </div>
                   <div className="flex gap-2 items-start mt-3 flex-col">
                     <span className="font-bold">Informações de pagamento:</span>
@@ -428,30 +390,30 @@ const FT_Bolsista_Modal = ({
                       <p>
                         {
                           pagadorOptions.find(
-                            (pg) => pg.id == modalData.payment_info?.pagador_id
+                            (pg) => pg.id == target.payment_info?.pagador_id
                           )?.name
                         }
                       </p>
                     </div>
                     <div>
                       <span className="font-bold">Banco:</span>
-                      <p>{modalData.payment_info?.bco}</p>
+                      <p>{target.payment_info?.bco}</p>
                     </div>
                     <div>
                       <span className="font-bold">Agencia:</span>
-                      <p>{modalData.payment_info?.ag}</p>
+                      <p>{target.payment_info?.ag}</p>
                     </div>
                     <div>
                       <span className="font-bold">Dígito Agencia:</span>
-                      <p>{modalData.payment_info?.dig_ag}</p>
+                      <p>{target.payment_info?.dig_ag}</p>
                     </div>
                     <div>
                       <span className="font-bold">Conta:</span>
-                      <p>{modalData.payment_info?.conta}</p>
+                      <p>{target.payment_info?.conta}</p>
                     </div>
                     <div>
                       <span className="font-bold">Digito Conta:</span>
-                      <p>{modalData.payment_info?.dig_conta}</p>
+                      <p>{target.payment_info?.dig_conta}</p>
                     </div>
                   </div>
                 </div>
@@ -487,7 +449,7 @@ const FT_Bolsista_Modal = ({
 };
 
 FT_Bolsista_Modal.propTypes = {
-  modalData: PropTypes.shape({
+  target: PropTypes.shape({
     payment_info: PropTypes.shape({
       bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -511,11 +473,8 @@ FT_Bolsista_Modal.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   pagadorOptions: PropTypes.arrayOf(PropTypes.any),
-  setModalData: PropTypes.func.isRequired,
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
-  attIsLoading: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
 export default FT_Bolsista_Modal;

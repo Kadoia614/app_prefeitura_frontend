@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -10,6 +10,9 @@ import TableContainer from "../../../../../components/shared/table/TableContaine
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from "primereact/tooltip";
 import TableHeader from "../../../../../components/shared/table/TableHeader";
+import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
+import { Paginator } from "primereact/paginator";
+import { useBolsistaContext } from "../../../../../context/bolsista/BolsistaContext";
 
 const tag = {
   ativo: {
@@ -31,12 +34,10 @@ const tag = {
 };
 
 const BolsistasTable = ({
-  tableData,
   setOpenModalEdit,
-  setModalData,
-  setExcludeModal,
   setExcludeModalOpen,
 }) => {
+  const {query, setQuery, fetchBolsistas, total, data, setTarget} = useBolsistaContext();
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { user } = useUserContext();
@@ -74,7 +75,7 @@ const BolsistasTable = ({
         color="text-primary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
-          setModalData(rowData);
+          setTarget(rowData);
         }}
       />
       <TableButton
@@ -101,30 +102,49 @@ const BolsistasTable = ({
     </div>
   );
 
+  useEffect(() => {
+    fetchBolsistas(query);
+  }, [query]);
+
   return (
     <>
       <TableContainer>
-        <TableHeader center={"Bolsistas"}></TableHeader>
+        <TableHeader center={"Bolsistas"} start={
+            <>
+              <InputFieldLine
+                id="SearchCertidao"
+                placeHolder={"Buscar Certidão por CPF"}
+                value={query.search}
+                onChange={(e) =>
+                  setQuery((q)=>({...q, search: e.target.value, page: 0 }))
+                }
+              ></InputFieldLine>
+            </>
+        }></TableHeader>
         <DataTable
           id="BolsistaTable"
-          value={tableData}
+          value={data}
           size="small"
-          paginator
-          rows={25}
           stripedRows
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
           rowClassName="hover:bg-gray-100 transition duration-200"
           header={
-            <div className="relative flex justify-end">
-              <h1 className="font-bold absolute right-[50%] top-[50%] traslate-x-[-50%] translate-y-[-50%] text-nowrap">Painel de Munícipes</h1>
-              <Tooltip target=".add-bolsista-btn" position="bottom" />
-              <SpeedDial
-                className="relative"
-                model={renderItems}
-                direction="down"
-                type="linear"
-                style={{ right: 0 }}
-              ></SpeedDial>
+            <div className="relative flex justify-between items-center px-4">
+              <div>
+                <p className="text-xs text-text-muted">total: {total}</p>
+              </div>
+              <h1 className="font-bold absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-nowrap">
+                Painel de Munícipes
+              </h1>
+              <div>
+                <Tooltip target=".add-bolsista-btn" position="bottom" />
+                <SpeedDial
+                  className="relative"
+                  model={renderItems}
+                  direction="down"
+                  type="linear"
+                  style={{ right: 0 }}
+                ></SpeedDial>
+              </div>
             </div>
           }
         >
@@ -173,6 +193,20 @@ const BolsistasTable = ({
 
           <Column header="Ações" body={renderActions} />
         </DataTable>
+
+        <Paginator
+        first={query.page}
+        rows={query.limit}
+        totalRecords={total}
+        rowsPerPageOptions={[10, 20, 30]}
+        onPageChange={(e) =>
+          setQuery((prev) => ({
+            ...prev,
+            page: e.page,
+            limit: e.rows,
+          }))
+        }
+      />
       </TableContainer>
 
       <SideBarBolsista
@@ -185,13 +219,8 @@ const BolsistasTable = ({
 };
 
 BolsistasTable.propTypes = {
-  tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
-  setModalData: PropTypes.func.isRequired,
-  setExcludeModal: PropTypes.func,
   setExcludeModalOpen: PropTypes.func,
-  attIsLoading: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
 export default BolsistasTable;

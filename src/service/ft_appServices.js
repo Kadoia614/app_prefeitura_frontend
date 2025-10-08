@@ -2,17 +2,23 @@ import API from "@api/API";
 import { APIBolsistaImage } from "@api/API";
 
 // bolsistas
-export const getBolsista = async (url) => {
-  const { data } = await API.get(url ? url : "/ft/bolsista");
+export const getBolsista = async (query) => {
+  const { page, limit, search } = query;
+  const url = search
+    ? `/ft/bolsista?page=${page || 0}&limit=${limit || 10}&search=${search}`
+    : `/ft/bolsista?page=${page || 0}&limit=${limit || 10}`;
+  const { data } = await API.get(url);
   return data;
 };
 
-export const updateBolsista = async (id, data) => {
-  return await API.put(`/ft/bolsista/${id}`, { ...data });
+export const updateBolsista = async (id, payload) => {
+  const { data } = await API.put(`/ft/bolsista/${id}`, { ...payload });
+  return data;
 };
 
-export const postBolsista = async (data) => {
-  return await API.post(`/ft/bolsista`, { ...data });
+export const postBolsista = async (payload) => {
+  const { data } = await API.post(`/ft/bolsista`, { ...payload });
+  return data;
 };
 
 // export const deleteBolsista = async (id) => {
