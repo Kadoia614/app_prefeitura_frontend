@@ -11,7 +11,7 @@ import TableButton from "../../../../components/shared/table/TableButton";
 
 import InputFieldLine from "../../../../components/shared/input/inputfield/InputFieldLine";
 import { IPTUMunicipeService } from "../../../../service/iptu";
-import Files from "./files";
+import Files from "./Files";
 
 import { useToast } from "../../../../components/shared/toast/ToastProvider";
 import { Button } from "primereact/button";
