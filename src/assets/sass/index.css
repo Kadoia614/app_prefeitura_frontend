@@ -23,6 +23,7 @@
   --color-cancel-hover: oklch(87.2% 0.01 258.338);
 
   --color-background: #fdfdfb;
+  --color-background-muted: #ededeb;
 
   --color-text: #A6A6A6;
   --color-text-hover: #4a4a4a;
@@ -31,7 +32,7 @@
   --color-text-muted-hover: #A6A6A6;
 
   --color-danger: oklch(63.7% 0.237 25.331);
-  --color-text-on-danger: #2F4F4F;
+  --color-on-danger: #FFFFFF;
   --color-danger-hover: oklch(70.4% 0.191 22.216);
 
   --color-success-primary: oklch(52.7% 0.154 150.069);
@@ -80,7 +81,7 @@ input {
 }
 
 .btn-danger {
-  @apply bg-danger hover:bg-danger-hover cursor-pointer text-text-on-danger py-1 px-2 rounded;
+  @apply bg-danger hover:bg-danger-hover cursor-pointer text-on-danger py-1 px-2 rounded;
 }
 
 .content {
