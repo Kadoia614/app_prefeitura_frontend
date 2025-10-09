@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { BolsistaContext } from "./BolsistaContext";
-import { postBolsista, updateBolsista } from "@/service/ft_appServices";
+import { postBolsista, updateBolsista, deleteBolsista, getBolsista } from "@/service/ft_appServices";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
-import { getBolsista } from "@/service/ft_appServices";
 
 import PropTypes from "prop-types";
 
 export const BolsistaProvider = ({ children }) => {
   const { showToast } = useToast();
 
+  
   let [data, setData] = useState([]);
   let [target, setTarget] = useState({});
   let [pagadorOptions, setPagadorOptions] = useState([]);
@@ -45,7 +45,7 @@ export const BolsistaProvider = ({ children }) => {
           },
         },
       };
-      const {bolsista} = await postBolsista(payload);
+      const { bolsista } = await postBolsista(payload);
 
       setData((prev) => [...prev, bolsista]);
       setTotal((prev) => prev + 1);
@@ -102,9 +102,21 @@ export const BolsistaProvider = ({ children }) => {
     }
   };
 
-  const deleteBolsista = (id) => {
-    setData((prev) => prev.filter((item) => item.id !== id));
-    setTotal((prev) => prev - 1);
+  const removeBolsista = async () => {
+    try {
+      await deleteBolsista(target.id);
+      setData((prev) => prev.filter((item) => item.id !== target.id));
+      setTotal((prev) => prev - 1);
+      showToast("success", "Confirmado", "Bolsista Excluido com sucesso");
+    } catch (error) {
+      showToast(
+        "error",
+        "Error",
+        "Erro ao excluir bolsista " + error.response?.data?.message || error
+      );
+    } finally {
+      setTarget({});
+    }
   };
 
   const fetchBolsistas = async () => {
@@ -134,7 +146,7 @@ export const BolsistaProvider = ({ children }) => {
         fetchBolsistas,
         addBolsista,
         attBolsista,
-        deleteBolsista,
+        removeBolsista,
         target,
         setTarget,
         query,

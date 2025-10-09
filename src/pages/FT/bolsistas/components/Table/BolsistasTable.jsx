@@ -12,7 +12,7 @@ import { Tooltip } from "primereact/tooltip";
 import TableHeader from "../../../../../components/shared/table/TableHeader";
 import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
 import { Paginator } from "primereact/paginator";
-import { useBolsistaContext } from "../../../../../context/bolsista/BolsistaContext";
+import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
 
 const tag = {
   ativo: {
@@ -33,11 +33,9 @@ const tag = {
   },
 };
 
-const BolsistasTable = ({
-  setOpenModalEdit,
-  setExcludeModalOpen,
-}) => {
-  const {query, setQuery, fetchBolsistas, total, data, setTarget} = useBolsistaContext();
+const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
+  const { query, setQuery, fetchBolsistas, total, data, setTarget } =
+    useBolsistaContext();
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { user } = useUserContext();
@@ -95,7 +93,8 @@ const BolsistasTable = ({
           icon={"pi pi-trash"}
           color="text-danger bg-white border-none"
           onClick={() => {
-            setExcludeModal(rowData.id), setExcludeModalOpen(true);
+            setTarget(rowData);
+            setExcludeModalOpen(true);
           }}
         />
       )}
@@ -109,18 +108,25 @@ const BolsistasTable = ({
   return (
     <>
       <TableContainer>
-        <TableHeader center={"Bolsistas"} start={
+        <TableHeader
+          center={
+            <div className="md:absolute left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]">
+              Bolsistas
+            </div>
+          }
+          start={
             <>
               <InputFieldLine
                 id="SearchCertidao"
-                placeHolder={"Buscar Certidão por CPF"}
+                placeHolder={"Buscar Bolsista por CPF ou nome"}
                 value={query.search}
                 onChange={(e) =>
-                  setQuery((q)=>({...q, search: e.target.value, page: 0 }))
+                  setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
                 }
               ></InputFieldLine>
             </>
-        }></TableHeader>
+          }
+        ></TableHeader>
         <DataTable
           id="BolsistaTable"
           value={data}
@@ -129,12 +135,12 @@ const BolsistasTable = ({
           rowClassName="hover:bg-gray-100 transition duration-200"
           header={
             <div className="relative flex justify-between items-center px-4">
+              <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
+                <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
+              </div>
               <div>
                 <p className="text-xs text-text-muted">total: {total}</p>
               </div>
-              <h1 className="font-bold absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-nowrap">
-                Painel de Munícipes
-              </h1>
               <div>
                 <Tooltip target=".add-bolsista-btn" position="bottom" />
                 <SpeedDial
@@ -195,18 +201,18 @@ const BolsistasTable = ({
         </DataTable>
 
         <Paginator
-        first={query.page}
-        rows={query.limit}
-        totalRecords={total}
-        rowsPerPageOptions={[10, 20, 30]}
-        onPageChange={(e) =>
-          setQuery((prev) => ({
-            ...prev,
-            page: e.page,
-            limit: e.rows,
-          }))
-        }
-      />
+          first={query.page}
+          rows={query.limit}
+          totalRecords={total}
+          rowsPerPageOptions={[10, 20, 30]}
+          onPageChange={(e) =>
+            setQuery((prev) => ({
+              ...prev,
+              page: e.page,
+              limit: e.rows,
+            }))
+          }
+        />
       </TableContainer>
 
       <SideBarBolsista

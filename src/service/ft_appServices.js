@@ -21,9 +21,10 @@ export const postBolsista = async (payload) => {
   return data;
 };
 
-// export const deleteBolsista = async (id) => {
-//   return await API.delete(`/ft/bolsista/${id}`);
-// };
+export const deleteBolsista = async (id) => {
+  const { data } = await API.delete(`/ft/bolsista/${id}`);
+  return data;
+};
 
 export const getBolsistaEdital = async (id) => {
   const { data } = await API.get(`/ft/bolsista/edital/${id}`);

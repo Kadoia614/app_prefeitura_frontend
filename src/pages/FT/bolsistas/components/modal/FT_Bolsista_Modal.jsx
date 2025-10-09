@@ -13,7 +13,7 @@ import SelectField from "@/components/shared/input/SelectField";
 
 import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
-import { useBolsistaContext } from "../../../../../context/bolsista/BolsistaContext";
+import { useBolsistaContext } from "@context/ft/bolsista/BolsistaContext";
 
 const FT_Bolsista_Modal = ({
   setOpenModalEdit,
@@ -153,7 +153,7 @@ const FT_Bolsista_Modal = ({
                     />
                   </div>
 
-                  <div className="mt-1 col-span-full flex flex-row">
+                  <div className="mt-1 col-span-full sm:flex flex-row">
                     <div className="mr-2">
                       <InputFieldMask
                         invalid={target?.cep ? false : true}
@@ -169,7 +169,7 @@ const FT_Bolsista_Modal = ({
                         }}
                       />
                     </div>
-                    <div className="ml-2">
+                    <div className="sm:ml-2">
                       <InputField
                         invalid={target?.numero ? false : true}
                         placeHolder="99"
@@ -295,7 +295,7 @@ const FT_Bolsista_Modal = ({
                         id="Ag"
                         invalid={target?.payment_info?.ag ? false : true}
                         keyfilter="int"
-                        inputClass="w-full sm:w-33 mr-2"
+                        inputClass="w-33 mr-2"
                         label="Agência"
                         value={target?.payment_info?.ag || ""}
                         onChange={(e) => {
@@ -324,7 +324,7 @@ const FT_Bolsista_Modal = ({
                         invalid={target?.payment_info?.conta ? false : true}
                         keyfilter="int"
                         id="Conta"
-                        inputClass="w-full sm:w-33 mr-2"
+                        inputClass="w-33 mr-2"
                         label="Conta"
                         value={target?.payment_info?.conta || ""}
                         onChange={(e) => {
