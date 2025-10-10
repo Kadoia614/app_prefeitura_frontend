@@ -6,8 +6,6 @@ import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
 import FT_Bolsista_ExcludeModal from "./components/modal/FT_Bolsista_excludeModal";
 
-import { BolsistaProvider } from "../../../context/ft/bolsista/BolsistaProvider";
-
 const Bolsista = () => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
@@ -17,7 +15,6 @@ const Bolsista = () => {
 
   return (
     <div id="Bolsistas" className="content">
-      <BolsistaProvider>
         <BolsistasTable
           setOpenModalEdit={setOpenModalEdit}
           setExcludeModalOpen={setExcludeModalOpen}
@@ -30,7 +27,6 @@ const Bolsista = () => {
           scopo={scopo}
         />
         <FT_Bolsista_ExcludeModal isOpen={excludeModalOpen} setIsOpen={setExcludeModalOpen}></FT_Bolsista_ExcludeModal>
-      </BolsistaProvider>
     </div>
   );
 };

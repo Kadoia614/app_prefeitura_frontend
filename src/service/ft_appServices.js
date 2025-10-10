@@ -57,16 +57,18 @@ export const postDoc = async (id, data) => {
 
 // editais
 export const getEdital = async (url) => {
-  const response = await API.get(url ? url : "/ft/edital");
-  return response.data;
+  const { data } = await API.get(url ? url : "/ft/edital");
+  console.log(data)
+  return data;
 };
 
-export const updateEdital = async (id, data) => {
-  return await API.put(`/ft/edital/${id}`, data);
+export const updateEdital = async (id, payload) => {
+  const { data } = await API.put(`/ft/edital/${id}`, payload);
+  return data;
 };
 
-export const postEdital = async (data) => {
-  return await API.post(`/ft/edital`, data);
+export const postEdital = async (payload) => {
+  return await API.post(`/ft/edital`, payload);
 };
 
 export const deleteEdital = async (id) => {

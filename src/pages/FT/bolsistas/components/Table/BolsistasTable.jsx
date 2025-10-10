@@ -34,7 +34,7 @@ const tag = {
 };
 
 const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
-  const { query, setQuery, fetchBolsistas, total, data, setTarget } =
+  const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
     useBolsistaContext();
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
@@ -129,7 +129,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
         ></TableHeader>
         <DataTable
           id="BolsistaTable"
-          value={data}
+          value={bolsistas}
           size="small"
           stripedRows
           rowClassName="hover:bg-gray-100 transition duration-200"

@@ -15,17 +15,9 @@ import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
 import { useBolsistaContext } from "@context/ft/bolsista/BolsistaContext";
 
-const FT_Bolsista_Modal = ({
-  setOpenModalEdit,
-  openModalEdit
-}) => {
-  const {
-    target,
-    setTarget,
-    pagadorOptions,
-    attBolsista,
-    addBolsista,
-  } = useBolsistaContext();
+const FT_Bolsista_Modal = ({ setOpenModalEdit, openModalEdit }) => {
+  const { target, setTarget, pagadorOptions, attBolsista, addBolsista } =
+    useBolsistaContext();
 
   const stepperRef = useRef(null);
   const [accept, setAccept] = useState(false);
@@ -42,11 +34,11 @@ const FT_Bolsista_Modal = ({
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
   const saveItem = async () => {
-      if (target.id) {
-        attBolsista();
-      } else {
-        addBolsista()
-      }
+    if (target.id) {
+      attBolsista();
+    } else {
+      addBolsista();
+    }
   };
 
   // apaga os dados do modal
@@ -237,9 +229,7 @@ const FT_Bolsista_Modal = ({
                   {/* Local Pagador */}
                   <div className="mt-1 col-span-3">
                     <SelectField
-                      invalid={
-                        target?.payment_info?.pagador_id ? false : true
-                      }
+                      invalid={target?.payment_info?.pagador_id ? false : true}
                       id="Pagador"
                       inputClass="w-full"
                       label="Pagador"
@@ -257,17 +247,16 @@ const FT_Bolsista_Modal = ({
                       </label>
                       <div className="mt-1">
                         <p>
-                          {target?.payment_info?.pagador_id &&
+                          {target?.payment_info?.pagador_id && target?.payment_info?.pagador_id != "pendente" &&
                             `${
                               pagadorOptions.find(
-                                (pg) =>
-                                  pg.id == target.payment_info?.pagador_id
-                              )?.quantity || 'Pendente'
+                              (pg) => pg.id == target.payment_info?.pagador_id
+                            ).quantity
                             } / ${
                               pagadorOptions.find(
                                 (pg) =>
                                   pg.id === target.payment_info?.pagador_id
-                              )?.max_bolsista || 'Pendente'
+                              )?.max_bolsista
                             }`}
                         </p>
                       </div>
@@ -334,9 +323,7 @@ const FT_Bolsista_Modal = ({
                       />
 
                       <InputField
-                        invalid={
-                          target?.payment_info?.dig_conta ? false : true
-                        }
+                        invalid={target?.payment_info?.dig_conta ? false : true}
                         keyfilter="int"
                         id="Dig_Conta"
                         inputClass="w-full"
@@ -449,30 +436,6 @@ const FT_Bolsista_Modal = ({
 };
 
 FT_Bolsista_Modal.propTypes = {
-  target: PropTypes.shape({
-    payment_info: PropTypes.shape({
-      bco: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      dig_ag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      dig_conta: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      pagador_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    }),
-    nome: PropTypes.string,
-    bolsa: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    vencimento: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    cpf: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    telefone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    local: PropTypes.string,
-    cep: PropTypes.string,
-    numero: PropTypes.string,
-    logradouro: PropTypes.string,
-    bairro: PropTypes.string,
-    cidade: PropTypes.string,
-    uf: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  }),
-  pagadorOptions: PropTypes.arrayOf(PropTypes.any),
   openModalEdit: PropTypes.bool.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
 };

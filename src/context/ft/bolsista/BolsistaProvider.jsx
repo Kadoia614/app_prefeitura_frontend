@@ -9,8 +9,8 @@ import PropTypes from "prop-types";
 export const BolsistaProvider = ({ children }) => {
   const { showToast } = useToast();
 
-  
-  let [data, setData] = useState([]);
+
+  let [bolsistas, setBolsistas] = useState([]);
   let [target, setTarget] = useState({});
   let [pagadorOptions, setPagadorOptions] = useState([]);
   let [total, setTotal] = useState(0);
@@ -47,7 +47,7 @@ export const BolsistaProvider = ({ children }) => {
       };
       const { bolsista } = await postBolsista(payload);
 
-      setData((prev) => [...prev, bolsista]);
+      setBolsistas((prev) => [...prev, bolsista]);
       setTotal((prev) => prev + 1);
       showToast("success", "Confirmado", "Bolsista salvo com sucesso");
     } catch (error) {
@@ -87,7 +87,7 @@ export const BolsistaProvider = ({ children }) => {
       };
       await updateBolsista(`${target.id}`, payload);
 
-      setData((prev) =>
+      setBolsistas((prev) =>
         prev.map((item) => (item.id === target.id ? target : item))
       );
       showToast("success", "Confirmado", "Bolsista salvo com sucesso");
@@ -105,7 +105,7 @@ export const BolsistaProvider = ({ children }) => {
   const removeBolsista = async () => {
     try {
       await deleteBolsista(target.id);
-      setData((prev) => prev.filter((item) => item.id !== target.id));
+      setBolsistas((prev) => prev.filter((item) => item.id !== target.id));
       setTotal((prev) => prev - 1);
       showToast("success", "Confirmado", "Bolsista Excluido com sucesso");
     } catch (error) {
@@ -126,7 +126,7 @@ export const BolsistaProvider = ({ children }) => {
       );
 
       setTotal(count);
-      setData(bolsista);
+      setBolsistas(bolsista);
       setPagadorOptions(pagador);
 
       localStorage.setItem("upload_token", uploadToken);
@@ -142,7 +142,7 @@ export const BolsistaProvider = ({ children }) => {
   return (
     <BolsistaContext.Provider
       value={{
-        data,
+        bolsistas,
         fetchBolsistas,
         addBolsista,
         attBolsista,
