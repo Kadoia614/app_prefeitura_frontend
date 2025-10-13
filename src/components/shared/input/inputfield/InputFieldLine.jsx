@@ -32,7 +32,7 @@ const InputFieldLine = ({
 InputFieldLine.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   inputClass: PropTypes.string,
   spanClass: PropTypes.string,

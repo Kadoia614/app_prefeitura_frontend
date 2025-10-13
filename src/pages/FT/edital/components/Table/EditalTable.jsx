@@ -41,38 +41,12 @@ const tag = {
 };
 
 const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
-  const { edital, targetEdital, setTargetEdital, fetchEdital, editalBolsista } =
+  const { edital, targetEdital, setTargetEdital, fetchEdital, editalBolsista, handleToggleBolsista } =
     useEditalContext();
 
   useEffect(() => {
     fetchEdital();
   }, []);
-
-  // const [alterModalOpen, setAlterModalOpen] = useState(false);
-  // const [alterId, setAlterId] = useState(null);
-
-  // const confirmToggle = (id) => {
-  //   setAlterId(id);
-  //   setAlterModalOpen(true);
-  // };
-
-  // const handleToggle = async (id) => {
-  //   try {
-  //     attIsLoading(true);
-  //     await toggleBolsista(`${id}`, `${selectedTable}`);
-  //     showToast("success", "Confirmado", "Bolsista alterado com sucesso");
-  //     fetchData(selectedTable);
-  //   } catch (err) {
-  //     showToast(
-  //       "error",
-  //       "Erro",
-  //       `Erro ao alterar bolsista: ${err.response.data.message}`
-  //     );
-  //   } finally {
-  //     setAlterModalOpen(false);
-  //     attIsLoading(false);
-  //   }
-  // };
 
   const renderStatus = (row) => {
     const status = row.BolsistasEdital?.status;
@@ -94,9 +68,9 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
           icon={"pi pi-times"}
           iconPos="left"
           color="text-danger bg-white border-none"
-          // onClick={() => {
-          //   confirmToggle(rowData.id);
-          // }}
+          onClick={() => {
+            handleToggleBolsista(rowData.id);
+          }}
         />
       )}
     </div>

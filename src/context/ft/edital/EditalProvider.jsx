@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { EditalContext } from "./EditalContext";
-import { getEdital, getEditalWithBolsista } from "@/service/ft_appServices";
+import {
+  getEdital,
+  getEditalWithBolsista,
+  postEdital,
+} from "@/service/ft_appServices";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
 import PropTypes from "prop-types";
-import { vincularBolsista } from "../../../service/ft_appServices";
+import {
+  toggleBolsista,
+  vincularBolsista,
+} from "../../../service/ft_appServices";
 
 export const EditalProvider = ({ children }) => {
   const { showToast } = useToast();
 
   let [edital, setEdital] = useState([]);
+  let [newEdital, setNewEdital] = useState({});
   let [targetEdital, setTargetEdital] = useState();
   let [editalBolsista, setEditalBolsista] = useState([]);
-  let [bolsistasToVincular, setBolsistasToVincular ] = useState({
+  let [bolsistasToVincular, setBolsistasToVincular] = useState({
     bolsistas: [],
     data_vinculo: null,
   });
@@ -24,15 +32,27 @@ export const EditalProvider = ({ children }) => {
     search: "",
   });
 
-  const addEditalBolsista = async () => {
+  const addEdital = async () => {
     try {
- 
+      let payload = {
+        edital: {
+          name: newEdital.name,
+          data_publicacao: newEdital.data_publicacao,
+          data_vencimento: newEdital.data_vencimento,
+          dia_pagamento: newEdital.dia_pagamento,
+          valor_bolsa: newEdital.valor_bolsa,
+        },
+      };
+
+      const { data } = await postEdital(payload);
+
+      setEdital((prev) => [...prev, data.newEdital]);
       showToast("success", "Confirmado", "Edital salvo com sucesso");
     } catch (error) {
       showToast(
         "error",
         "Error",
-        "Erro ao salvar bolsista " + error.response?.data?.message || error
+        "Erro ao salvar bolsista " + (error.response?.data?.message || error)
       );
     } finally {
       setTargetEdital({});
@@ -41,59 +61,41 @@ export const EditalProvider = ({ children }) => {
 
   const addBolsistaIntoEdital = async () => {
     try {
-      await vincularBolsista(targetEdital, bolsistasToVincular.bolsistas, bolsistasToVincular.data_vinculo);
+      await vincularBolsista(
+        targetEdital,
+        bolsistasToVincular.bolsistas,
+        bolsistasToVincular.data_vinculo
+      );
+
+      fetchBolsistaEdital();
       setBolsistasToVincular({ bolsistas: [], data_vinculo: null });
+
       showToast("success", "Confirmado", "Edital salvo com sucesso");
     } catch (error) {
       showToast(
         "error",
         "Error",
-        `Erro ao vincular Bolsista ${error.status == 400 ? "Dados inválidos" : error.response.data.message}`
+        `Erro ao vincular Bolsista ${
+          error.status == 400 ? "Dados inválidos" : error.response.data.message
+        }`
       );
-      return;
     }
   };
 
-  // const attBolsista = async () => {
-  //   try {
-  //     let payload = {
-  //       bolsista: {
-  //         nome: target.nome,
-  //         cpf: target.cpf.replace(/\D/g, ""),
-  //         telefone: target.telefone.replace(/\D/g, ""),
-  //         local: target.local,
-  //         cep: target.cep,
-  //         numero: target.numero,
-  //         logradouro: target.logradouro,
-  //         bairro: target.bairro,
-  //         cidade: target.cidade,
-  //         uf: target.uf,
-  //         payment_info: {
-  //           bco: target.payment_info.bco,
-  //           ag: target.payment_info.ag,
-  //           dig_ag: target.payment_info.dig_ag,
-  //           conta: target.payment_info.conta,
-  //           dig_conta: target.payment_info.dig_conta,
-  //           pagador_id: target.payment_info.pagador_id,
-  //         },
-  //       },
-  //     };
-  //     await updateBolsista(`${target.id}`, payload);
+  const handleToggleBolsista = async (id) => {
+    try {
+      await toggleBolsista(`${id}`, targetEdital);
 
-  //     setData((prev) =>
-  //       prev.map((item) => (item.id === target.id ? target : item))
-  //     );
-  //     showToast("success", "Confirmado", "Bolsista salvo com sucesso");
-  //   } catch (error) {
-  //     showToast(
-  //       "error",
-  //       "Error",
-  //       "Erro ao salvar bolsista " + error.response?.data?.message || error
-  //     );
-  //   } finally {
-  //     setTargetEdital({});
-  //   }
-  // };
+      fetchBolsistaEdital();
+      showToast("success", "Confirmado", "Bolsista salvo com sucesso");
+    } catch (error) {
+      showToast(
+        "error",
+        "Error",
+        "Erro ao salvar bolsista " + (error.response?.data?.message || error)
+      );
+    }
+  };
 
   // const removeBolsista = async () => {
   //   try {
@@ -114,7 +116,7 @@ export const EditalProvider = ({ children }) => {
 
   const fetchEdital = async () => {
     try {
-      const { edital } = await getEdital(); 
+      const { edital } = await getEdital();
       setEdital(edital);
     } catch (error) {
       showToast(
@@ -126,8 +128,8 @@ export const EditalProvider = ({ children }) => {
 
   const fetchBolsistaEdital = async () => {
     try {
-      if(targetEdital === undefined) return;
-      const {bolsista_edital} = await getEditalWithBolsista(targetEdital);
+      if (targetEdital === undefined) return;
+      const { bolsista_edital } = await getEditalWithBolsista(targetEdital);
       setEditalBolsista(bolsista_edital.bolsistas);
     } catch (error) {
       showToast(
@@ -152,11 +154,12 @@ export const EditalProvider = ({ children }) => {
         bolsistasToVincular,
         setBolsistasToVincular,
         addBolsistaIntoEdital,
-        // setEditalBolsista,
+        addEdital,
+        setNewEdital,
+        newEdital,
+        handleToggleBolsista,
         query,
         setQuery,
-        // addBolsista,
-        // attBolsista,
         // removeBolsista,
         fetchEdital,
       }}
