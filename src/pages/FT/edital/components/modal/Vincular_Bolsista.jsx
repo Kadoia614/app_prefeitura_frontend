@@ -28,6 +28,7 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
   } = useEditalContext();
 
   useEffect(() => {
+    setQuery({ page: 0, limit: 100000, search: "" });
     fetchBolsistas();
   }, []);
 
