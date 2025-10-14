@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import Modal from "@/components/shared/modal/Modal";
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
 import SelectField from "../../../../../components/shared/input/SelectField";
-
-import { toggleBolsista } from "@/service/ft_appServices";
 
 import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
 import TableHeader from "../../../../../components/shared/table/TableHeader";
 import { SpeedDial } from "primereact/speeddial";
 import { Paginator } from "primereact/paginator";
+import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
 
 const tag = {
   ativo: {
@@ -41,7 +39,7 @@ const tag = {
 };
 
 const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
-  const { edital, targetEdital, setTargetEdital, fetchEdital, editalBolsista, handleToggleBolsista } =
+  const { edital, targetEdital, setTargetEdital, fetchEdital, editalBolsista, handleToggleBolsista, queryEdital, setQueryEdital } =
     useEditalContext();
 
   useEffect(() => {
@@ -91,6 +89,7 @@ const renderItems = [
       disabled: !targetEdital,
       className: "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
       command: () => {
+        setQueryEdital((q) => ({ ...q, page: 0, limit: 100000, search: "" }));
         setIsVincularModalOpen(true);
       },
     },
@@ -109,6 +108,18 @@ const renderItems = [
     <>
       <TableContainer>
         <TableHeader
+        start={
+                      <>
+              <InputFieldLine
+                id="SearchCertidao"
+                placeHolder={"Buscar Bolsista por CPF ou nome"}
+                value={queryEdital.search}
+                onChange={(e) =>
+                  setQueryEdital((q) => ({ ...q, search: e.target.value, page: 0 }))
+                }
+              ></InputFieldLine>
+            </>
+        }
           end={
             <div>
               <SelectField
@@ -126,7 +137,7 @@ const renderItems = [
               />
             </div>
           }
-          start={
+          center={
             <div>
               <h1 className="text-center">Edital</h1>
             </div>
@@ -134,7 +145,7 @@ const renderItems = [
         ></TableHeader>
         <DataTable
           id="BolsistaTable"
-          value={editalBolsista}
+          value={editalBolsista.bolsistas}
           size="small"
           stripedRows
           rowClassName="hover:bg-gray-100 transition duration-200"
@@ -143,7 +154,7 @@ const renderItems = [
                           <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
                         </div>
                         <div>
-                          <p className="text-xs text-text-muted">total: {0}</p>
+                          <p className="text-xs text-text-muted">total: {editalBolsista.count || 0}</p>
                         </div>
                         <div>
                           <SpeedDial

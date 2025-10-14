@@ -20,16 +20,18 @@ export const EditalProvider = ({ children }) => {
   let [edital, setEdital] = useState([]);
   let [newEdital, setNewEdital] = useState({});
   let [targetEdital, setTargetEdital] = useState();
-  let [editalBolsista, setEditalBolsista] = useState([]);
-  let [bolsistasToVincular, setBolsistasToVincular] = useState({
-    bolsistas: [],
-    data_vinculo: null,
-  });
-
-  const [query, setQuery] = useState({
+  let [ queryEdital, setQueryEdital ] = useState({
     page: 0,
     limit: 10,
     search: "",
+  });
+  let [editalBolsista, setEditalBolsista] = useState({
+    count: 0,
+    bolsistas: [],
+  });
+  let [bolsistasToVincular, setBolsistasToVincular] = useState({
+    bolsistas: [],
+    data_vinculo: null,
   });
 
   const addEdital = async () => {
@@ -129,25 +131,30 @@ export const EditalProvider = ({ children }) => {
   const fetchBolsistaEdital = async () => {
     try {
       if (targetEdital === undefined) return;
-      const { bolsista_edital } = await getEditalWithBolsista(targetEdital);
-      setEditalBolsista(bolsista_edital.bolsistas);
+      const { bolsista_edital } = await getEditalWithBolsista(
+        targetEdital,
+        queryEdital
+      );
+      setEditalBolsista({
+        count: bolsista_edital.count,
+        bolsistas: bolsista_edital.bolsistas,
+      });
     } catch (error) {
       showToast(
         "error",
-        "Falha ao buscar Edital: " + error.response.data.message
+        "Falha ao buscar Edital: " + (error.response?.data?.message || error)
       );
     }
   };
 
   useEffect(() => {
     fetchBolsistaEdital();
-  }, [targetEdital]);
+  }, [targetEdital, queryEdital]);
 
   return (
     <EditalContext.Provider
       value={{
         edital,
-        setEdital,
         targetEdital,
         setTargetEdital,
         editalBolsista,
@@ -158,10 +165,10 @@ export const EditalProvider = ({ children }) => {
         setNewEdital,
         newEdital,
         handleToggleBolsista,
-        query,
-        setQuery,
         // removeBolsista,
         fetchEdital,
+        queryEdital,
+        setQueryEdital,
       }}
     >
       <>{children}</>

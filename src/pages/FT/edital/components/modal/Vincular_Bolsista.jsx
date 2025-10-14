@@ -67,12 +67,12 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
 
   const isChecked = (bolsistaId) => {
     return (
-      editalBolsista?.some((b) => b.id == bolsistaId) ||
+      editalBolsista.bolsistas?.some((b) => b.id == bolsistaId) ||
       bolsistasToVincular.bolsistas?.includes(bolsistaId)
     );
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetchBolsistas(query);
   }, [query]);
 
@@ -125,29 +125,29 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
               />
             </div>
             {bolsistas.map((bolsista) => (
-                  <div key={bolsista.id} className="flex items-center mb-2">
-                    <Checkbox
-                      disabled={
-                        bolsista.status === "pendente" ||
-                        editalBolsista?.some((b) => b.id === bolsista.id)
-                      }
-                      inputId={`cb-${targetEdital?.id}-${bolsista.id}`}
-                      checked={isChecked(bolsista.id)}
-                      onChange={() => toggleBolsista(bolsista.id)}
-                    />
-                    <label
-                      htmlFor={`cb-${targetEdital?.id}-${bolsista.id}`}
-                      className={`ml-2 ${
-                        bolsista.status === "pendente" ||
-                        editalBolsista?.includes(bolsista.id)
-                          ? "text-danger/80 font-bold capitalize"
-                          : ""
-                      }`}
-                    >
-                      {bolsista.nome}
-                    </label>
-                  </div>
-                ))}
+              <div key={bolsista.id} className="flex items-center mb-2">
+                <Checkbox
+                  disabled={
+                    bolsista.status === "pendente" ||
+                    editalBolsista?.bolsistas?.some((b) => b.id === bolsista.id)
+                  }
+                  inputId={`cb-${targetEdital?.id}-${bolsista.id}`}
+                  checked={isChecked(bolsista.id)}
+                  onChange={() => toggleBolsista(bolsista.id)}
+                />
+                <label
+                  htmlFor={`cb-${targetEdital?.id}-${bolsista.id}`}
+                  className={`ml-2 ${
+                    bolsista.status === "pendente" ||
+                    editalBolsista?.bolsistas?.includes(bolsista.id)
+                      ? "text-danger/80 font-bold capitalize"
+                      : ""
+                  }`}
+                >
+                  {bolsista.nome}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
       </Modal>
