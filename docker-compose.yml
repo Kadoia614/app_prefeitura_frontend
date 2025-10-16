@@ -9,7 +9,7 @@ services:
     ports:
       - "83:80"
     environment:
-      NODE_ENV: development
+      NODE_ENV: ${NODE_ENV}
     networks:
       - dokploy-network
 networks:
