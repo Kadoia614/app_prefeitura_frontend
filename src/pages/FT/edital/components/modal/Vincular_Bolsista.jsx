@@ -27,11 +27,6 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
     addBolsistaIntoEdital,
   } = useEditalContext();
 
-  useEffect(() => {
-    setQuery({ page: 0, limit: 100000, search: "" });
-    fetchBolsistas();
-  }, []);
-
   const CloseModal = () => {
     setIsVincularModalOpen(false);
     clearModal();
@@ -82,6 +77,14 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
       <Modal
         id="VincularBolsista"
         title={"Vincular Bolsista ao Edital"}
+        onShow={() => {
+          setQuery({ page: 0, limit: 100000, search: "" });
+          fetchBolsistas();
+        }}
+        onHide={() => 
+        {setQuery({ page: 0, limit: 10, search: "" });
+          CloseModal();}
+        }
         onAcept={() => saveItem()}
         aceptLabel={"Salvar"}
         onRefuse={() => CloseModal()}

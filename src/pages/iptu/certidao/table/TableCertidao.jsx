@@ -163,7 +163,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
           )}
         </div>
         <Paginator
-          first={query.page}
+          first={query.page * query.limit} // ← aqui está o ajuste
           rows={query.limit}
           totalRecords={total}
           rowsPerPageOptions={[10, 20, 30]}
