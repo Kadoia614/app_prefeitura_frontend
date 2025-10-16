@@ -8,7 +8,9 @@ RUN npm install --silent
 
 COPY . .
 
+ARG NODE_ENV
 ARG VITE_ENV
+ENV NODE_ENV=$NODE_ENV
 ENV VITE_ENV=$VITE_ENV
 
 RUN npm run build
