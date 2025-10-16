@@ -8,6 +8,9 @@ RUN npm install --silent
 
 COPY . .
 
+ARG VITE_ENV
+ENV VITE_ENV=$VITE_ENV
+
 RUN npm run build
 
 FROM nginx:alpine
