@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile
       args:
-        - VITE_ENV=${NODE_ENV}
+        VITE_ENV=${NODE_ENV}
     ports:
       - "83:80"
     environment:
