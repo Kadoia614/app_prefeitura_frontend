@@ -20,7 +20,7 @@ import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 
 function App() {
-  const Env = import.meta.env.VITE_ENV;
+  const Env = import.meta.env.VITE_APP_NODE_ENV;
 
   switch (Env) {
     case "man":

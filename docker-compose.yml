@@ -6,14 +6,10 @@ services:
       dockerfile: Dockerfile
       args:
         NODE_ENV: ${NODE_ENV}
-        VITE_ENV: ${NODE_ENV}  # ← VITE_ENV recebe o mesmo valor
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      VITE_ENV: ${NODE_ENV}
-    expose:
-      - "80"
-    networks:
-      - dokploy-network
-networks:
-  dokploy-network:
-    external: true
+    ports:
+      - "83:80"
+#     networks:
+#       - dokploy-network
+# networks:
+#   dokploy-network:
+#     external: true
