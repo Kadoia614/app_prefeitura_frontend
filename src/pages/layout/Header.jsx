@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-primary text-on-primary font-bold h-20 flex items-center justify-between flex-row py-4 px-8">
+    <header className="shadow-primary text-primary shadow-md font-bold h-20 flex items-center justify-between flex-row py-4 px-8 z-50">
       <div className="flex flex-row items-end">
       <a href="#" className="w-16 bg-white rounded-md">
         <img src={logo} alt="" className="h-12 m-auto p-0" />

@@ -62,7 +62,7 @@ GeralExcludeModal.propTypes = {
   targetId: PropTypes.any,
   setTargetID: PropTypes.func.isRequired,
   onShow: PropTypes.func,
-  loadTable: PropTypes.func.isRequired,
+  loadTable: PropTypes.func,
   url: PropTypes.string.isRequired,
   message: PropTypes.string,
 };
