@@ -4,22 +4,25 @@ import Title from "@/components/shared/title/Title";
 
 import Bolsista from "./bolsistas/Bolsista";
 import Edital from "./edital/Edital";
+import { BolsistaProvider } from "../../context/ft/bolsista/BolsistaProvider";
 
 const FTAPP = () => {
   return (
-    <div id="Bolsistas">
+    <div id="FT">
       <Title>Frente de Trabalho</Title>
 
       <div>
-        <TabView>
-          <TabPanel header="Bolsistas" >
-            <Bolsista lazy/>
-          </TabPanel>
+        <BolsistaProvider>
+          <TabView>
+            <TabPanel header="Bolsistas">
+              <Bolsista lazy />
+            </TabPanel>
 
-          <TabPanel header="Editais" >
-            <Edital lazy/>
-          </TabPanel>
-        </TabView>
+            <TabPanel header="Editais">
+              <Edital lazy />
+            </TabPanel>
+          </TabView>
+        </BolsistaProvider>
       </div>
     </div>
   );

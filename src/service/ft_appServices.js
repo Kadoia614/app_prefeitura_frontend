@@ -2,22 +2,29 @@ import API from "@api/API";
 import { APIBolsistaImage } from "@api/API";
 
 // bolsistas
-export const getBolsista = async (url) => {
-  const { data } = await API.get(url ? url : "/ft/bolsista");
+export const getBolsista = async (query) => {
+  const { page, limit, search } = query;
+  const url = search
+    ? `/ft/bolsista?page=${page || 0}&limit=${limit || 10}&search=${search}`
+    : `/ft/bolsista?page=${page || 0}&limit=${limit || 10}`;
+  const { data } = await API.get(url);
   return data;
 };
 
-export const updateBolsista = async (id, data) => {
-  return await API.put(`/ft/bolsista/${id}`, { ...data });
+export const updateBolsista = async (id, payload) => {
+  const { data } = await API.put(`/ft/bolsista/${id}`, { ...payload });
+  return data;
 };
 
-export const postBolsista = async (data) => {
-  return await API.post(`/ft/bolsista`, { ...data });
+export const postBolsista = async (payload) => {
+  const { data } = await API.post(`/ft/bolsista`, { ...payload });
+  return data;
 };
 
-// export const deleteBolsista = async (id) => {
-//   return await API.delete(`/ft/bolsista/${id}`);
-// };
+export const deleteBolsista = async (id) => {
+  const { data } = await API.delete(`/ft/bolsista/${id}`);
+  return data;
+};
 
 export const getBolsistaEdital = async (id) => {
   const { data } = await API.get(`/ft/bolsista/edital/${id}`);
@@ -50,24 +57,30 @@ export const postDoc = async (id, data) => {
 
 // editais
 export const getEdital = async (url) => {
-  const response = await API.get(url ? url : "/ft/edital");
-  return response.data;
+  const { data } = await API.get(url ? url : "/ft/edital");
+  console.log(data)
+  return data;
 };
 
-export const updateEdital = async (id, data) => {
-  return await API.put(`/ft/edital/${id}`, data);
+export const updateEdital = async (id, payload) => {
+  const { data } = await API.put(`/ft/edital/${id}`, payload);
+  return data;
 };
 
-export const postEdital = async (data) => {
-  return await API.post(`/ft/edital`, data);
+export const postEdital = async (payload) => {
+  return await API.post(`/ft/edital`, payload);
 };
 
 export const deleteEdital = async (id) => {
   return await API.delete(`/ft/edital/${id}`);
 };
 
-export const getEditalWithBolsista = async (id) => {
-  const { data } = await API.get(`/ft/edital/${id}/bolsista`);
+export const getEditalWithBolsista = async (id, query) => {
+    const { page, limit, search } = query;
+  const url = search
+    ? `/ft/edital/${id}/bolsista?page=${page || 0}&limit=${limit || 10}&search=${search || ""}`
+    : `/ft/edital/${id}/bolsista?page=${page || 0}&limit=${limit || 10}`;
+  const { data } = await API.get(url);
 
   return data;
 };

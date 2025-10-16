@@ -70,7 +70,7 @@ const Modal = ({
       closable
       blockScroll
       dismissableMask
-      className="p-fluid w-[50vw]"
+      className="p-fluid md:w-[50vw] max-w-full"
       onShow={onShow}
     >
       {children}

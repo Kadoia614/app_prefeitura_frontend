@@ -1,58 +1,38 @@
-import { useState } from "react";
 import Modal from "@/components/shared/modal/Modal";
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMoney from "@/components/shared/input/inputfield/InputFieldMoney";
-import { postEdital, updateEdital } from "@/service/ft_appServices";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 import PropTypes from "prop-types";
-import { useLoadingContext } from "../../../../../context/loading/LoadingContext";
+import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
 
 const Edital_Modal = ({
   isEditalModalOpen,
   setIsEditalModalOpen,
-  fetchData,
 }) => {
-  const { attIsLoading } = useLoadingContext();
-  const [editalData, setEditalData] = useState({});
+  let { setNewEdital, newEdital, addEdital } = useEditalContext();
 
   const { showToast } = useToast();
   const today = new Date();
 
   // sómente para gerenciar os valore dos inputs
   const editableItem = (key, value) => {
-    setEditalData((e) => ({ ...e, [key]: value }));
+    setNewEdital((e) => ({ ...e, [key]: value }));
   };
 
   // apaga os dados do modal
   const clearModal = () => {
-    setEditalData({});
+    setNewEdital({});
   };
 
   // merma coisa, somente para as demandas do próprio user que ele vai poder dar esse save / update, não faz sentido estar totalmente aqui, vou refatorar
-  const saveItem = async (id) => {
+  const saveItem = async () => {
     try {
-      attIsLoading(true);
-      let payload = {
-        edital: {
-          name: editalData.name,
-          data_publicacao: editalData.data_publicacao,
-          data_vencimento: editalData.data_vencimento,
-          dia_pagamento: editalData.dia_pagamento,
-          valor_bolsa: editalData.valor_bolsa,
-        },
-      };
-
-      if (id) {
-        await updateEdital(`${id}`, payload);
+      if (setNewEdital.id) {
+        // await updateEdital(`${id}`, payload);
       } else {
-        await postEdital(payload);
+        await addEdital();
       }
-
-      showToast("success", "Confirmed", "Edital salvo com sucesso");
-      setIsEditalModalOpen(false);
-      clearModal();
-      fetchData();
     } catch (error) {
       showToast(
         "error",
@@ -62,8 +42,6 @@ const Edital_Modal = ({
         }`
       );
       return;
-    } finally {
-      attIsLoading(false);
     }
   };
 
@@ -72,9 +50,9 @@ const Edital_Modal = ({
       {/* Modal to create/ edit a Edital */}
       <Modal
         id="EditalModal"
-        title={editalData?.id ? "Atualizar Edital" : "Cadastrar Edital"}
+        title={newEdital?.id ? "Atualizar Edital" : "Cadastrar Edital"}
         onAcept={() => {
-          saveItem(editalData?.id || null);
+          saveItem(newEdital?.id || null);
         }}
         aceptLabel={"Salvar"}
         onRefuse={() => {
@@ -90,11 +68,11 @@ const Edital_Modal = ({
             {/* Nome */}
             <div className="mt-1 col-span-2 sm:col-span-full">
               <InputField
-                invalid={editalData?.name ? false : true}
+                invalid={newEdital?.name ? false : true}
                 id="Name"
                 inputClass="w-full"
                 label="Nome"
-                value={editalData?.name || ""}
+                value={newEdital?.name || ""}
                 onChange={(e) => {
                   editableItem("name", e.target.value);
                 }}
@@ -104,9 +82,9 @@ const Edital_Modal = ({
             {/* Publicacao */}
             <div className="mt-1 col-span-3">
               <CalendarInput
-                invalid={editalData?.data_publicacao ? false : true}
+                invalid={newEdital?.data_publicacao ? false : true}
                 label={"Publicação"}
-                value={editalData?.data_publicacao || ""}
+                value={newEdital?.data_publicacao || ""}
                 onChange={(e) => {
                   editableItem("data_publicacao", e.target.value);
                 }}
@@ -119,10 +97,10 @@ const Edital_Modal = ({
             {/* Validade */}
             <div className="mt-1 col-span-3">
               <CalendarInput
-                invalid={editalData?.data_vencimento ? false : true}
+                invalid={newEdital?.data_vencimento ? false : true}
                 label={"Expira em:"}
                 inputClass="w-full"
-                value={editalData?.data_vencimento || ""}
+                value={newEdital?.data_vencimento || ""}
                 onChange={(e) => {
                   editableItem("data_vencimento", e.target.value);
                 }}
@@ -135,15 +113,15 @@ const Edital_Modal = ({
             {/* Pagamento */}
             <div className="mt-1 col-span-2">
               <CalendarInput
-                invalid={editalData?.dia_pagamento ? false : true}
+                invalid={newEdital?.dia_pagamento ? false : true}
                 label={"Pagamento"}
                 inputClass="w-full"
                 value={
-                  editalData?.dia_pagamento
+                  newEdital?.dia_pagamento
                     ? new Date(
                         today.getFullYear(),
                         today.getMonth(),
-                        editalData?.dia_pagamento
+                        newEdital?.dia_pagamento
                       )
                     : null
                 }
@@ -158,12 +136,12 @@ const Edital_Modal = ({
             {/* Bolsa */}
             <div className="mt-1 col-span-4">
               <InputFieldMoney
-                invalid={editalData?.valor_bolsa ? false : true}
+                invalid={newEdital?.valor_bolsa ? false : true}
                 id="Bolsa"
                 keyfilter="int"
                 inputClass="w-full sm:w-50"
                 label="Valor da Bolsa"
-                value={editalData?.valor_bolsa || ""}
+                value={newEdital?.valor_bolsa || ""}
                 onChange={(e) => {
                   editableItem("valor_bolsa", e.target.value);
                 }}
@@ -178,7 +156,6 @@ const Edital_Modal = ({
 Edital_Modal.propTypes = {
   isEditalModalOpen: PropTypes.bool.isRequired,
   setIsEditalModalOpen: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
 export default Edital_Modal;

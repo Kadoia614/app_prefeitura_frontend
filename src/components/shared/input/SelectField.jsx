@@ -1,6 +1,9 @@
+import PropTypes from "prop-types";
+
 const SelectField = ({
   id,
   label,
+  fieldsetClass,
   value,
   options,
   onChange,
@@ -9,8 +12,8 @@ const SelectField = ({
   selectClass,
   defaultDisabled
 }) => (
-  <fieldset className="mt-2">
-    <label htmlFor={id} className="font-bold text-text-muted">
+  <fieldset className={`mt-2 text-end ${fieldsetClass}`}>
+    <label htmlFor={id} className={`font-bold text-text-muted`}>
       {label}
     </label>
     <div className="mt-1">
@@ -33,5 +36,21 @@ const SelectField = ({
     </div>
   </fieldset>
 );
+
+SelectField.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  fieldsetClass: PropTypes.string,
+  value: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  })).isRequired,
+  onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  selectClass: PropTypes.string,
+  defaultDisabled: PropTypes.bool,
+};
 
 export default SelectField;

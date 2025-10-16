@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 import TableButton from "@/components/shared/table/TableButton";
-import BolsistaTableHeader from "./BolsistaTableHeader";
 import { useUserContext } from "@/context/user/UserContext";
 import TableContainer from "../../../../../components/shared/table/TableContainer";
+import { SpeedDial } from "primereact/speeddial";
+import { Tooltip } from "primereact/tooltip";
+import TableHeader from "../../../../../components/shared/table/TableHeader";
+import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
+import { Paginator } from "primereact/paginator";
+import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
 
 const tag = {
   ativo: {
-    style: "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
-    icon: <i className="pi pi-check-circle">  </i>,
+    style:
+      "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-check-circle"> </i>,
     label: "Ativo",
   },
   inativo: {
@@ -27,13 +33,9 @@ const tag = {
   },
 };
 
-const BolsistasTable = ({
-  tableData,
-  setOpenModalEdit,
-  setModalData,
-  setExcludeModal,
-  setExcludeModalOpen,
-}) => {
+const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
+  const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
+    useBolsistaContext();
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
   const { user } = useUserContext();
@@ -51,6 +53,17 @@ const BolsistasTable = ({
     );
   };
 
+  const renderItems = [
+    {
+      label: "Adicionar Bolsista",
+      icon: "pi pi-user",
+      className: "add-bolsista-btn bg-primary hover:bg-primary-hover",
+      command: () => {
+        setOpenModalEdit(true);
+      },
+    },
+  ];
+
   const renderActions = (rowData) => (
     <div className="flex gap-2">
       <TableButton
@@ -60,7 +73,7 @@ const BolsistasTable = ({
         color="text-primary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
-          setModalData(rowData);
+          setTarget(rowData);
         }}
       />
       <TableButton
@@ -80,27 +93,66 @@ const BolsistasTable = ({
           icon={"pi pi-trash"}
           color="text-danger bg-white border-none"
           onClick={() => {
-            setExcludeModal(rowData.id), setExcludeModalOpen(true);
+            setTarget(rowData);
+            setExcludeModalOpen(true);
           }}
         />
       )}
     </div>
   );
 
+  useEffect(() => {
+    fetchBolsistas(query);
+  }, [query]);
+
   return (
     <>
       <TableContainer>
-        <BolsistaTableHeader tag={tag} setOpenModalEdit={setOpenModalEdit} />
-
+        <TableHeader
+          center={
+            <div className="md:absolute left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]">
+              Bolsistas
+            </div>
+          }
+          start={
+            <>
+              <InputFieldLine
+                id="SearchCertidao"
+                placeHolder={"Buscar Bolsista por CPF ou nome"}
+                value={query.search}
+                onChange={(e) =>
+                  setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+                }
+              ></InputFieldLine>
+            </>
+          }
+        ></TableHeader>
         <DataTable
           id="BolsistaTable"
-          value={tableData}
+          value={bolsistas}
           size="small"
-          paginator
-          rows={25}
           stripedRows
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
           rowClassName="hover:bg-gray-100 transition duration-200"
+          header={
+            <div className="relative flex justify-between items-center px-4">
+              <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
+                <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">total: {total}</p>
+              </div>
+              <div>
+                <Tooltip target=".add-bolsista-btn" position="bottom" />
+                <SpeedDial
+                  className="relative"
+                  model={renderItems}
+                  direction="down"
+                  type="linear"
+                  style={{ right: 0 }}
+                ></SpeedDial>
+              </div>
+            </div>
+          }
         >
           <Column
             field="id"
@@ -147,6 +199,20 @@ const BolsistasTable = ({
 
           <Column header="Ações" body={renderActions} />
         </DataTable>
+
+        <Paginator
+          first={query.page}
+          rows={query.limit}
+          totalRecords={total}
+          rowsPerPageOptions={[10, 20, 30]}
+          onPageChange={(e) =>
+            setQuery((prev) => ({
+              ...prev,
+              page: e.page,
+              limit: e.rows,
+            }))
+          }
+        />
       </TableContainer>
 
       <SideBarBolsista
@@ -159,13 +225,8 @@ const BolsistasTable = ({
 };
 
 BolsistasTable.propTypes = {
-  tableData: PropTypes.array.isRequired,
   setOpenModalEdit: PropTypes.func.isRequired,
-  setModalData: PropTypes.func.isRequired,
-  setExcludeModal: PropTypes.func,
   setExcludeModalOpen: PropTypes.func,
-  attIsLoading: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
 export default BolsistasTable;
