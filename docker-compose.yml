@@ -8,8 +8,6 @@ services:
         NODE_ENV: ${NODE_ENV}
     ports:
       - "83:80"
-    environment:
-      NODE_ENV: ${NODE_ENV}
     networks:
       - dokploy-network
 networks:
