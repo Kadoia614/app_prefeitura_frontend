@@ -12,6 +12,7 @@ import TableHeader from "../../../../../components/shared/table/TableHeader";
 import { SpeedDial } from "primereact/speeddial";
 import { Paginator } from "primereact/paginator";
 import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
+import { getRelatory } from "../../../../../service/ft_appServices";
 
 const tag = {
   ativo: {
@@ -39,8 +40,24 @@ const tag = {
 };
 
 const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
-  const { edital, targetEdital, setTargetEdital, fetchEdital, editalBolsista, handleToggleBolsista, queryEdital, setQueryEdital } =
-    useEditalContext();
+  const {
+    edital,
+    targetEdital,
+    setTargetEdital,
+    fetchEdital,
+    editalBolsista,
+    handleToggleBolsista,
+    queryEdital,
+    setQueryEdital,
+  } = useEditalContext();
+
+    async function openRelatory() {
+    const data = await getRelatory(targetEdital);
+
+    const archive = URL.createObjectURL(data);
+
+    window.open(archive, "_blank");
+  }
 
   useEffect(() => {
     fetchEdital();
@@ -74,7 +91,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
     </div>
   );
 
-const renderItems = [
+  const renderItems = [
     {
       label: "Novo Edital",
       icon: "pi pi-file-plus",
@@ -87,7 +104,8 @@ const renderItems = [
       label: "Vincular Bolsista",
       icon: "pi pi-link",
       disabled: !targetEdital,
-      className: "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
+      className:
+        "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
       command: () => {
         setQueryEdital((q) => ({ ...q, page: 0, limit: 100000, search: "" }));
         setIsVincularModalOpen(true);
@@ -98,9 +116,9 @@ const renderItems = [
       icon: "pi pi-address-book",
       className: "generate-relatory",
       disabled: !targetEdital,
-      // command: () => {
-      //   openRelatory();
-      // },
+      command: () => {
+        openRelatory();
+      },
     },
   ];
 
@@ -108,18 +126,22 @@ const renderItems = [
     <>
       <TableContainer>
         <TableHeader
-        start={
-                      <>
+          start={
+            <>
               <InputFieldLine
                 id="SearchCertidao"
                 placeHolder={"Buscar Bolsista por CPF ou nome"}
                 value={queryEdital.search}
                 onChange={(e) =>
-                  setQueryEdital((q) => ({ ...q, search: e.target.value, page: 0 }))
+                  setQueryEdital((q) => ({
+                    ...q,
+                    search: e.target.value,
+                    page: 0,
+                  }))
                 }
               ></InputFieldLine>
             </>
-        }
+          }
           end={
             <div>
               <SelectField
@@ -149,23 +171,27 @@ const renderItems = [
           size="small"
           stripedRows
           rowClassName="hover:bg-gray-100 transition duration-200"
-          header={<div className="relative flex justify-between items-center px-4">
-                        <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
-                          <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
-                        </div>
-                        <div>
-                          <p className="text-xs text-text-muted">total: {editalBolsista.count || 0}</p>
-                        </div>
-                        <div>
-                          <SpeedDial
-                            className="relative"
-                            model={renderItems}
-                            direction="down"
-                            type="linear"
-                            style={{ right: 0 }}
-                          ></SpeedDial>
-                        </div>
-                      </div>}
+          header={
+            <div className="relative flex justify-between items-center px-4">
+              <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
+                <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">
+                  total: {editalBolsista.count || 0}
+                </p>
+              </div>
+              <div>
+                <SpeedDial
+                  className="relative"
+                  model={renderItems}
+                  direction="down"
+                  type="linear"
+                  style={{ right: 0 }}
+                ></SpeedDial>
+              </div>
+            </div>
+          }
         >
           <Column
             field="id"
@@ -233,19 +259,19 @@ const renderItems = [
 
           <Column header="Ações" body={renderActions} />
         </DataTable>
-                <Paginator
-                  // first={query.page}
-                  // rows={query.limit}
-                  // totalRecords={total}
-                  // rowsPerPageOptions={[10, 20, 30]}
-                  // onPageChange={(e) =>
-                  //   setQuery((prev) => ({
-                  //     ...prev,
-                  //     page: e.page,
-                  //     limit: e.rows,
-                  //   }))
-                  // }
-                />
+        <Paginator
+        // first={query.page}
+        // rows={query.limit}
+        // totalRecords={total}
+        // rowsPerPageOptions={[10, 20, 30]}
+        // onPageChange={(e) =>
+        //   setQuery((prev) => ({
+        //     ...prev,
+        //     page: e.page,
+        //     limit: e.rows,
+        //   }))
+        // }
+        />
       </TableContainer>
 
       {/* <Modal
