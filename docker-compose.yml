@@ -4,12 +4,12 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      args:
+        - VITE_ENV=${NODE_ENV}
     ports:
       - "83:80"
     environment:
       VITE_ENV: ${NODE_ENV}
-    args:
-      - VITE_ENV=${NODE_ENV}
     networks:
       - dokploy-network
 networks:
