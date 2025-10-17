@@ -5,7 +5,9 @@ services:
       context: ./
       dockerfile: Dockerfile
       args:
-        NODE_ENV: ${NODE_ENV}
+        VITE_APP_NODE_ENV: ${VITE_APP_NODE_ENV}
+    environment:
+      - VITE_APP_NODE_ENV=${VITE_APP_NODE_ENV}
     ports:
       - "83:80"
     networks:

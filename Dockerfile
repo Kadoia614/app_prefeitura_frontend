@@ -6,11 +6,11 @@ COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 
 RUN npm install --silent
 
+ARG VITE_APP_NODE_ENV
+ENV VITE_APP_NODE_ENV=$VITE_APP_NODE_ENV
+
 COPY . .
-
-ARG NODE_ENV
-
-RUN VITE_APP_NODE_ENV=$NODE_ENV npm run build
+RUN npm run build
 
 FROM nginx:alpine
 
