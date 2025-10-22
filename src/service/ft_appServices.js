@@ -58,7 +58,6 @@ export const postDoc = async (id, data) => {
 // editais
 export const getEdital = async (url) => {
   const { data } = await API.get(url ? url : "/ft/edital");
-  console.log(data)
   return data;
 };
 
@@ -92,7 +91,6 @@ export const getAllEditalWithBolsista = async () => {
 };
 
 export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
-  console.log([bolsistas]);
   const { data } = await API.post(`/ft/edital/vincularbolsista/${id}`, {
     bolsista: bolsistas,
     data_vinculo,
