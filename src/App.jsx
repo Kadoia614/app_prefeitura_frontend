@@ -53,7 +53,7 @@ function App() {
                   <Route index element={<ServicesCards />} />
                   <Route path="config" element={<UserConfig />} />
                   <Route path="admin" element={<Admin />} />
-                  <Route path="ft-app" element={<FT_APP />}></Route>
+                  <Route path="frente-de-trabalho" element={<FT_APP />}></Route>
                   <Route
                     path="iptu/certidao"
                     element={<CertidaoIPTU></CertidaoIPTU>}
