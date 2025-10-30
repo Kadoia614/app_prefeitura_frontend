@@ -64,7 +64,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
   }, []);
 
   const renderStatus = (row) => {
-    const status = row.BolsistasEdital?.status;
+    const status = row.bolsistas_edital[0]?.status;
     const item = tag[status];
     if (!item) return null;
     return (
@@ -217,14 +217,14 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
             className="text-sm text-text-muted p-4"
           />
           <Column
-            field="BolsistasEdital.status"
+            field="bolsistas_edital[0].status"
             header="Status"
             body={renderStatus}
             sortable
             className="text-sm text-text-muted p-4"
           />
           <Column
-            field="BolsistasEdital.data_vinculo"
+            field="bolsistas_edital[0]?.data_vinculo"
             header="Vinculo"
             sortable
             filter
@@ -232,14 +232,14 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
             filterMatchMode="contains"
             className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
-              new Date(rowData.BolsistasEdital.data_vinculo).toLocaleDateString(
+              new Date(rowData.bolsistas_edital[0]?.data_vinculo).toLocaleDateString(
                 "pt-BR"
               )
             }
           />
 
           <Column
-            field="BolsistasEdital.data_vinculo"
+            field="bolsistas_edital[0]?.data_vinculo"
             header="Encerramento"
             sortable
             filter
@@ -247,8 +247,8 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
             filterMatchMode="contains"
             className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
-              !rowData.BolsistasEdital.prorrogated ? (
-                new Date(rowData.BolsistasEdital.expire_at).toLocaleDateString(
+              !rowData.bolsistas_edital[0]?.prorrogated ? (
+                new Date(rowData.bolsistas_edital[0]?.expire_at).toLocaleDateString(
                   "pt-BR"
                 )
               ) : (
@@ -260,17 +260,17 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
           <Column header="Ações" body={renderActions} />
         </DataTable>
         <Paginator
-        // first={query.page}
-        // rows={query.limit}
-        // totalRecords={total}
-        // rowsPerPageOptions={[10, 20, 30]}
-        // onPageChange={(e) =>
-        //   setQuery((prev) => ({
-        //     ...prev,
-        //     page: e.page,
-        //     limit: e.rows,
-        //   }))
-        // }
+        first={queryEdital.page * queryEdital.limit}
+        rows={queryEdital.limit}
+        totalRecords={editalBolsista.count}
+        rowsPerPageOptions={[10, 20, 30]}
+        onPageChange={(e) =>
+          setQueryEdital((prev) => ({
+            ...prev,
+            page: e.page,
+            limit: e.rows,
+          }))
+        }
         />
       </TableContainer>
 

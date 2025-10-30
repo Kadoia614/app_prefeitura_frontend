@@ -131,13 +131,13 @@ export const EditalProvider = ({ children }) => {
   const fetchBolsistaEdital = async () => {
     try {
       if (targetEdital === undefined) return;
-      const { edital_bolsista, count } = await getEditalWithBolsista(
+      const data = await getEditalWithBolsista(
         targetEdital,
         queryEdital
       );
       setEditalBolsista({
-        count: count,
-        bolsistas: edital_bolsista?.bolsistas,
+        count: data.count,
+        bolsistas: data.bolsistas,
       });
     } catch (error) {
       showToast(

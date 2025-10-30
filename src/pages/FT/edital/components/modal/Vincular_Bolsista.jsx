@@ -25,6 +25,7 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
     setBolsistasToVincular,
     bolsistasToVincular,
     addBolsistaIntoEdital,
+    setQueryEdital
   } = useEditalContext();
 
   const CloseModal = () => {
@@ -81,10 +82,11 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
           setQuery({ page: 0, limit: 100000, search: "" });
           fetchBolsistas();
         }}
-        onHide={() => 
-        {setQuery({ page: 0, limit: 10, search: "" });
-          CloseModal();}
-        }
+        onHide={() => {
+          setQuery({ page: 0, limit: 10, search: "" });
+          setQueryEdital({ page: 0, limit: 10, search: "" });
+          CloseModal();
+        }}
         onAcept={() => saveItem()}
         aceptLabel={"Salvar"}
         onRefuse={() => CloseModal()}
