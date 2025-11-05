@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Paginator } from "primereact/paginator";
+import { Tooltip } from "primereact/tooltip";
+import { SpeedDial } from "primereact/speeddial";
+
+import TableButton from "@/components/shared/table/TableButton";
+import TableContainer from "@/components/shared/table/TableContainer";
+import InputFieldLine from "@/components/shared/input/inputfield/InputFieldLine";
+import TableHeader from "@/components/shared/table/TableHeader";
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
-import TableButton from "@/components/shared/table/TableButton";
-import { useUserContext } from "@/context/user/UserContext";
-import TableContainer from "../../../../../components/shared/table/TableContainer";
-import { SpeedDial } from "primereact/speeddial";
-import { Tooltip } from "primereact/tooltip";
-import TableHeader from "../../../../../components/shared/table/TableHeader";
-import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
-import { Paginator } from "primereact/paginator";
+
 import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
+import { useUserContext } from "@/context/user/UserContext";
 
 const tag = {
   ativo: {
@@ -38,9 +40,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
     useBolsistaContext();
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
-  const { user } = useUserContext();
-
-  const scopo = user.scopo;
+  const { permissions } = useUserContext();
 
   const renderStatus = ({ status }) => {
     const item = tag[status];
@@ -66,28 +66,32 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
 
   const renderActions = (rowData) => (
     <div className="flex gap-2">
-      <TableButton
-        tooltip={`Editar`}
-        icon={"pi pi-pen-to-square"}
-        iconPos="left"
-        color="text-primary bg-white border-none"
-        onClick={() => {
-          setOpenModalEdit(true);
-          setTarget(rowData);
-        }}
-      />
-      <TableButton
-        tooltip={`Documentos`}
-        icon={"pi pi-file"}
-        iconPos="left"
-        color="text-primary bg-white border-none"
-        onClick={() => {
-          setSideBarOpen(true);
-          setSideBarId(rowData.id);
-        }}
-      />
+      {permissions.edit && (
+        <>
+          <TableButton
+            tooltip={`Editar`}
+            icon={"pi pi-pen-to-square"}
+            iconPos="left"
+            color="text-primary bg-white border-none"
+            onClick={() => {
+              setOpenModalEdit(true);
+              setTarget(rowData);
+            }}
+          />
+          <TableButton
+            tooltip={`Documentos`}
+            icon={"pi pi-file"}
+            iconPos="left"
+            color="text-primary bg-white border-none"
+            onClick={() => {
+              setSideBarOpen(true);
+              setSideBarId(rowData.id);
+            }}
+          />
+        </>
+      )}
 
-      {(scopo == 1 || scopo == 2) && (
+      {permissions.del && (
         <TableButton
           tooltip={`Excluir`}
           icon={"pi pi-trash"}
@@ -141,16 +145,18 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               <div>
                 <p className="text-xs text-text-muted">total: {total}</p>
               </div>
-              <div>
-                <Tooltip target=".add-bolsista-btn" position="bottom" />
-                <SpeedDial
-                  className="relative"
-                  model={renderItems}
-                  direction="down"
-                  type="linear"
-                  style={{ right: 0 }}
-                ></SpeedDial>
-              </div>
+              {permissions.write && (
+                <div>
+                  <Tooltip target=".add-bolsista-btn" position="bottom" />
+                  <SpeedDial
+                    className="relative"
+                    model={renderItems}
+                    direction="down"
+                    type="linear"
+                    style={{ right: 0 }}
+                  ></SpeedDial>
+                </div>
+              )}
             </div>
           }
         >

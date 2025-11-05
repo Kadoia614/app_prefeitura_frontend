@@ -23,7 +23,7 @@ const GeralExcludeModal = ({
       showToast("success", "Deletado com sucesso!");
       loadTable();
     } catch (error) {
-      alert(JSON.stringify(error.response.data));
+      console.log(JSON.stringify(error.response.data));
       showToast("error", "Falha ao deletar: " + error.response.data.message);
     } finally {
       setIsOpen(false);

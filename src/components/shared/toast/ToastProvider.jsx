@@ -1,6 +1,7 @@
 // src/components/ui/ToastProvider.jsx
 import { Toast } from "primereact/toast";
 import { createContext, useContext, useRef } from "react";
+import propTypes from "prop-types";
 
 const ToastContext = createContext(null);
 
@@ -19,4 +20,8 @@ export const ToastProvider = ({ children }) => {
       {children}
     </ToastContext.Provider>
   );
+};
+
+ToastProvider.propTypes = {
+  children: propTypes.node,
 };

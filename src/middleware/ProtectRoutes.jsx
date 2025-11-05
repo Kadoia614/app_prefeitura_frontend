@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 
 import { useUserContext } from "@/context/user/UserContext";
+import { useLoadingContext } from "../context/loading/LoadingContext";
+
 import API from "../api/API";
 import Error from "./HandleError";
-import { useLoadingContext } from "../context/loading/LoadingContext";
 
 const ProtectRoutes = () => {
   let { attIsLoading } = useLoadingContext();
-  let { AttAuth, attUser } = useUserContext();
-  let [error, setError] = useState(null);
+  let { AttAuth, attUser, setServicesTarget, services } = useUserContext();
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
   const authUser = async () => {
     try {
@@ -31,9 +33,15 @@ const ProtectRoutes = () => {
     }
   };
 
+  let params = useParams();
+
   useEffect(() => {
     authUser();
   }, []);
+
+  useEffect(() => {
+    params.id ? setServicesTarget(params.id) : setServicesTarget(null);
+  }, [params, services]);
 
   if (error) {
     return <Error Error={error.response.data.message}></Error>;
