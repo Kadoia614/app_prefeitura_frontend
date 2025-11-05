@@ -18,6 +18,7 @@ import Admin from "./pages/admin/PainelAdmin";
 import UserConfig from "./pages/user/UserConfig";
 import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
+import Esporte from "./pages/esporte/Esporte";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -58,6 +59,7 @@ function App() {
                     path="iptu/certidao"
                     element={<CertidaoIPTU></CertidaoIPTU>}
                   ></Route>
+                  <Route path="esporte" element={<Esporte /> }></Route>
                 </Route>
 
                 <Route path="*" element={<HandleError />} />
