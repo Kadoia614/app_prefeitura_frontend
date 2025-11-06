@@ -5,10 +5,12 @@ import { postBolsista, updateBolsista, deleteBolsista, getBolsista } from "@/ser
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
 import PropTypes from "prop-types";
+import { useLoadingContext } from "../../loading/LoadingContext";
 
 export const BolsistaProvider = ({ children }) => {
   const { showToast } = useToast();
 
+  let { attIsLoading } = useLoadingContext();
 
   let [bolsistas, setBolsistas] = useState([]);
   let [target, setTarget] = useState({});
@@ -23,6 +25,8 @@ export const BolsistaProvider = ({ children }) => {
 
   const addBolsista = async () => {
     try {
+      attIsLoading(true);
+
       let payload = {
         bolsista: {
           nome: target.nome,
@@ -58,11 +62,15 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
+      attIsLoading(true);
+
     }
   };
 
   const attBolsista = async () => {
     try {
+      attIsLoading(true);
+
       let payload = {
         bolsista: {
           nome: target.nome,
@@ -99,11 +107,14 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
+      attIsLoading(true);
+
     }
   };
 
   const removeBolsista = async () => {
     try {
+      attIsLoading(true);
       await deleteBolsista(target.id);
       setBolsistas((prev) => prev.filter((item) => item.id !== target.id));
       setTotal((prev) => prev - 1);
@@ -116,11 +127,13 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
+      attIsLoading(true);
     }
   };
 
   const fetchBolsistas = async () => {
     try {
+      attIsLoading(true);
       const { bolsista, pagador, uploadToken, count } = await getBolsista(
         query
       );
@@ -136,6 +149,8 @@ export const BolsistaProvider = ({ children }) => {
         "error",
         "Falha ao buscar bolsistas: " + error.response.data.message
       );
+    } finally {
+      attIsLoading(false);
     }
   };
 

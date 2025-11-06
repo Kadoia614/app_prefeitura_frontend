@@ -15,7 +15,8 @@ const RolesPainel = () => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
   const [excludeModal, setExcludeModal] = useState(null);
 
-  const { attIsLoading } = useLoadingContext();
+  let { attIsLoading } = useLoadingContext();
+
   const { showToast } = useToast();
 
   const fetchData = async () => {

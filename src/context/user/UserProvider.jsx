@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import PropTypes from "prop-types";
 import API from "../../api/API";
 import { useToast } from "../../components/shared/toast/ToastProvider";
+import { useLoadingContext } from "../loading/LoadingContext";
 
 export const UserProvider = ({ children }) => {
   let { showToast } = useToast();
+  let { attIsLoading } = useLoadingContext();
 
   const [user, setUser] = useState({
     ip: null,
@@ -15,6 +17,8 @@ export const UserProvider = ({ children }) => {
   });
   const [services, setServices] = useState([]);
   const [permissions, setPermissions] = useState([]);
+
+  const [params, setParams] = useState({});
 
   const AttAuth = (value) => {
     setUser((e) => ({ ...e, auth: value }));
@@ -34,23 +38,35 @@ export const UserProvider = ({ children }) => {
 
   const getServices = async () => {
     try {
+      attIsLoading(true);
+
       const response = await API.get("/service/user");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
       console.log(error.response.data.message);
       showToast("error", "Error", error.response.data.message);
       return []; // Retorna um array vazio em caso de erro
+    } finally {
+      attIsLoading(false);
     }
   };
 
-  const setServicesTarget = async (target) => {
-    console.log(target);
-    let ServicePermissions = services.filter((service) => {
-      return service.id == target;
-    });
-    console.log(ServicePermissions[0]?.permission || []);
+  const switchPermissions = async () => {
+      let ServicePermissions = services.filter((service) => {
+        return service.id == params.id;
+      });
 
-    setPermissions(ServicePermissions[0]?.permission || []);
+      const serviceTarget = ServicePermissions[0];
+
+      setPermissions(serviceTarget?.permission);
+  };
+
+  useEffect(() => {
+    switchPermissions();
+  }, [services, params]);
+
+  const AttParams = (param) => {
+    setParams(param)
   };
 
   return (
@@ -62,8 +78,8 @@ export const UserProvider = ({ children }) => {
         user,
         services,
         getServices,
-        setServicesTarget,
         permissions,
+        AttParams
       }}
     >
       {children}

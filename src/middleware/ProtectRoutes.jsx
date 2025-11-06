@@ -9,18 +9,22 @@ import Error from "./HandleError";
 
 const ProtectRoutes = () => {
   let { attIsLoading } = useLoadingContext();
-  let { AttAuth, attUser, setServicesTarget, services } = useUserContext();
+  let { AttAuth, attUser, AttParams } = useUserContext();
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const param = useParams();
+
   const authUser = async () => {
     try {
+      attIsLoading(true); // Quando os dados estiverem carregados
+
       const { data } = await API.get("/auth");
       console.log("user autenticado");
       attUser(data.user.ip, data.user.name, data.user.role);
       AttAuth(true);
     } catch (err) {
-      if (err.status === 401) {
+      if (err.status === 401 || err.status === 403) {
         AttAuth(false);
         localStorage.removeItem("token");
         navigate("/");
@@ -33,15 +37,15 @@ const ProtectRoutes = () => {
     }
   };
 
-  let params = useParams();
-
   useEffect(() => {
     authUser();
   }, []);
 
   useEffect(() => {
-    params.id ? setServicesTarget(params.id) : setServicesTarget(null);
-  }, [params, services]);
+    if (param.id) {
+      AttParams(param);
+    }
+  }, [param.id]);
 
   if (error) {
     return <Error Error={error.response.data.message}></Error>;
@@ -50,7 +54,7 @@ const ProtectRoutes = () => {
   return (
     <>
       <div className="container mx-auto my-4 bg-gray-100 rounded-md">
-        <Outlet context={{ attIsLoading }} />
+        <Outlet />
       </div>
     </>
   );

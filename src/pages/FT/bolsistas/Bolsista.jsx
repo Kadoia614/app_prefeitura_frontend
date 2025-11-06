@@ -10,17 +10,20 @@ const Bolsista = () => {
 
   return (
     <div id="Bolsistas" className="content">
-        <BolsistasTable
-          setOpenModalEdit={setOpenModalEdit}
-          setExcludeModalOpen={setExcludeModalOpen}
-        />
+      <BolsistasTable
+        setOpenModalEdit={setOpenModalEdit}
+        setExcludeModalOpen={setExcludeModalOpen}
+      />
 
-        {/* Modal para edição e cadastro de bolsistas */}
-        <FT_Bolsista_Modal
-          openModalEdit={openModalEdit}
-          setOpenModalEdit={setOpenModalEdit}
-        />
-        <FT_Bolsista_ExcludeModal isOpen={excludeModalOpen} setIsOpen={setExcludeModalOpen}></FT_Bolsista_ExcludeModal>
+      {/* Modal para edição e cadastro de bolsistas */}
+      <FT_Bolsista_Modal
+        openModalEdit={openModalEdit}
+        setOpenModalEdit={setOpenModalEdit}
+      />
+      <FT_Bolsista_ExcludeModal
+        isOpen={excludeModalOpen}
+        setIsOpen={setExcludeModalOpen}
+      ></FT_Bolsista_ExcludeModal>
     </div>
   );
 };

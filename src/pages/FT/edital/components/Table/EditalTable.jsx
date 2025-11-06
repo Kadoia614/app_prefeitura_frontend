@@ -95,7 +95,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
     </div>
   );
 
-  const renderItems = permissions.write
+  const renderItems = permissions?.write
     ? [
         {
           label: "Novo Edital",
@@ -277,8 +277,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
               )
             }
           />
-
-          <Column header="Ações" body={renderActions} />
+          {permissions && <Column header="Ações" body={renderActions} />}
         </DataTable>
         <Paginator
           first={queryEdital.page * queryEdital.limit}
