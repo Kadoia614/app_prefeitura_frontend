@@ -62,7 +62,7 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
-      attIsLoading(true);
+      attIsLoading(false);
 
     }
   };
@@ -107,7 +107,7 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
-      attIsLoading(true);
+      attIsLoading(false);
 
     }
   };
@@ -127,7 +127,7 @@ export const BolsistaProvider = ({ children }) => {
       );
     } finally {
       setTarget({});
-      attIsLoading(true);
+      attIsLoading(false);
     }
   };
 
