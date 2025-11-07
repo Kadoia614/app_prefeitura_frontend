@@ -53,7 +53,7 @@ const mocked = [
   },
 ];
 
-const Table = () => {
+const Table = ({ setEditOpen, setExcludeOpen}) => {
   const { permissions } = useUserContext();
 
   const renderActions = (rowData) => (
@@ -66,7 +66,7 @@ const Table = () => {
             iconPos="left"
             color="text-primary bg-white border-none"
             onClick={() => {
-            //   setOpenModalEdit(true);
+              setEditOpen(true);
             //   setTarget(rowData);
             }}
           />
@@ -76,7 +76,7 @@ const Table = () => {
             iconPos="left"
             color="text-primary bg-white border-none"
             onClick={() => {
-            //   setSideBarOpen(true);
+              setExcludeOpen(true);
             //   setSideBarId(rowData.id);
             }}
           />

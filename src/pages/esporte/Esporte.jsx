@@ -1,9 +1,20 @@
-import { useParams } from "react-router"
+import { useState } from "react";
+import ModalAtleta from "./components/ModalAtleta";
+import Table from "./components/Table";
+import SportProvider from "../../context/sport/SportProvider";
 
 const Esporte = () => {
-    return (
-        <div>Esporte {useParams().id}</div>
-    )
-}
+  const [editOpen, setEditOpen] = useState(false);
+  const [excludeOpen, setExcludeOpen] = useState(false);
 
-export default Esporte
+  return (
+    <div id="Esporte" className="content">
+      <SportProvider>
+        <Table setEditOpen={setEditOpen} setExcludeOpen={setExcludeOpen} />
+        <ModalAtleta isOpen={editOpen} setIsOpen={setEditOpen} />
+      </SportProvider>
+    </div>
+  );
+};
+
+export default Esporte;
