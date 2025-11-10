@@ -39,7 +39,7 @@ function App() {
         </div>
       ) : (
         <>
-          <div id="Main" className="min-h-full flex flex-col">
+          <div id="Main" className="min-h-full flex flex-col bg-background">
             <Header />
             <div className="flex flex-col justify-between h-[100%] overflow-auto">
               <Routes>
@@ -54,7 +54,7 @@ function App() {
                     path="iptu/certidao"
                     element={<CertidaoIPTU></CertidaoIPTU>}
                   ></Route>
-                  <Route path="esporte" element={<Esporte />}></Route>
+                  <Route path="esporte/:modalidade?" element={<Esporte />}></Route>
                 </Route>
 
                 <Route path="*" element={<HandleError />} />

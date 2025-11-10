@@ -8,7 +8,10 @@ import { DataTable } from "primereact/datatable";
 import { SpeedDial } from "primereact/speeddial";
 import { Tooltip } from "primereact/tooltip";
 
-import { useUserContext } from "../../../context/user/UserContext";
+import { useUserContext } from "../../../../context/user/UserContext";
+import { useSportContext } from "../../../../context/sport/SportContext";
+
+import PropTypes from 'prop-types';
 
 const mocked = [
   {
@@ -17,7 +20,16 @@ const mocked = [
     birthday: "27/07/2001",
     cpf: "123.456.789-00",
     bithday: "1990-01-01",
-    address: "(11) 99999-9999",
+    tel: "(11) 99999-9999",
+    email: "(11) 99999-9999",
+    // address
+    cep: "06853450",
+    numero: "123",
+    logradouro: "Rua Terra Nova",
+    bairro: "jd Itapecerica",
+    cidade: "Itapecerica da serra",
+    uf: "SP",
+
     status: "ativo",
     creator: "kadoia",
   },
@@ -27,7 +39,16 @@ const mocked = [
     birthday: "27/07/2001",
     cpf: "123.456.789-00",
     bithday: "1990-01-01",
-    address: "(11) 99999-9999",
+    tel: "(11) 99999-9999",
+    email: "(11) 99999-9999",
+    // address
+    cep: "06853450",
+    numero: "123",
+    logradouro: "Rua Terra Nova",
+    bairro: "jd Itapecerica",
+    cidade: "Itapecerica da serra",
+    uf: "SP",
+
     status: "ativo",
     creator: "kadoia",
   },
@@ -37,7 +58,16 @@ const mocked = [
     birthday: "27/07/2001",
     cpf: "123.456.789-00",
     bithday: "1990-01-01",
-    address: "(11) 99999-9999",
+    tel: "(11) 99999-9999",
+    email: "(11) 99999-9999",
+    // address
+    cep: "06853450",
+    numero: "123",
+    logradouro: "Rua Terra Nova",
+    bairro: "jd Itapecerica",
+    cidade: "Itapecerica da serra",
+    uf: "SP",
+
     status: "ativo",
     creator: "kadoia",
   },
@@ -47,14 +77,24 @@ const mocked = [
     birthday: "27/07/2001",
     cpf: "123.456.789-00",
     bithday: "1990-01-01",
-    address: "(11) 99999-9999",
+    tel: "(11) 99999-9999",
+    email: "(11) 99999-9999",
+    // address
+    cep: "06853450",
+    numero: "123",
+    logradouro: "Rua Terra Nova",
+    bairro: "jd Itapecerica",
+    cidade: "Itapecerica da serra",
+    uf: "SP",
+
     status: "ativo",
     creator: "kadoia",
   },
 ];
 
-const Table = ({ setEditOpen, setExcludeOpen}) => {
+const Table = ({ setEditOpen, setExcludeOpen }) => {
   const { permissions } = useUserContext();
+  const { setAtletaTarget } = useSportContext();
 
   const renderActions = (rowData) => (
     <div className="flex gap-2">
@@ -66,18 +106,8 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
             iconPos="left"
             color="text-primary bg-white border-none"
             onClick={() => {
+              setAtletaTarget(rowData);
               setEditOpen(true);
-            //   setTarget(rowData);
-            }}
-          />
-          <TableButton
-            tooltip={`Documentos`}
-            icon={"pi pi-file"}
-            iconPos="left"
-            color="text-primary bg-white border-none"
-            onClick={() => {
-              setExcludeOpen(true);
-            //   setSideBarId(rowData.id);
             }}
           />
         </>
@@ -89,17 +119,28 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
           icon={"pi pi-trash"}
           color="text-danger bg-white border-none"
           onClick={() => {
-            // setTarget(rowData);
-            // setExcludeModalOpen(true);
+            setAtletaTarget(rowData);
+            setExcludeOpen(true);
           }}
         />
       )}
     </div>
   );
 
+  const renderItems = [
+    {
+      label: "Adicionar Bolsista",
+      icon: "pi pi-user",
+      className: "add-atleta-btn bg-primary hover:bg-primary-hover",
+      command: () => {
+        setEditOpen(true);
+      },
+    },
+  ];
+
   return (
     <>
-    {console.log(permissions)}
+      {console.log(permissions)}
       <TableContainer>
         <TableHeader>Esporte</TableHeader>
         <DataTable
@@ -118,14 +159,14 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
               </div>
               {permissions?.write && (
                 <div>
-                  {/* <Tooltip target=".add-bolsista-btn" position="bottom" />
-                              <SpeedDial
-                                className="relative"
-                                model={renderItems}
-                                direction="down"
-                                type="linear"
-                                style={{ right: 0 }}
-                              ></SpeedDial> */}
+                  <Tooltip target=".add-bolsista-btn" position="bottom" />
+                  <SpeedDial
+                    className="relative"
+                    model={renderItems}
+                    direction="down"
+                    type="linear"
+                    style={{ right: 0 }}
+                  ></SpeedDial>
                 </div>
               )}
             </div>
@@ -147,7 +188,7 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
             className="text-sm text-text-muted p-4"
           />
           <Column
-            field="address"
+            field="bairro"
             header="Endereço"
             className="text-sm text-text-muted p-4"
           />
@@ -168,9 +209,7 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
             header="Criado por"
             className="text-sm text-text-muted p-4 whitespace-nowrap"
           />
-          {permissions &&
-          <Column header="Ações" body={renderActions} />}
-
+          {permissions && <Column header="Ações" body={renderActions} />}
         </DataTable>
 
         {/* <Paginator
@@ -192,3 +231,8 @@ const Table = ({ setEditOpen, setExcludeOpen}) => {
 };
 
 export default Table;
+
+Table.propTypes = {
+  setEditOpen: PropTypes.func.isRequired,
+  setExcludeOpen: PropTypes.func.isRequired,
+};

@@ -18,6 +18,11 @@ const SportProvider = ({ children }) => {
     setAtleta(atleta);
   };
 
+  const removeAtleta = () => {
+    setAtleta(e=>[e.filter((item) => item.uuid !== atletaTarget.uuid)]);
+    setAtletaTarget({});
+  };
+
 
   return (
     <SportContext.Provider
@@ -26,6 +31,7 @@ const SportProvider = ({ children }) => {
         atletaTarget,
         atleta,
         saveAtleta,
+        removeAtleta,
         modalidade
       }}
     >

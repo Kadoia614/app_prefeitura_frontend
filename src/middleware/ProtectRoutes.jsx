@@ -53,7 +53,7 @@ const ProtectRoutes = () => {
 
   return (
     <>
-      <div className="container mx-auto my-4 bg-gray-100 rounded-md">
+      <div className="container mx-auto my-4 bg-background-muted rounded-md">
         <Outlet />
       </div>
     </>

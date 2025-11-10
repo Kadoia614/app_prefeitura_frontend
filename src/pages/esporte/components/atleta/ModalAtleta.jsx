@@ -70,13 +70,13 @@ const ModalAtleta = ({ isOpen, setIsOpen }) => {
                   {/* Nome */}
                   <div className="mt-1 col-span-full">
                     <InputField
-                      invalid={atletaTarget?.nome ? false : true}
+                      invalid={atletaTarget?.name ? false : true}
                       id="Name"
                       inputClass="w-full"
                       label="Nome"
-                      value={atletaTarget?.nome || ""}
+                      value={atletaTarget?.name || ""}
                       onChange={(e) => {
-                        editableItem("nome", e.target.value);
+                        editableItem("name", e.target.value);
                       }}
                     />
                   </div>
@@ -111,14 +111,14 @@ const ModalAtleta = ({ isOpen, setIsOpen }) => {
                   </div>
                   <div className="mt-1 lg:col-span-3 col-span-full">
                     <InputFieldMask
-                      invalid={atletaTarget?.telefone ? false : true}
+                      invalid={atletaTarget?.tel ? false : true}
                       id="Telefone"
                       inputClass="w-full"
                       label="Telefone"
                       mask={"(99)99999-9999"}
-                      value={atletaTarget?.telefone || ""}
+                      value={atletaTarget?.tel || ""}
                       onChange={(e) => {
-                        editableItem("telefone", e.target.value);
+                        editableItem("tel", e.target.value);
                       }}
                     />
                   </div>
@@ -137,19 +137,7 @@ const ModalAtleta = ({ isOpen, setIsOpen }) => {
                     />
                   </div>
 
-                  {/* Local */}
-                  <div className="mt-1 col-span-full">
-                    <InputField
-                      invalid={atletaTarget?.local ? false : true}
-                      id="Local"
-                      inputClass="w-full"
-                      label="Local de trabalho"
-                      value={atletaTarget?.local || ""}
-                      onChange={(e) => {
-                        editableItem("local", e.target.value);
-                      }}
-                    />
-                  </div>
+                  {/* address */}
                   <div className="col-span-full grid grid-cols-5 gap-2">
                     <div className="mt-1 col-span-full sm:flex flex-row">
                       <div className="mr-2">
