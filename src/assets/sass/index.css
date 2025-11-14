@@ -6,43 +6,43 @@
 
 @theme {
   --color-primary: #80bdff;
-  --color-on-primary: #FFFFFF;       /* Branco puro: alto contraste */
-  --color-primary-hover: #00a4d2;
-  --color-on-primary-muted: #F0F8FF; /* Azul gelo: suave, ainda legível */
+  --color-on-primary: #ffffff;
+  --color-primary-hover: #6fb3f0;
+  --color-on-primary-muted: #e6f4ff;
 
-  --color-secondary: #CDE8D5;
-  --color-on-secondary: #2F4F4F;     /* Cinza esverdeado escuro */
-  --color-secondary-hover: #B3D6C0;
-  --color-on-secondary-muted: #4B4B4B; /* Cinza neutro escuro */
+  --color-secondary: #d6eadf;
+  --color-on-secondary: #3f5f5f;
+  --color-secondary-hover: #c2d9cc;
+  --color-on-secondary-muted: #5a5a5a;
 
-  --color-accent: #F2E2B8;
-  --color-accent-hover: #f4f9fc;
+  --color-accent: #f6eac2;
+  --color-accent-hover: #f9f5e6;
 
-  --color-cancel: oklch(92.8% 0.006 264.531);
-  --color-on-cancel: #6a7282;
-  --color-cancel-hover: oklch(87.2% 0.01 258.338);
+  --color-cancel: #dcd6f7; /* Lilás pastel mais saturado */
+  --color-on-cancel: #4c4c66; /* Azul escuro acinzentado */
+  --color-cancel-hover: #c2bce0; /* Lilás mais profundo */
 
-  --color-background: #fdfdfb;
-  --color-background-muted: #ededeb;
+  --color-background: #fcfcfa;
+  --color-background-muted: #efefec;
 
-  --color-text: #A6A6A6;
+  --color-text: #9a9a9a;
   --color-text-hover: #4a4a4a;
 
   --color-text-muted: #7a7a7a;
-  --color-text-muted-hover: #A6A6A6;
+  --color-text-muted-hover: #9a9a9a;
 
   --color-danger: oklch(63.7% 0.237 25.331);
-  --color-on-danger: #FFFFFF;
+  --color-on-danger: #ffffff;
   --color-danger-hover: oklch(70.4% 0.191 22.216);
 
   --color-success-primary: oklch(52.7% 0.154 150.069);
-  --color-success-primary-hover: #BFD8B8;
+  --color-success-primary-hover: #bfd8b8;
 
   --color-highlight: oklch(68.1% 0.162 75.834);
   --color-highlight-hover: oklch(79.5% 0.184 86.047);
 
   --color-info: oklch(62.3% 0.214 259.815);
-  --color-info-hover: oklch(54.6% 0.245 262.881);
+  --color-info-hover: oklch(54.6% 0.245 262.881); /* Azul claro com contraste */
 
   --animate-jump: jump 0.5s ease-in-out;
 }
