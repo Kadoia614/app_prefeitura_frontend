@@ -6,8 +6,10 @@ import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
 import PropTypes from "prop-types";
 import { useLoadingContext } from "../../loading/LoadingContext";
+import { getBolsistaToExpire } from "../../../service/ft_appServices";
 
 export const BolsistaProvider = ({ children }) => {
+  
   const { showToast } = useToast();
 
   let { attIsLoading } = useLoadingContext();
@@ -16,6 +18,10 @@ export const BolsistaProvider = ({ children }) => {
   let [target, setTarget] = useState({});
   let [pagadorOptions, setPagadorOptions] = useState([]);
   let [total, setTotal] = useState(0);
+  let [toExpire, setToExpire] = useState({
+    count: 0,
+    bolsistas: [],
+  });
 
   const [query, setQuery] = useState({
     page: 0,
@@ -138,21 +144,32 @@ export const BolsistaProvider = ({ children }) => {
         query
       );
 
+      const data = await getBolsistaToExpire();
+      setToExpire({
+        count: data.count,
+        bolsistas: data.bolsistas,})
+
       setTotal(count);
       setBolsistas(bolsista);
       setPagadorOptions(pagador);
+      // setToExpire(to_expire);
 
       localStorage.setItem("upload_token", uploadToken);
       return;
     } catch (error) {
       showToast(
         "error",
-        "Falha ao buscar bolsistas: " + error.response.data.message
+        "Falha ao buscar bolsistas: " + error.response?.data?.message || error
       );
     } finally {
       attIsLoading(false);
     }
   };
+
+  const prorrogate = (data) => {
+    console.log("data: ", data);
+    alert("Em desenvolvimento")
+  }
 
   return (
     <BolsistaContext.Provider
@@ -162,6 +179,9 @@ export const BolsistaProvider = ({ children }) => {
         addBolsista,
         attBolsista,
         removeBolsista,
+        prorrogate,
+        toExpire,
+        setToExpire,
         target,
         setTarget,
         query,

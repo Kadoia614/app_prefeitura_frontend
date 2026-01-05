@@ -11,6 +11,11 @@ export const getBolsista = async (query) => {
   return data;
 };
 
+export const getBolsistaToExpire = async () => {
+  const { data } = await API.get(`/ft/bolsista/toexpire`);
+  return data;
+}
+
 export const updateBolsista = async (id, payload) => {
   const { data } = await API.put(`/ft/bolsista/${id}`, { ...payload });
   return data;
