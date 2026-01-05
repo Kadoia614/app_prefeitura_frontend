@@ -35,6 +35,11 @@ const tag = {
     icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Inativo",
   },
+  expirado: {
+    style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-exclamation-triangle"></i>,
+    label: "Expirado",
+  },
   pendente: {
     style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
     icon: <i className="pi pi-exclamation-triangle"></i>,

@@ -71,7 +71,6 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
 
   const renderActions = (rowData) => (
     <div className="flex gap-2">
-      {console.log(permissions)}
       {permissions.edit && (
         <>
           <TableButton

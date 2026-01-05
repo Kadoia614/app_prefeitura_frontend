@@ -233,7 +233,7 @@ const FT_Bolsista_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                       id="Pagador"
                       inputClass="w-full"
                       label="Pagador"
-                      options={pagadorOptions}
+                      options={pagadorOptions? pagadorOptions : []}
                       value={target?.payment_info?.pagador_id || ""}
                       onChange={(e) => {
                         editablePayment("pagador_id", e.target.value);
