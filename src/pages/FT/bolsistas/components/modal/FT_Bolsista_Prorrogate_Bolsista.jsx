@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 import Modal from "@/components/shared/modal/Modal";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { Button } from "primereact/button";
@@ -13,15 +13,24 @@ const FT_Bolsista_Prorrogate_Bolsista = ({ isOpen, setIsOpen }) => {
 
   const stepperRef = useRef(null);
   const [accept, setAccept] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
   const [toProrrogate, setToProrrogate] = useState([]);
+
+  useEffect(() => {
+    if (selectAll) {
+      setToProrrogate(toExpire.bolsistas);
+    } else {
+      setToProrrogate([]);
+    }
+  }, [selectAll]);
 
   return (
     <>
       {/* Modal to create/ edit a bolsista */}
       {console.log(toExpire)}
       <Modal
-        id="EditBolsista"
-        // title={target?.id ? "Atualizar Bolsista" : "Cadastrar Bolsista"}
+        id="ProrrogateBolsistaModal"
+        title={"Prorrogar Bolsistas"}
         isDisabled={!accept}
         onAcept={() => {
           prorrogate(toProrrogate);
@@ -39,35 +48,57 @@ const FT_Bolsista_Prorrogate_Bolsista = ({ isOpen, setIsOpen }) => {
         <Stepper ref={stepperRef} linear>
           <StepperPanel header="Bolsista">
             <div className="flex flex-col justify-end gap-4 mt-4">
+              <h5 className="font-bold">
+                {
+                  "Os seguintes bolsistas estão prestes a expirar, selecione quais deseja prorrogar."
+                }
+              </h5>
               <div className="flex flex-col gap-2 bg-accent p-2">
+                <div className="flex flex-row gap-2 p-2">
+                  <Checkbox
+                    name="SelecionarTodos"
+                    inputId={`prorrogateAll`}
+                    checked={selectAll}
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setSelectAll(true)
+                        : setSelectAll(false)
+                    }
+                  />
+                  <label htmlFor={`prorrogateAll`} className="font-bold">
+                    Selecionar Todos
+                  </label>
+                </div>
                 {toExpire.bolsistas.map((b, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-2 bg-secondary p-2 rounded-md"
-                  >
-                    <Checkbox
-                      name="accept"
-                      inputId={`prorrogate-${index}`}
-                      checked={toProrrogate.includes(b)}
-                      onChange={(e) =>
-                        e.target.checked
-                          ? setToProrrogate([...toProrrogate, b])
-                          : setToProrrogate(
-                              toProrrogate.filter((e) => e.id !== b.id)
-                            )
-                      }
-                    />
-                    <div className="flex flex-row gap-2">
-                      <label htmlFor={`prorrogate-${index}`}>{b.nome}</label>
-                      <label
-                        className="text-nowrap text-ellipsis width-100 overflow-hidden"
-                        htmlFor={`prorrogate-${index}`}
-                        title={b.edital[0].name}
-                      >
-                        {b.edital[0].name}
-                      </label>
+                  <>
+                    <div
+                      key={index}
+                      className="flex gap-2 bg-secondary p-2 rounded-md"
+                    >
+                      <Checkbox
+                        name="Selecionar"
+                        inputId={`prorrogate-${index}`}
+                        checked={toProrrogate.includes(b)}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setToProrrogate([...toProrrogate, b])
+                            : setToProrrogate(
+                                toProrrogate.filter((e) => e.id !== b.id)
+                              )
+                        }
+                      />
+                      <div className="flex flex-row gap-2">
+                        <label htmlFor={`prorrogate-${index}`}>{b.nome}</label>
+                        <label
+                          className="text-nowrap text-ellipsis width-100 overflow-hidden"
+                          htmlFor={`prorrogate-${index}`}
+                          title={b.edital[0].name}
+                        >
+                          {b.edital[0].name}
+                        </label>
+                      </div>
                     </div>
-                  </div>
+                  </>
                 ))}
               </div>
               <Button
@@ -108,7 +139,7 @@ const FT_Bolsista_Prorrogate_Bolsista = ({ isOpen, setIsOpen }) => {
                   onChange={(e) => setAccept(e.target.checked)}
                 />
                 <label htmlFor="accept" className="font-bold">
-                  Eu li e concordo com os termos e condições
+                  Eu li e estou ciente das regras de prorrogação
                 </label>
               </div>
               <Button

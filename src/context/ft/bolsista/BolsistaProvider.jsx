@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BolsistaContext } from "./BolsistaContext";
-import { postBolsista, updateBolsista, deleteBolsista, getBolsista } from "@/service/ft_appServices";
+import {
+  postBolsista,
+  updateBolsista,
+  deleteBolsista,
+  getBolsista,
+} from "@/service/ft_appServices";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
 import PropTypes from "prop-types";
 import { useLoadingContext } from "../../loading/LoadingContext";
-import { getBolsistaToExpire } from "../../../service/ft_appServices";
+import { getBolsistaToExpire, putBolsistaToExpire } from "../../../service/ft_appServices";
 
 export const BolsistaProvider = ({ children }) => {
-  
   const { showToast } = useToast();
 
   let { attIsLoading } = useLoadingContext();
@@ -22,6 +26,13 @@ export const BolsistaProvider = ({ children }) => {
     count: 0,
     bolsistas: [],
   });
+  let [prorrogateModalOpen, setProrrogateModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (toExpire.count > 0) {
+      setProrrogateModalOpen(true);
+    }
+  }, [toExpire]);
 
   const [query, setQuery] = useState({
     page: 0,
@@ -69,7 +80,6 @@ export const BolsistaProvider = ({ children }) => {
     } finally {
       setTarget({});
       attIsLoading(false);
-
     }
   };
 
@@ -114,7 +124,6 @@ export const BolsistaProvider = ({ children }) => {
     } finally {
       setTarget({});
       attIsLoading(false);
-
     }
   };
 
@@ -147,7 +156,8 @@ export const BolsistaProvider = ({ children }) => {
       const data = await getBolsistaToExpire();
       setToExpire({
         count: data.count,
-        bolsistas: data.bolsistas,})
+        bolsistas: data.bolsistas,
+      });
 
       setTotal(count);
       setBolsistas(bolsista);
@@ -167,9 +177,16 @@ export const BolsistaProvider = ({ children }) => {
   };
 
   const prorrogate = (data) => {
-    console.log("data: ", data);
-    alert("Em desenvolvimento")
-  }
+    const bolsistas = []
+    for(const b of data){
+      const uuid = b.id
+      const edital = b.edital[0].id
+
+      bolsistas.push({bolsista_id: uuid, edital_id: edital})
+    }
+
+    putBolsistaToExpire(bolsistas)
+  };
 
   return (
     <BolsistaContext.Provider
@@ -189,6 +206,8 @@ export const BolsistaProvider = ({ children }) => {
         pagadorOptions,
         setPagadorOptions,
         total,
+        prorrogateModalOpen,
+        setProrrogateModalOpen,
       }}
     >
       <>{children}</>

@@ -3,10 +3,13 @@ import { useState } from "react";
 import BolsistasTable from "./components/Table/BolsistasTable";
 import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
 import FT_Bolsista_ExcludeModal from "./components/modal/FT_Bolsista_excludeModal";
+import FT_Bolsista_Prorrogate_Bolsista from "./components/modal/FT_Bolsista_Prorrogate_Bolsista";
+import { useBolsistaContext } from "../../../context/ft/bolsista/BolsistaContext";
 
 const Bolsista = () => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
+  let { setProrrogateModalOpen, prorrogateModalOpen } = useBolsistaContext();
 
   return (
     <div id="Bolsistas" className="content">
@@ -24,6 +27,11 @@ const Bolsista = () => {
         isOpen={excludeModalOpen}
         setIsOpen={setExcludeModalOpen}
       ></FT_Bolsista_ExcludeModal>
+
+      <FT_Bolsista_Prorrogate_Bolsista
+        isOpen={prorrogateModalOpen}
+        setIsOpen={setProrrogateModalOpen}
+      ></FT_Bolsista_Prorrogate_Bolsista>
     </div>
   );
 };

@@ -2,6 +2,8 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "/api",
+  maxBodyLength: 1048576,
+  maxContentLength: 1048576,
   headers: {
     "Content-Type": "application/json",
   },
