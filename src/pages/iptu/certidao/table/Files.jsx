@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { IPTUCertidaoService } from "../../../../service/iptu";
 import { useToast } from "../../../../components/shared/toast/ToastProvider";
 
-const Files = ({ data, sudoMode, setData, setTarget }) => {
+const Files = ({ data, sudoMode, setData, setTarget, permissions }) => {
   const { showToast } = useToast();
 
   const deleteCertidao = async (id) => {
@@ -69,6 +69,7 @@ const Files = ({ data, sudoMode, setData, setTarget }) => {
       <div className="border-1 border-gray-200 rounded-md p-4 w-full max-w-80 overflow-y-scroll max-h-78">
         <h1 className="text-center font-bold">Documentos</h1>
         <div>
+          {permissions?.write &&
           <FileUploadIptu
             uuid={data.uuid}
             maxSize={2000000}
@@ -76,7 +77,7 @@ const Files = ({ data, sudoMode, setData, setTarget }) => {
             className="btn-primary w-full"
             setData={setData}
             setTarget={setTarget}
-          ></FileUploadIptu>
+          ></FileUploadIptu>}
           {data?.certs &&
             data.certs.map((c) => {
               const create = new Date(c.createdAt).toLocaleString("pt-BR");
@@ -92,7 +93,7 @@ const Files = ({ data, sudoMode, setData, setTarget }) => {
                     <p className="text-sm text-nowrap">{c.name}</p>
                     <p className="text-xs text-text-muted">{create}</p>
                   </div>
-                  {sudoMode && (
+                  {sudoMode && permissions?.del && (
                     <>
                       <Button
                         tooltip={"Excluir Certidão"}
@@ -118,6 +119,7 @@ Files.propTypes = {
   sudoMode: PropTypes.bool,
   setData: PropTypes.func.isRequired,
   setTarget: PropTypes.func.isRequired,
+  permissions: PropTypes.object,
   data: PropTypes.shape({
     uuid: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     certs: PropTypes.arrayOf(

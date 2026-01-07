@@ -21,6 +21,7 @@ const FileUploadIptu = ({ uuid, setData, setTarget }) => {
     try {
       if (!uuid) {
         showToast("error", "Erro", "Nenhum municipe selecionado");
+        return;
       }
       const base64 = await prepareBase64(file);
 
@@ -43,7 +44,6 @@ const FileUploadIptu = ({ uuid, setData, setTarget }) => {
       showToast("success", "Sucesso", "Upload realizado com sucesso");
     } catch (error) {
       fileUploadRef.current?.onError?.();
-
       showToast(
         "error",
         "Erro",
@@ -74,7 +74,7 @@ const FileUploadIptu = ({ uuid, setData, setTarget }) => {
         mode="basic"
         customUpload
         accept="application/pdf"
-        maxFileSize={2000000}
+        maxFileSize={1048576}
         chooseOptions={chooseOptions}
         uploadHandler={handleUpload}
         auto

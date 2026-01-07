@@ -2,17 +2,20 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { SpeedDial } from "primereact/speeddial";
+import { Paginator } from "primereact/paginator";
 
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
+import TableHeader from "../../../../../components/shared/table/TableHeader";
+
+import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
 import SelectField from "../../../../../components/shared/input/SelectField";
 
-import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
-import TableHeader from "../../../../../components/shared/table/TableHeader";
-import { SpeedDial } from "primereact/speeddial";
-import { Paginator } from "primereact/paginator";
-import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
 import { getRelatory } from "../../../../../service/ft_appServices";
+
+import { useUserContext } from "@/context/user/UserContext";
+import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
 
 const tag = {
   ativo: {
@@ -32,6 +35,11 @@ const tag = {
     icon: <i className="pi pi-exclamation-triangle"></i>,
     label: "Inativo",
   },
+  expirado: {
+    style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
+    icon: <i className="pi pi-exclamation-triangle"></i>,
+    label: "Expirado",
+  },
   pendente: {
     style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
     icon: <i className="pi pi-exclamation-triangle"></i>,
@@ -50,8 +58,9 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
     queryEdital,
     setQueryEdital,
   } = useEditalContext();
+  let { permissions } = useUserContext();
 
-    async function openRelatory() {
+  async function openRelatory() {
     const data = await getRelatory(targetEdital);
 
     const archive = URL.createObjectURL(data);
@@ -77,7 +86,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
 
   const renderActions = (rowData) => (
     <div className="flex flex-wrap gap-2">
-      {targetEdital && (
+      {targetEdital && permissions.edit && (
         <TableButton
           tooltip={`Inativar bolsista`}
           icon={"pi pi-times"}
@@ -91,36 +100,53 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
     </div>
   );
 
-  const renderItems = [
-    {
-      label: "Novo Edital",
-      icon: "pi pi-file-plus",
-      className: "add-edital-btn bg-highlight hover:bg-highlight-hover",
-      command: () => {
-        setIsEditalModalOpen(true);
-      },
-    },
-    {
-      label: "Vincular Bolsista",
-      icon: "pi pi-link",
-      disabled: !targetEdital,
-      className:
-        "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
-      command: () => {
-        setQueryEdital((q) => ({ ...q, page: 0, limit: 100000, search: "" }));
-        setIsVincularModalOpen(true);
-      },
-    },
-    {
-      label: "Gerar Relatório",
-      icon: "pi pi-address-book",
-      className: "generate-relatory",
-      disabled: !targetEdital,
-      command: () => {
-        openRelatory();
-      },
-    },
-  ];
+  const renderItems = permissions?.write
+    ? [
+        {
+          label: "Novo Edital",
+          icon: "pi pi-file-plus",
+          className: "add-edital-btn bg-highlight hover:bg-highlight-hover",
+          command: () => {
+            setIsEditalModalOpen(true);
+          },
+        },
+        {
+          label: "Vincular Bolsista",
+          icon: "pi pi-link",
+          disabled: !targetEdital,
+          className:
+            "vinculate-bolsista-edital-btn bg-success-primary hover:bg-success-primary-hover",
+          command: () => {
+            setQueryEdital((q) => ({
+              ...q,
+              page: 0,
+              limit: 100000,
+              search: "",
+            }));
+            setIsVincularModalOpen(true);
+          },
+        },
+        {
+          label: "Gerar Relatório",
+          icon: "pi pi-address-book",
+          className: "generate-relatory",
+          disabled: !targetEdital,
+          command: () => {
+            openRelatory();
+          },
+        },
+      ]
+    : [
+        {
+          label: "Gerar Relatório",
+          icon: "pi pi-address-book",
+          className: "generate-relatory",
+          disabled: !targetEdital,
+          command: () => {
+            openRelatory();
+          },
+        },
+      ];
 
   return (
     <>
@@ -232,9 +258,9 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
             filterMatchMode="contains"
             className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
-              new Date(rowData.bolsistas_edital[0]?.data_vinculo).toLocaleDateString(
-                "pt-BR"
-              )
+              new Date(
+                rowData.bolsistas_edital[0]?.data_vinculo
+              ).toLocaleDateString("pt-BR")
             }
           />
 
@@ -248,29 +274,28 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
             className="text-sm text-text-muted p-4 whitespace-nowrap"
             body={(rowData) =>
               !rowData.bolsistas_edital[0]?.prorrogated ? (
-                new Date(rowData.bolsistas_edital[0]?.expire_at).toLocaleDateString(
-                  "pt-BR"
-                )
+                new Date(
+                  rowData.bolsistas_edital[0]?.expire_at
+                ).toLocaleDateString("pt-BR")
               ) : (
                 <p className="text-success font-bold">Prorrogado</p>
               )
             }
           />
-
-          <Column header="Ações" body={renderActions} />
+          {permissions && <Column header="Ações" body={renderActions} />}
         </DataTable>
         <Paginator
-        first={queryEdital.page * queryEdital.limit}
-        rows={queryEdital.limit}
-        totalRecords={editalBolsista.count}
-        rowsPerPageOptions={[10, 20, 30]}
-        onPageChange={(e) =>
-          setQueryEdital((prev) => ({
-            ...prev,
-            page: e.page,
-            limit: e.rows,
-          }))
-        }
+          first={queryEdital.page * queryEdital.limit}
+          rows={queryEdital.limit}
+          totalRecords={editalBolsista.count}
+          rowsPerPageOptions={[10, 20, 30]}
+          onPageChange={(e) =>
+            setQueryEdital((prev) => ({
+              ...prev,
+              page: e.page,
+              limit: e.rows,
+            }))
+          }
         />
       </TableContainer>
 

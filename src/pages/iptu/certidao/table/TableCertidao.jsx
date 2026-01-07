@@ -1,20 +1,23 @@
 import PropTypes from "prop-types";
+
 import { useState, useEffect } from "react";
+
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputSwitch } from "primereact/inputswitch";
 import { Paginator } from "primereact/paginator";
+import { Button } from "primereact/button";
 
 import TableContainer from "../../../../components/shared/table/TableContainer";
 import TableHeader from "../../../../components/shared/table/TableHeader";
 import TableButton from "../../../../components/shared/table/TableButton";
-
+import { useToast } from "../../../../components/shared/toast/ToastProvider";
 import InputFieldLine from "../../../../components/shared/input/inputfield/InputFieldLine";
-import { IPTUMunicipeService } from "../../../../service/iptu";
+
 import Files from "./Files";
 
-import { useToast } from "../../../../components/shared/toast/ToastProvider";
-import { Button } from "primereact/button";
+import { IPTUMunicipeService } from "../../../../service/iptu";
+import { useUserContext } from "@/context/user/UserContext";
 
 const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
   const { showToast } = useToast();
@@ -29,8 +32,12 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
   const [total, setTotal] = useState(0);
   const [target, setTarget] = useState();
 
+  const { permissions } = useUserContext();
+
+
   const actions = [
     {
+      permission: "edit",
       name: "edit",
       icon: "pi pi-pen-to-square",
       color: "text-primary bg-cancel hover:bg-cancel-hover border-none",
@@ -40,6 +47,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
       },
     },
     {
+      permission: "del",
       name: "delete",
       icon: "pi pi-trash",
       color: "text-danger bg-cancel hover:bg-cancel-hover border-none",
@@ -130,13 +138,14 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
             ></Column>
             <Column field="name" header="Nome"></Column>
             <Column field="email" header="Email"></Column>
-            {sudoMode && (
+            {sudoMode && permissions && (
               <Column
                 header="Actions"
                 body={(rowData) => {
                   return (
                     <div className="flex gap-2">
                       {actions.map((action, i) => (
+                        permissions[action.permission] &&
                         <TableButton
                           key={i}
                           tooltip={action.name}
@@ -159,6 +168,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
               sudoMode={sudoMode}
               setData={setData}
               setTarget={setTarget}
+              permissions={permissions}
             />
           )}
         </div>

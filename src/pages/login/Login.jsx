@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import API from "../../api/API";
 import { useLoadingContext } from "@/context/loading/LoadingContext";
@@ -115,23 +115,23 @@ const Login = () => {
                   <div>
                     <p className="text-sm text-text-muted wrap">
                       Não tem uma conta?{" "}
-                      <a
-                        href="/register"
+                      <Link
+                        to="/register"
                         className="text-primary hover:underline"
                       >
                         Solicite acesso
-                      </a>
+                      </Link>
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-text-muted">
                       Esqueceu sua senha?{" "}
-                      <a
-                        href="/reset-password"
+                      <Link
+                        to="/reset-password"
                         className="text-primary hover:underline"
                       >
                         Redefina sua senha
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>
@@ -152,13 +152,13 @@ const Login = () => {
         <div className="text-center">
           <p className="text-sm text-text-muted">
             Ao clicar em <b>Login</b>, você concorda com nossos{" "}
-            <a href="/terms" className="text-primary hover:underline">
+            <Link to="/terms" className="text-primary hover:underline">
               Termos de Serviço
-            </a>{" "}
+            </Link>{" "}
             e{" "}
-            <a href="/privacy" className="text-primary hover:underline">
+            <Link to="/privacy" className="text-primary hover:underline">
               Política de Privacidade
-            </a>
+            </Link>
           </p>
         </div>
       </div>

@@ -27,9 +27,9 @@ const SelectField = ({
         <option value="" disabled={defaultDisabled ? defaultDisabled : ""}>
           {defaultValue || "Escolha uma opção"}
         </option>
-        {options?.map((option) => (
-          <option key={option.id || 0} value={option.id || ""}>
-            {option.name}
+        {options && options.map((option, index) => (
+          <option key={index} value={option.id || ""}>
+            {option.name || ""}
           </option>
         ))}
       </select>
@@ -43,9 +43,9 @@ SelectField.propTypes = {
   fieldsetClass: PropTypes.string,
   value: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  })).isRequired,
+    value: PropTypes.string,
+    label: PropTypes.string,
+  })),
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   defaultValue: PropTypes.string,

@@ -9,7 +9,6 @@ import Vincular_Bolsista from "./components/modal/Vincular_Bolsista";
 import { EditalProvider } from "../../../context/ft/edital/EditalProvider";
 
 const Edital = () => {
-
   const [isEditalModalOpen, setIsEditalModalOpen] = useState(false);
   const [isVincularModalOpen, setIsVincularModalOpen] = useState(false);
 

@@ -4,6 +4,7 @@ import HanlerError from "../middleware/HandleError";
 
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
+import { Link } from "react-router";
 
 // eslint-disable-next-line react/prop-types
 function Services() {
@@ -37,9 +38,9 @@ function Services() {
   const cardFooter = (url, name) => {
     return (
       <>
-        <a href={url}>
+        <Link to={url}>
           <Button label={name} className="btn-primary w-full mt-4" />
-        </a>
+        </Link>
       </>
     );
   };
