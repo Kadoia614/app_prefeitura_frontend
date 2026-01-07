@@ -24,7 +24,7 @@ function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
   return (
     <>
-      {Env === "man" ? (
+      {Env === "manutencao" ? (
         <div className=" bg-background">
           <Header />
 
@@ -59,7 +59,7 @@ function App() {
 
                 <Route path="*" element={<HandleError />} />
               </Routes>
-              {Env === "dev" && (
+              {Env === "development" && (
                 <div className="bg-background-muted text-danger fixed rounded-md p-4 left-2 bottom-2 z-999">
                   Sistema em ambiente de desenvolvimento...
                 </div>
