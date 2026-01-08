@@ -36,11 +36,13 @@ const tag = {
 
 const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
   const mockedData = [{
-    uuid: 1,
-    matricula: "123456",
-    nome: "João da Silva",
+    id: 1,
+    // responsavel1
+    func_publico: "sim",
+    idade_1_resp: 20,
     cpf: "***.***.**6-00",
-    idade: 20,
+    orgao_1_resp: "SSP",
+    nome_1_resp: "João da Silva",
     estado_civil: "solteiro",
     moradia: "lugada",
     cep: "06.853-450",
@@ -49,6 +51,7 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
     renda: "R$ 1.000,00",
     local_trabalho: "Itapecerica da Serra",
     quantidade_moradores: 2,
+
 
     email: "jR2yH@example.com",
   }];
