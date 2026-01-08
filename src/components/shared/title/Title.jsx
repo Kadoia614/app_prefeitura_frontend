@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Title = ({children}) => {
     return(
         <div className="w-full rounded-t-md overflow-hidden mb-5 ">
@@ -6,5 +8,9 @@ const Title = ({children}) => {
         </div>
     )
 }
+
+Title.propTypes = {
+  children: PropTypes.any,
+};
 
 export default Title;

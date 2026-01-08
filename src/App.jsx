@@ -19,9 +19,38 @@ import UserConfig from "./pages/user/UserConfig";
 import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 import Esporte from "./pages/esporte/Esporte";
+import MinhaCasa from "./pages/minhacasa/MinhaCasa";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
+
+  const servicos = [
+    {
+      path: "config",
+      component: <UserConfig></UserConfig>
+    },
+    {
+      path: "certidao",
+      component: <CertidaoIPTU></CertidaoIPTU>
+    },
+    {
+      path: "esporte",
+      component: <Esporte></Esporte>
+    },
+    {
+      path: "frente-de-trabalho",
+      component: <FT_APP></FT_APP>
+    },
+    {
+      path: "admin",
+      component: <Admin></Admin>
+    },
+        {
+      path: "minha-casa-minha-vida",
+      component: <MinhaCasa></MinhaCasa>
+    }
+  ]
+
   return (
     <>
       {Env === "manutencao" ? (
@@ -47,14 +76,15 @@ function App() {
 
                 <Route path="/services/:id?" element={<ProtectRoutes />}>
                   <Route index element={<ServicesCards />} />
-                  <Route path="config" element={<UserConfig />} />
-                  <Route path="admin" element={<Admin />} />
-                  <Route path="frente-de-trabalho" element={<FT_APP />}></Route>
-                  <Route
-                    path="iptu/certidao"
-                    element={<CertidaoIPTU></CertidaoIPTU>}
-                  ></Route>
-                  <Route path="esporte/:modalidade?" element={<Esporte />}></Route>
+
+                  {servicos.map((servico) => (
+                    <Route
+                      key={servico.path}
+                      path={servico.path}
+                      element={servico.component}
+                    />
+                  ))}
+
                 </Route>
 
                 <Route path="*" element={<HandleError />} />
