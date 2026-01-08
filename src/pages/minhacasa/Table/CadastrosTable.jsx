@@ -35,7 +35,23 @@ const tag = {
 };
 
 const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
-  const mockedData = [];
+  const mockedData = [{
+    uuid: 1,
+    matricula: "123456",
+    nome: "João da Silva",
+    cpf: "***.***.**6-00",
+    idade: 20,
+    estado_civil: "solteiro",
+    moradia: "lugada",
+    cep: "06.853-450",
+    telefone: "(00) 00000-0000",
+    ocupacao: "estudante",
+    renda: "R$ 1.000,00",
+    local_trabalho: "Itapecerica da Serra",
+    quantidade_moradores: 2,
+
+    email: "jR2yH@example.com",
+  }];
 
   // const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
   //   useBolsistaContext();
