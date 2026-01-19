@@ -9,15 +9,17 @@ const CalendarInput = ({
   view,
   inputClass,
   placeHolder,
+  fieldClass,
   format,
   disabled,
   invalid,
+  children
 }) => (
-  <fieldset className="mt-2 border=0">
+  <fieldset className={`mt-2 ${fieldClass || ""}`}>
     <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
-    <div className="mt-1">
+    <div className="mt-1 flex flex-row gap-2 items-center">
       <Calendar
         invalid={invalid || false}
         id={id}
@@ -31,6 +33,7 @@ const CalendarInput = ({
         dateFormat={format || "mm/dd/yy"}
         showIcon
       />
+      {children}
     </div>
   </fieldset>
 );
@@ -45,6 +48,8 @@ CalendarInput.propTypes = {
   format: PropTypes.string,
   disabled: PropTypes.bool,
   invalid: PropTypes.bool,
+  fieldClass: PropTypes.string,
+  children: PropTypes.any,
 };
 
 export default CalendarInput;

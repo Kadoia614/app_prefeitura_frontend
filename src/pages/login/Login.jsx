@@ -100,7 +100,7 @@ const Login = () => {
                   />
 
                   <PasswordFieldLine
-                    widthField="mt-4"
+                    fieldClass="mt-4"
                     inputClass={"w-full"}
                     icon={<i className="pi pi-key"> </i>}
                     placeholder="Senha"

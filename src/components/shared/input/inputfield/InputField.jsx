@@ -5,6 +5,7 @@ const InputField = ({
   id,
   label,
   value,
+  onFocusOff,
   onChange,
   maxLength,
   keyfilter,
@@ -12,9 +13,9 @@ const InputField = ({
   placeHolder,
   disabled,
   invalid,
-  widthField,
+  fieldClass,
 }) => (
-  <fieldset className={`mt-2 ${widthField}`}>
+  <fieldset className={`mt-2 ${fieldClass || "" }`}>
     <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
@@ -26,6 +27,7 @@ const InputField = ({
         className={`rounded-md ps-2 py-1.5 focus:border-primary ring ring-gray-300 focus:ring-blue-200 ${inputClass} ${
           disabled ? "bg-gray-100" : ""
         }`}
+        onBlur={onFocusOff}
         placeholder={`${placeHolder || label}`}
         value={value || ""}
         onChange={onChange}
@@ -40,13 +42,14 @@ InputField.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
+  onFocusOff: PropTypes.func,
   maxLength: PropTypes.number,
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
 };
 
 export default InputField;

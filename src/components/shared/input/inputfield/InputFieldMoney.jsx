@@ -12,9 +12,9 @@ const InputFieldMoney = ({
   placeHolder,
   disabled,
   invalid,
-  widthField
+  fieldClass
 }) => (
-  <fieldset className={`mt-2 ${widthField}`}>
+  <fieldset className={`mt-2 ${fieldClass}`}>
     <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
@@ -45,7 +45,7 @@ InputFieldMoney.propTypes = {
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
 };

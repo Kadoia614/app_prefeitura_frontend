@@ -5,6 +5,7 @@ const InputFieldMask = ({
   id,
   label,
   value,
+  onFocusOff,
   onChange,
   maxLength,
   keyfilter,
@@ -13,9 +14,9 @@ const InputFieldMask = ({
   disabled,
   invalid,
   mask,
-  widthField
+  fieldClass,
 }) => (
-  <fieldset className={`mt-2 ${widthField}`}>
+  <fieldset className={`mt-2 ${fieldClass}`}>
     <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
@@ -29,6 +30,7 @@ const InputFieldMask = ({
         }`}
         placeholder={`${placeHolder || label}`}
         value={value || ""}
+        onBlur={onFocusOff}
         onChange={onChange}
         maxLength={maxLength}
         disabled={disabled || false}
@@ -43,13 +45,14 @@ InputFieldMask.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
+  onFocusOff: PropTypes.func,
   maxLength: PropTypes.number,
   keyfilter: PropTypes.string,
   inputClass: PropTypes.string,
   placeHolder: PropTypes.string,
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
   mask: PropTypes.string,
 };
 

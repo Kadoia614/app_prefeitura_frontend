@@ -10,10 +10,10 @@ const PasswordFieldLine = ({
   placeHolder,
   disabled,
   invalid,
-  widthField,
+  fieldClass,
   feedback,
 }) => (
-  <fieldset className={`mt-2 ${widthField}`}>
+  <fieldset className={`mt-2 ${fieldClass}`}>
     <label htmlFor={id} className="font-bold text-text-muted">
       {label}
     </label>
@@ -43,7 +43,7 @@ PasswordFieldLine.propTypes = {
   disabled: PropTypes.bool,
   feedback: PropTypes.bool,
   icon: PropTypes.any,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
 };
 
 export default PasswordFieldLine;
