@@ -14,6 +14,7 @@ import InputFieldLine from "@/components/shared/input/inputfield/InputFieldLine"
 import { useUserContext } from "@/context/user/UserContext";
 import { Skeleton } from "primereact/skeleton";
 import { useLoadingContext } from "../../../context/loading/LoadingContext";
+import { useMinhaCasaContext } from "../../../context/minhacasa/MinhaCasaContext";
 
 const tag = {
   ativo: {
@@ -35,44 +36,13 @@ const tag = {
 };
 
 const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
-  const mockedData = [{
 
-    id: 1,
-    cond_moradia: "lugada",
-    aluguel: "1000,00",
-    obs: "sem obs",
-    status: "ativo",
-
-    // responsavel1
-    {
-      func_publico: "sim",
-    idade_1_resp: 20,
-    cpf: "***.***.**6-00",
-    orgao_1_resp: "SSP",
-    nome_1_resp: "João da Silva",
-    estado_civil: "solteiro",
-    cep: "06.853-450",
-    telefone: "(00) 00000-0000",
-    ocupacao: "estudante",
-    renda: "R$ 1.000,00",
-    local_trabalho: "Itapecerica da Serra",
-    quantidade_moradores: 2,
-    }
-    
-52002
-
-    email: "jR2yH@example.com",
-  }];
-
-  // const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
-  //   useBolsistaContext();
+  const { cadastros, cadastrosTotal, setTarget, fetchCadastro, query, setQuery } = useMinhaCasaContext();
 
   const { permissions } = useUserContext();
   let { isLoading } = useLoadingContext();
 
-  const [sideBarOpen, setSideBarOpen] = useState(false);
-  const [sideBarId, setSideBarId] = useState(null);
-
+  // componentizar
   const renderStatus = ({ status }) => {
     const item = tag[status];
     if (!item) return null;
@@ -84,9 +54,10 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
     );
   };
 
+  // componentizar
   const renderItems = [
     {
-      label: "Adicionar Bolsista",
+      label: "Adicionar Cadastro",
       icon: "pi pi-user",
       className: "add-bolsista-btn bg-primary hover:bg-primary-hover",
       command: () => {
@@ -95,50 +66,40 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
     },
   ];
 
-  // const renderActions = (rowData) => (
-  //   <div className="flex gap-2">
-  //     {permissions.edit && (
-  //       <>
-  //         <TableButton
-  //           tooltip={`Editar`}
-  //           icon={"pi pi-pen-to-square"}
-  //           iconPos="left"
-  //           color="text-primary bg-white border-none"
-  //           onClick={() => {
-  //             setOpenModalEdit(true);
-  //             setTarget(rowData);
-  //           }}
-  //         />
-  //         <TableButton
-  //           tooltip={`Documentos`}
-  //           icon={"pi pi-file"}
-  //           iconPos="left"
-  //           color="text-primary bg-white border-none"
-  //           onClick={() => {
-  //             setSideBarOpen(true);
-  //             setSideBarId(rowData.id);
-  //           }}
-  //         />
-  //       </>
-  //     )}
+  const renderActions = (rowData) => (
+    <div className="flex gap-2">
+      {permissions.edit && (
+        <>
+          <TableButton
+            tooltip={`Editar`}
+            icon={"pi pi-pen-to-square"}
+            iconPos="left"
+            color="text-primary bg-white border-none"
+            onClick={() => {
+              setTarget(rowData);
+              setOpenModalEdit(true);
+            }}
+          />
+        </>
+      )}
 
-  //     {permissions.del && (
-  //       <TableButton
-  //         tooltip={`Excluir`}
-  //         icon={"pi pi-trash"}
-  //         color="text-danger bg-white border-none"
-  //         onClick={() => {
-  //           setTarget(rowData);
-  //           setExcludeModalOpen(true);
-  //         }}
-  //       />
-  //     )}
-  //   </div>
-  // );
+      {permissions.del && (
+        <TableButton
+          tooltip={`Excluir`}
+          icon={"pi pi-trash"}
+          color="text-danger bg-white border-none"
+          onClick={() => {
+            setTarget(rowData);
+            setExcludeModalOpen(true);
+          }}
+        />
+      )}
+    </div>
+  );
 
-  // useEffect(() => {
-  //   fetchBolsistas(query);
-  // }, [query]);
+  useEffect(() => {
+    fetchCadastro(query);
+  }, [query]);
 
   return (
     <>
@@ -149,18 +110,18 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               Cadastros
             </div>
           }
-          // start={
-          //   <>
-          //     <InputFieldLine
-          //       id="SearchCertidao"
-          //       placeHolder={"Buscar Bolsista por CPF ou nome"}
-          //       value={query.search}
-          //       onChange={(e) =>
-          //         setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
-          //       }
-          //     ></InputFieldLine>
-          //   </>
-          // }
+          start={
+            <>
+              <InputFieldLine
+                id="SearchCertidao"
+                placeHolder={"Buscar Bolsista por CPF ou nome"}
+                value={query.search}
+                onChange={(e) =>
+                  setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+                }
+              ></InputFieldLine>
+            </>
+          }
         ></TableHeader>
 
         {isLoading ? (
@@ -171,7 +132,7 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
         ) : (
           <DataTable
             id="BolsistaTable"
-            value={mockedData}
+            value={cadastros}
             size="small"
             stripedRows
             rowClassName="hover:bg-gray-100 transition duration-200"
@@ -181,7 +142,9 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
                   <h1 className="font-bold text-nowrap">Painel de Cadastros</h1>
                 </div>
                 <div>
-                  <p className="text-xs text-text-muted">total: {mockedData.length}</p>
+                  <p className="text-xs text-text-muted">
+                    total: {cadastrosTotal}
+                  </p>
                 </div>
                 {permissions?.write && (
                   <div>
@@ -199,12 +162,12 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             }
           >
             <Column
-              field="id"
+              field="uuid"
               header="Id"
               className="text-sm text-text-muted p-4 whitespace-nowrap"
             />
             <Column
-              field="nome"
+              field="responsavel1.nome"
               header="Nome"
               sortable
               filter
@@ -213,20 +176,22 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               className="text-sm text-text-muted p-4"
             />
             <Column
-              field="local"
-              header="Local"
+              field="moradia.cep"
+              header="CEP"
               sortable
               filter
               filterPlaceholder="Pesquisar Local"
               filterMatchMode="contains"
-              className="text-sm text-text-muted p-4"
+            />
+                        <Column
+              field="cond_moradia"
+              header="Condição de Moradia"
             />
             <Column
               field="status"
               header="Status"
               body={renderStatus}
               sortable
-              className="text-sm text-text-muted p-4"
             />
             <Column
               field="createdAt"
@@ -235,13 +200,12 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               filter
               filterPlaceholder="Pesquisar data"
               filterMatchMode="contains"
-              className="text-sm text-text-muted p-4 whitespace-nowrap"
               body={(rowData) =>
                 new Date(rowData.createdAt).toLocaleDateString("pt-BR")
               }
             />
-            {/* {permissions &&
-            <Column header="Ações" body={renderActions} />} */}
+            {permissions &&
+            <Column header="Ações" body={renderActions} />}
           </DataTable>
         )}
 
@@ -265,7 +229,7 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
 
 CadastrosTable.propTypes = {
   setOpenModalEdit: PropTypes.func.isRequired,
-  setExcludeModalOpen: PropTypes.func,
+  setExcludeModalOpen: PropTypes.func.isRequired,
 };
 
 export default CadastrosTable;

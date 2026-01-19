@@ -1,21 +1,19 @@
-import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
 import PropTypes from 'prop-types';
 
 import Modal from "@/components/shared/modal/Modal";
-const ExcludeModal = ({ isOpen, setIsOpen }) => {
-  const { removeBolsista, setTarget } = useBolsistaContext();
+const Cadastro_ExcludeModal = ({ isOpen, setIsOpen }) => {
 
   const handleConfirm = async () => {
-    removeBolsista();
+    // removeBolsista();
     setIsOpen(false);
   };
   const handleRefuse = () => {
-    setTarget({});
+    // setTarget({});
     setIsOpen(false);
   };
   return (
     <Modal
-      id={"FT_Bolsista_excludeModal"}
+      id={"cadastroExcludeModal"}
       title={`Excluir`}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
@@ -26,16 +24,16 @@ const ExcludeModal = ({ isOpen, setIsOpen }) => {
       typeCancel="btn-cancel"
     >
       <p className="text-danger font-bold">
-        Tem certeza que deseja excluir esse Bolsista??
+        Tem certeza que deseja excluir esse cadastro?
       </p>
     </Modal>
   );
 };
 
-ExcludeModal.propTypes = {
+Cadastro_ExcludeModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };
 
 
-export default ExcludeModal;
+export default Cadastro_ExcludeModal;
