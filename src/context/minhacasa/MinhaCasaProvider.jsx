@@ -27,7 +27,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel1
       responsavel1: {
-        func_publico: "sim",
+        func_publico: true,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -43,7 +43,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel2
       responsavel2: {
-        func_publico: "sim",
+        func_publico: true,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -76,7 +76,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel1
       responsavel1: {
-        func_publico: "sim",
+        func_publico: true,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -92,7 +92,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel2
       responsavel2: {
-        func_publico: "sim",
+        func_publico: false,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -125,7 +125,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel1
       responsavel1: {
-        func_publico: "sim",
+        func_publico: true,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -141,7 +141,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel2
       responsavel2: {
-        func_publico: "sim",
+        func_publico: false,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -174,7 +174,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel1
       responsavel1: {
-        func_publico: "sim",
+        func_publico: true,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",
@@ -190,7 +190,7 @@ export const MinhaCasaProvider = ({ children }) => {
 
       // responsavel2
       responsavel2: {
-        func_publico: "sim",
+        func_publico: false,
         nascimento: "2001-07-27T15:00:00.000Z",
         cpf: "***.***.**6-00",
         orgao: "SSP",

@@ -55,10 +55,10 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
       .then((res) => res.json())
       .then((data) => {
         editableItem("cep", data.cep.replace(/\D/g, ""));
-        editableItem("logradouro", data.logradouro);
-        editableItem("bairro", data.bairro);
-        editableItem("cidade", data.localidade);
-        editableItem("uf", data.uf);
+        editableItem("moradia.logradouro", data.logradouro);
+        editableItem("moradia.bairro", data.bairro);
+        editableItem("moradia.cidade", data.localidade);
+        editableItem("moradia.uf", data.uf);
       })
       .catch((error) => {
         console.log(error);
@@ -105,7 +105,10 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                     fieldClass={"w-12/12"}
                     checked={target.responsavel1?.func_publico}
                     onChange={(e) =>
-                      editableItem("responsavel1.func_publico", e.target.checked)
+                      editableItem(
+                        "responsavel1.func_publico",
+                        e.target.checked,
+                      )
                     }
                   ></Checkbox>
                   <label htmlFor="ingredient1" className="ml-2">
@@ -220,7 +223,125 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
             </div>
           </StepperPanel>
           <StepperPanel header="2° Responsavel">
-            <div className="flex flex-column">{/* em desenvolvimento */}</div>
+            <div className="flex flex-col">
+              <div className="flex flex-row gap-2 flex-wrap">
+                <fieldset>
+                  <Checkbox
+                    inputId="CpfResponsavel2"
+                    name="func_publico"
+                    value={target.responsavel2?.func_publico}
+                    fieldClass={"w-12/12"}
+                    checked={target.responsavel2?.func_publico}
+                    onChange={(e) =>
+                      editableItem(
+                        "responsavel2.func_publico",
+                        e.target.checked,
+                      )
+                    }
+                  ></Checkbox>
+                  <label htmlFor="ingredient1" className="ml-2">
+                    Funcionario público
+                  </label>
+                </fieldset>
+              </div>
+              <Divider></Divider>
+              <div className="flex flex-row gap-2 flex-wrap">
+                <InputField
+                  id="CpfResponsavel2"
+                  value={target.responsavel2?.cpf}
+                  fieldClass={"max-w-40"}
+                  onFocusOff={(e) => verificarCPF(e.target.value)}
+                  onChange={(e) =>
+                    editableItem("responsavel2.cpf", e.target.value)
+                  }
+                  maxLength={14}
+                  label="CPF"
+                ></InputField>
+
+                <InputField
+                  id="NomeResponsavel2"
+                  value={target.responsavel2?.nome}
+                  onChange={(e) =>
+                    editableItem("responsavel2.nome", e.target.value)
+                  }
+                  label="Nome"
+                ></InputField>
+
+                <CalendarInput
+                  id="NascimentoResponsavel2"
+                  value={target.responsavel2?.nascimento}
+                  fieldClass={"w-12/12"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.nascimento", e.target.value)
+                  }
+                  view="date"
+                  label="Nascimento"
+                >
+                  <span className="font-bold">
+                    Idade:
+                    {target.responsavel2?.nascimento
+                      ? new Date().getFullYear() -
+                        new Date(target.responsavel2.nascimento).getFullYear()
+                      : ""}
+                  </span>
+                </CalendarInput>
+              </div>
+
+              <Divider></Divider>
+
+              <div className="flex flex-row gap-2 flex-wrap">
+                <InputField
+                  id="TelefoneResponsavel2"
+                  value={target.responsavel2?.telefone}
+                  fieldClass={"w-12/12 sm:w-7/12"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.telefone", e.target.value)
+                  }
+                  label="Telefone"
+                ></InputField>
+
+                <InputField
+                  id="EmailResponsavel2"
+                  value={target.responsavel2?.email}
+                  fieldClass={"w-12/12"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.email", e.target.value)
+                  }
+                  label="Email"
+                ></InputField>
+              </div>
+              <Divider></Divider>
+              <div className="flex flex-row flex-wrap">
+                <InputField
+                  id="OcupacaoResponsavel2"
+                  value={target.responsavel2?.ocupacao}
+                  fieldClass={"w-12/12 sm:w-6/12"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.ocupacao", e.target.value)
+                  }
+                  maxLength={14}
+                  label="Ocupação"
+                ></InputField>
+                <InputField
+                  id="RendaResponsavel2"
+                  value={target.responsavel2?.renda}
+                  fieldClass={"w-12/12 sm:w-6/12 sm:pl-2"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.renda", e.target.value)
+                  }
+                  label="Renda"
+                ></InputField>
+                <InputField
+                  id="LocalTrabalhoResponsavel2"
+                  value={target.responsavel2?.local_trabalho}
+                  fieldClass={"w-12/12"}
+                  onChange={(e) =>
+                    editableItem("responsavel2.local_trabalho", e.target.value)
+                  }
+                  label="Local de trabalho"
+                ></InputField>
+              </div>
+            </div>
             <div className="flex justify-end gap-2 mt-4">
               <Button
                 label="Back"
@@ -242,7 +363,7 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                   value={target.moradia?.cep}
                   fieldClass={"w-40"}
                   onChange={(e) => editableItem("moradia.cep", e.target.value)}
-                  onBlur={(e) => getCep(e.target.value)}
+                  onFocusOff={(e) => getCep(e.target.value)}
                   label="Cep"
                 ></InputField>
               </div>
@@ -272,6 +393,7 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                   id="LogradouroMoradia"
                   value={target.moradia?.logradouro}
                   fieldClass={"w-12/12"}
+                  disabled
                   label="Logradouro"
                 ></InputField>
 
@@ -279,6 +401,7 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                   id="BairroMoradia"
                   value={target.moradia?.bairro}
                   fieldClass={"w-12/12"}
+                  disabled
                   label="Bairro"
                 ></InputField>
 
@@ -286,6 +409,7 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                   id="CidadeMoradia"
                   value={target.moradia?.cidade}
                   fieldClass={"w-8/12"}
+                  disabled
                   label="Cidade"
                 ></InputField>
 
@@ -293,6 +417,7 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                   id="UfMoradia"
                   value={target.moradia?.uf}
                   fieldClass={"w-4/12 sm:w-2/12 pl-2"}
+                  disabled
                   label="UF"
                 ></InputField>
               </div>
@@ -317,8 +442,35 @@ const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
                 <h2 className="text-2xl">Confirmação</h2>
                 <Divider></Divider>
 
-                {/* em desenvolvimento */}
+                <div className="flex flex-col bg-background-muted p-4 rounded-md">
+                  <div>
+                    <h3 className="text-lg font-bold">1° Responsável</h3>
+                    <div className="flex flex-col gap-2 rounded-md bg-background p-4">
+                      <div><span className="font-bold">
+                          Funcionário Público:
+                        </span> <p className="text-text-secondary"> {target.responsavel1?.func_publico ? "Sim" : "Não"}</p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>
+                      <div><span className="font-bold"></span><p className="text-text-secondary"></p></div>                      
+                    </div>
+                  </div>
+                  <Divider></Divider>
+                  <div>
+                    <h3 className="text-md font-bold">2° Responsável</h3>
+                  </div>
+                  <Divider></Divider>
 
+                  <div>
+                    <h3 className="text-md font-bold">Imóvel</h3>
+                  </div>
+                </div>
                 <Divider></Divider>
                 <div>
                   <Checkbox
