@@ -104,7 +104,7 @@ const Table = ({ setEditOpen, setExcludeOpen }) => {
             tooltip={`Editar`}
             icon={"pi pi-pen-to-square"}
             iconPos="left"
-            color="text-primary bg-white border-none"
+            color="text-text-secondary bg-white border-none"
             onClick={() => {
               setAtletaTarget(rowData);
               setEditOpen(true);

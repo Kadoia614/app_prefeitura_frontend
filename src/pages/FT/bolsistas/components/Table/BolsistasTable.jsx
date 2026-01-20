@@ -77,7 +77,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             tooltip={`Editar`}
             icon={"pi pi-pen-to-square"}
             iconPos="left"
-            color="text-primary bg-white border-none"
+            color="text-text-secondary bg-white border-none"
             onClick={() => {
               setOpenModalEdit(true);
               setTarget(rowData);
@@ -87,7 +87,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             tooltip={`Documentos`}
             icon={"pi pi-file"}
             iconPos="left"
-            color="text-primary bg-white border-none"
+            color="text-text-secondary bg-white border-none"
             onClick={() => {
               setSideBarOpen(true);
               setSideBarId(rowData.id);

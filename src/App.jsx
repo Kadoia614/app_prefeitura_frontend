@@ -59,7 +59,7 @@ function App() {
 
           <div className="absolute w-full bg-background-muted h-full md:max-w-[50vw] md:max-h-[50vh] rounded-md left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
             <div className="animate-pulse flex justify-center items-center h-full w-full">
-              <h1 className="text-center text-2xl text-primary mt-5">
+              <h1 className="text-center text-2xl text-text-secondary mt-5">
                 {" "}
                 Sistema em manutenção, tente novamente em alguns minutos...
               </h1>

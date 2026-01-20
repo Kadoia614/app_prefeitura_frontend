@@ -83,7 +83,7 @@ const Login = () => {
         <div className="flex bg-white px-5 sm:px-10 py-10 w-full">
           <div className="flex flex-col w-full md:w-1/2">
             <h1 className="text-3xl text-center">Login</h1>
-            <div className="md:border-r-1 border-text-primary w-[100%]">
+            <div className="md:border-r-1 border-primary w-[100%]">
               <div
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 className="bg-white py-4 px-4 box-border"
@@ -117,7 +117,7 @@ const Login = () => {
                       Não tem uma conta?{" "}
                       <Link
                         to="/register"
-                        className="text-primary hover:underline"
+                        className="text-text-secondary hover:underline"
                       >
                         Solicite acesso
                       </Link>
@@ -128,7 +128,7 @@ const Login = () => {
                       Esqueceu sua senha?{" "}
                       <Link
                         to="/reset-password"
-                        className="text-primary hover:underline"
+                        className="text-text-secondary hover:underline"
                       >
                         Redefina sua senha
                       </Link>
@@ -152,11 +152,11 @@ const Login = () => {
         <div className="text-center">
           <p className="text-sm text-text-muted">
             Ao clicar em <b>Login</b>, você concorda com nossos{" "}
-            <Link to="/terms" className="text-primary hover:underline">
+            <Link to="/terms" className="text-text-secondary hover:underline">
               Termos de Serviço
             </Link>{" "}
             e{" "}
-            <Link to="/privacy" className="text-primary hover:underline">
+            <Link to="/privacy" className="text-text-secondary hover:underline">
               Política de Privacidade
             </Link>
           </p>
