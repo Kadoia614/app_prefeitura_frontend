@@ -15,7 +15,7 @@ import CalendarInput from "@/components/shared/input/CalendarInput";
 // } from "@/service/ft_appServices";
 import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
 import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
-import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
+import InputFieldLine from "../../../../shared/input/inputfield/InputFieldLine";
 
 const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
   const { bolsistas, fetchBolsistas, setQuery, query } = useBolsistaContext();

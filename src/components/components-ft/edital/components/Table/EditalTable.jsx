@@ -7,10 +7,10 @@ import { Paginator } from "primereact/paginator";
 
 import TableContainer from "@/components/shared/table/TableContainer";
 import TableButton from "@/components/shared/table/TableButton";
-import TableHeader from "../../../../../components/shared/table/TableHeader";
+import TableHeader from "../../../../shared/table/TableHeader";
 
-import InputFieldLine from "../../../../../components/shared/input/inputfield/InputFieldLine";
-import SelectField from "../../../../../components/shared/input/SelectField";
+import InputFieldLine from "../../../../shared/input/inputfield/InputFieldLine";
+import SelectField from "../../../../shared/input/SelectField";
 
 import { getRelatory } from "../../../../../service/ft_appServices";
 

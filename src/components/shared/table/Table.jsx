@@ -6,76 +6,100 @@ import TableContainer from "./TableContainer";
 import { DataTable } from "primereact/datatable";
 import { Skeleton } from "primereact/skeleton";
 import { useLoadingContext } from "../../../context/loading/LoadingContext";
+import { Column } from "primereact/column";
+import { ColumnGroup } from "primereact/columngroup";
 
-const Table = ({children, data, total, query, setQuery, header, id, inputPlaceholder}) => {
-const { isLoading } = useLoadingContext();
-    return (
-        <TableContainer>
-                <TableHeader
-                  center={
-                    <div className="md:absolute left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]">
-                      Cadastros
-                    </div>
-                  }
-                  start={
-                    <>
-                      <InputFieldLine
-                        id="SearchCertidao"
-                        placeHolder={inputPlaceholder || "Buscar..."}
-                        value={query.search}
-                        onChange={(e) =>
-                          setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
-                        }
-                      ></InputFieldLine>
-                    </>
-                  }
-                ></TableHeader>
-        
-                {isLoading ? (
-                  <div>
-                    <Skeleton className="w-full min-h-15"></Skeleton>
-                    <Skeleton className="w-full min-h-52 mt-2"></Skeleton>
-                  </div>
-                ) : (
-                  <DataTable
-                    id={id}
-                    value={data}
-                    size="small"
-                    stripedRows
-                    rowClassName="hover:bg-gray-100 transition duration-200"
-                    header={
-                      header
-                    }
-                  >
-                    {children}
-                  </DataTable>
-                )}
-        
-                <Paginator
-                  first={query.page * query.limit}
-                  rows={query.limit}
-                  totalRecords={total}
-                  rowsPerPageOptions={[10, 20, 30]}
-                  onPageChange={(e) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      page: e.page,
-                      limit: e.rows,
-                    }))
-                  }
-                />
-              </TableContainer>
-    )
-}
+const Table = ({
+  query,
+  setQuery,
+  header,
+  data,
+  cols,
+  total,
+  id,
+  inputPlaceholder,
+  actions,
+  titulo
+}) => {
+  const { isLoading } = useLoadingContext();
+  return (
+    <TableContainer>
+      <TableHeader
+        end={
+          <div>
+            {titulo}
+          </div>
+        }
+        start={
+          <>
+            <InputFieldLine
+              id="SearchCertidao"
+              placeHolder={inputPlaceholder || "Buscar..."}
+              value={query.search}
+              onChange={(e) =>
+                setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+              }
+            ></InputFieldLine>
+          </>
+        }
+      ></TableHeader>
 
-export default Table
+      {isLoading ? (
+        <div>
+          <Skeleton className="w-full min-h-15"></Skeleton>
+          <Skeleton className="w-full min-h-52 mt-2"></Skeleton>
+        </div>
+      ) : (
+        <DataTable
+          id={id}
+          value={data}
+          size="small"
+          stripedRows
+          rowClassName="hover:bg-gray-100 transition duration-200"
+          header={header}
+        >
+          {cols.map((col, i) => (
+            <ColumnGroup
+              key={i}
+              field={col.key}
+              header={col.label}
+              body={col.body || false}
+              className={col.classname || ""}
+            ></ColumnGroup>
+          ))}
+
+          {actions ? <Column header="Ações" body={actions} /> : ""}
+        </DataTable>
+      )}
+
+      <Paginator
+        first={query.page * query.limit} // ← aqui está o ajuste
+        rows={query.limit}
+        totalRecords={total}
+        rowsPerPageOptions={[10, 20, 30]}
+        onPageChange={(e) =>
+          setQuery((prev) => ({
+            ...prev,
+            page: e.page,
+            limit: e.rows,
+          }))
+        }
+      />
+    </TableContainer>
+  );
+};
+
+export default Table;
 
 Table.propTypes = {
-    children: Protypes.node.isRequired,
-    data: Protypes.array.isRequired,
-    total: Protypes.number.isRequired,
-    query: Protypes.object.isRequired,
-    setQuery: Protypes.func.isRequired,
-    header: Protypes.node,
-    id: Protypes.string
-}
+  titulo: Protypes.string,
+  data: Protypes.array.isRequired,
+  total: Protypes.number.isRequired,
+  query: Protypes.object.isRequired,
+  setQuery: Protypes.func.isRequired,
+  cols: Protypes.array.isRequired,
+  header: Protypes.node,
+  id: Protypes.string.isRequired,
+  inputPlaceholder: Protypes.string,
+  actions: Protypes.array,
+};

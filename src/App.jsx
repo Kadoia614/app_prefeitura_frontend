@@ -20,6 +20,7 @@ import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 import Esporte from "./pages/esporte/Esporte";
 import MinhaCasa from "./pages/minhacasa/MinhaCasa";
+import Reservas from "./pages/reservas/Reservas";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -27,29 +28,33 @@ function App() {
   const servicos = [
     {
       path: "config",
-      component: <UserConfig></UserConfig>
+      component: <UserConfig></UserConfig>,
     },
     {
       path: "certidao",
-      component: <CertidaoIPTU></CertidaoIPTU>
+      component: <CertidaoIPTU></CertidaoIPTU>,
     },
     {
       path: "esporte",
-      component: <Esporte></Esporte>
+      component: <Esporte></Esporte>,
     },
     {
       path: "frente-de-trabalho",
-      component: <FT_APP></FT_APP>
+      component: <FT_APP></FT_APP>,
     },
     {
       path: "admin",
-      component: <Admin></Admin>
+      component: <Admin></Admin>,
     },
-        {
+    {
       path: "minha-casa-minha-vida",
-      component: <MinhaCasa></MinhaCasa>
-    }
-  ]
+      component: <MinhaCasa></MinhaCasa>,
+    },
+    {
+      path: "reservas",
+      component: <Reservas></Reservas>,
+    },
+  ];
 
   return (
     <>
@@ -84,7 +89,6 @@ function App() {
                       element={servico.component}
                     />
                   ))}
-
                 </Route>
 
                 <Route path="*" element={<HandleError />} />

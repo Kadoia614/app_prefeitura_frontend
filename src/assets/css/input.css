@@ -1,0 +1,125 @@
+/* Fonte custom */
+@import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
+
+/* Definição das camadas: Tailwind base, PrimeReact e Tailwind utilities */
+@layer tailwind-base, primereact, tailwind-utilities, overrides;
+
+/* Tema do PrimeReact (entra na camada primereact) */
+@import "primereact/resources/themes/lara-light-blue/theme.css"
+  layer(primereact);
+
+/* Tailwind base reset */
+@layer tailwind-base {
+  @tailwind base;
+}
+
+/* Tailwind components + utilities */
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+/* ─────────────────────────────
+ * BASE (obrigatório para @apply)
+ * ───────────────────────────── */
+@layer overrides {
+  #root {
+    font-family: "Inika", serif;
+    font-weight: 400;
+    @apply h-dvh text-lg flex flex-col bg-background;
+  }
+  #Main {
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  .input .p-calendar,
+  input {
+    @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-text-muted placeholder:text-text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-primary;
+  }
+  .p-speeddial-button {
+    @apply h-[48px] w-[48px] bg-primary hover:bg-primary-hover cursor-pointer text-primary-foreground py-1 px-2;
+  }
+  .p-speeddial-list {
+    @apply top-[110%] absolute;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover hover:text-text-muted cursor-pointer py-1 px-2 rounded;
+  }
+  .btn-cancel {
+    @apply bg-background-muted hover:bg-background-muted-hover cursor-pointer text-text-muted ring-1 ring-border-muted py-1 px-2 rounded;
+  }
+  .btn-danger {
+    @apply bg-danger hover:bg-danger-hover cursor-pointer text-danger-foreground py-1 px-2 rounded;
+  }
+  .content {
+    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
+  }
+  .p-datepicker-trigger {
+    @apply bg-primary p-0;
+  }
+  .p-password input {
+    @apply w-full;
+  }
+}
+
+@layer base {
+  #root {
+    font-family: "Inika", serif;
+    font-weight: 400;
+    @apply min-h-dvh text-lg flex flex-col bg-background;
+  }
+
+  #Main {
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  input {
+    @apply appearance-none rounded-md py-1.5 pr-7 pl-3
+      text-base
+      text-text-muted
+      placeholder:text-text-subtle
+      focus:outline
+      focus:outline-2
+      focus:outline-primary;
+  }
+}
+
+/* ─────────────────────────────
+ * COMPONENTS
+ * ───────────────────────────── */
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover
+      cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .btn-cancel {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary-hover
+      ring-1 ring-border cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .btn-danger {
+    @apply bg-danger text-danger-foreground hover:bg-danger-hover
+      cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .p-speeddial-button {
+    @apply h-12 w-12 bg-primary hover:bg-primary-hover
+      text-primary-foreground rounded-full;
+  }
+
+  .p-speeddial-list {
+    @apply absolute top-[110%];
+  }
+}
+
+/* ─────────────────────────────
+ * UTILIDADES CUSTOM
+ * ───────────────────────────── */
+@layer utilities {
+  .content {
+    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
+  }
+}
