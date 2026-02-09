@@ -2,6 +2,8 @@ import ReservationTable from "../../components/components-reservas/table/Reserva
 import Title from "../../components/shared/title/Title";
 import ReservasNav from "../../components/components-reservas/nav/ReservasNav";
 import { useState } from "react";
+import MotoristasTable from "../../components/components-reservas/table/MotoristasTable";
+import Dashboard from "../../components/components-reservas/Dashboard";
 
 const Reservas = () => {
   const [tabOpen, setTabOpen] = useState(false);
@@ -11,21 +13,21 @@ const Reservas = () => {
     {
       label: "Dashboard",
       icon: "pi pi-microchip",
-      content: <ReservationTable />,
+      content: <Dashboard />,
     },
     {
       label: "Motoristas",
       icon: "pi pi-user",
-      content: "<Atleta />",
+      content: <MotoristasTable />,
     },
     {
-      label: "Viculos",
-      icon: "pi pi-arrow-right-arrow-left",
+      label: "Veiculos",
+      icon: "pi pi-car",
       content: "<Atleta />",
     },
     {
       label: "Agendamentos",
-      icon: "pi pi-map-marker",
+      icon: "pi pi-book",
       content: <ReservationTable />,
     },
   ];
@@ -40,6 +42,7 @@ const Reservas = () => {
         <ReservasNav
           sideOpen={tabOpen}
           setSideOpen={setTabOpen}
+          tab={tab}
           setTab = {setTab}
           options={options}
         >

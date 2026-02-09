@@ -22,7 +22,7 @@ const ReservasNav = ({ sideOpen, setSideOpen, options, tab, setTab }) => {
         ></i>
       </div>
       <Divider className="my-0"></Divider>
-      <div
+      <div  
         className={`p-3 bg-background-muted
           flex md:flex-col gap-2 md:justify-center ${
             !sideOpen && "items-center"
@@ -30,15 +30,14 @@ const ReservasNav = ({ sideOpen, setSideOpen, options, tab, setTab }) => {
       >
         {options &&
           options.map((option, index) => (
-            <Link to={option.link} key={index}>
+            <Link to={option.link} key={index} className="flex items-center justify-center">
               <Button
                 link
-                tooltip={!sideOpen ? option.label : ""}
-                label={sideOpen ? option.label : ""}
-                className={`text-sm gap-2 flex items-center  hover:text-text-secondary ${
-                  index == tab ? "text-text-secondary" : "text-text-muted"
+                tooltip={!sideOpen ? option.label : false}
+                className={`text-sm gap-2 flex items-center hover:text-text-secondary ${
+                  index == tab ? "text-text-secondary shadow-sm shadow-primary-hover" : "text-text-muted"
                 }`}
-                icon={option.icon}
+                label={<i className={option.icon}></i>}
                 onClick={() => setTab(index)}
               />
             </Link>
