@@ -4,6 +4,8 @@ import ReservasNav from "../../components/components-reservas/nav/ReservasNav";
 import { useState } from "react";
 import MotoristasTable from "../../components/components-reservas/table/MotoristasTable";
 import Dashboard from "../../components/components-reservas/Dashboard";
+import VeiculosTable from "../../components/components-reservas/table/VeiculosTable";
+import { MotoristaProvider } from "../../context/reservas/motorista/MotoristaProvider";
 
 const Reservas = () => {
   const [tabOpen, setTabOpen] = useState(false);
@@ -23,7 +25,7 @@ const Reservas = () => {
     {
       label: "Veiculos",
       icon: "pi pi-car",
-      content: "<Atleta />",
+      content: <VeiculosTable />,
     },
     {
       label: "Agendamentos",
@@ -34,7 +36,6 @@ const Reservas = () => {
 
   return (
     <div className="content" id="Reservas">
-      {console.log(window.user)}
       <Title subtitle={"Prefeitura de Itapecerica da Serra"}>
         Reservas - Frotas <br />
       </Title>
@@ -43,12 +44,12 @@ const Reservas = () => {
           sideOpen={tabOpen}
           setSideOpen={setTabOpen}
           tab={tab}
-          setTab = {setTab}
+          setTab={setTab}
           options={options}
         >
           {" "}
         </ReservasNav>
-        {options[tab].content}
+        <MotoristaProvider>{options[tab].content}</MotoristaProvider>
       </div>
     </div>
   );

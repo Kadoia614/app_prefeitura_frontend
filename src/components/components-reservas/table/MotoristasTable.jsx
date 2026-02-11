@@ -1,52 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Table from "../../shared/table/Table";
 import RenderStatus from "../../shared/renderStatus";
+import { useMotoristaContext } from "../../../context/reservas/motorista/MotoristaContext";
 
 const MotoristasTable = () => {
-  const [query, setQuery] = useState({
-    search: "",
-    page: 0,
-    limit: 10,
-  });
+  let { query, setQuery, motorista, fetchMotorista, total } =
+    useMotoristaContext();
 
-  const [data, setData] = useState([]);
-
-  const [total, setTotal] = useState(10);
-
-  const fetchData = async () => {
-    try {
-      const response = [
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          nome: "Motorista 1",
-          cnh: "123456789",
-          telefone: "(11) 99999-9999",
-          email: "miguel.moraes@itapecerica.sp.gov.br",
-          status: "ativo",
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          nome: "Motorista 1",
-          cnh: "123456789",
-          telefone: "(11) 99999-9999",
-          email: "miguel.moraes@itapecerica.sp.gov.br",
-          status: "inativo",
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          nome: "Motorista 1",
-          cnh: "123456789",
-          telefone: "(11) 99999-9999",
-          email: "miguel.moraes@itapecerica.sp.gov.br",
-          status: "suspenso",
-        },
-      ];
-      setData(response);
-      setTotal(response.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    fetchMotorista();
+  }, [query]);
 
   const status = (rowData) => {
     switch (rowData.status) {
@@ -72,16 +35,12 @@ const MotoristasTable = () => {
     },
   ];
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
       <Table
         titulo={"Motoristas cadastrados"}
         query={query}
         setQuery={setQuery}
-        data={data}
+        data={motorista}
         cols={cols}
         total={total}
         id={"MotoristasTable"}
