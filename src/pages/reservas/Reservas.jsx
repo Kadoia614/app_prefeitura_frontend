@@ -6,6 +6,8 @@ import MotoristasTable from "../../components/components-reservas/table/Motorist
 import Dashboard from "../../components/components-reservas/Dashboard";
 import VeiculosTable from "../../components/components-reservas/table/VeiculosTable";
 import { MotoristaProvider } from "../../context/reservas/motorista/MotoristaProvider";
+import { VeiculoProvider } from "../../context/reservas/veiculo/VeiculoProvider";
+import { AgendamentoProvider } from "../../context/reservas/reservas/AgendamentoProvider";
 
 const Reservas = () => {
   const [tabOpen, setTabOpen] = useState(false);
@@ -20,17 +22,29 @@ const Reservas = () => {
     {
       label: "Motoristas",
       icon: "pi pi-user",
-      content: <MotoristasTable />,
+      content: (
+        <MotoristaProvider>
+          <MotoristasTable />
+        </MotoristaProvider>
+      ),
     },
     {
       label: "Veiculos",
       icon: "pi pi-car",
-      content: <VeiculosTable />,
+      content: (
+        <VeiculoProvider>
+          <VeiculosTable />
+        </VeiculoProvider>
+      ),
     },
     {
       label: "Agendamentos",
-      icon: "pi pi-book",
-      content: <ReservationTable />,
+      icon: "pi pi-calendar",
+      content: (
+        <AgendamentoProvider>
+          <ReservationTable />
+        </AgendamentoProvider>
+      ),
     },
   ];
 
@@ -49,7 +63,7 @@ const Reservas = () => {
         >
           {" "}
         </ReservasNav>
-        <MotoristaProvider>{options[tab].content}</MotoristaProvider>
+        {options[tab].content}
       </div>
     </div>
   );

@@ -1,56 +1,62 @@
 import { useEffect, useState } from "react";
 import Table from "../../shared/table/Table";
 import RenderStatus from "../../shared/renderStatus";
+import { useUserContext } from "../../../context/user/UserContext";
+import { useVeiculoContext } from "../../../context/reservas/veiculo/VeiculoContext";
+import { Button } from "primereact/button";
+import TableButton from "../../shared/table/TableButton";
+import VeiculoModal from "../modal/VeiculoModal";
 
 const VeiculosTable = () => {
-  const [query, setQuery] = useState({
-    search: "",
-    page: 0,
-    limit: 10,
-  });
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const [data, setData] = useState([]);
+  let {
+    query,
+    setQuery,
+    veiculo,
+    fetchVeiculo,
+    total,
+    setTarget,
+    panel,
+    setPanel,
+  } = useVeiculoContext();
 
-  const [total, setTotal] = useState(10);
+  const { permissions } = useUserContext();
 
-  const fetchData = async () => {
-    try {
-      const response = [
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          placa: "ABC-1234",
-          modelo: "Civic",
-          marca: "Honda",
-          ano: "2020",
-          cor: "Preto",
-          status: "ativo",
-        },
-                {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          placa: "ABC-1234",
-          modelo: "Civic",
-          marca: "Honda",
-          ano: "2020",
-          cor: "Preto",
-          status: "inativo",
-        },
-                {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          placa: "ABC-1234",
-          modelo: "Civic",
-          marca: "Honda",
-          ano: "2020",
-          cor: "Preto",
-          status: "manutencao",
-        },
-        
-      ];
-      setData(response);
-      setTotal(response.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    fetchVeiculo();
+  }, [query]);
+
+  const renderActions = (rowData) => (
+    <div className="flex gap-2">
+      {permissions.edit && (
+        <>
+          <TableButton
+            tooltip={`Editar`}
+            icon={"pi pi-pen-to-square"}
+            iconPos="left"
+            color="table-button-info"
+            onClick={() => {
+              setIsEditOpen(true);
+              setTarget(rowData);
+            }}
+          />
+        </>
+      )}
+
+      {permissions.del && (
+        <TableButton
+          tooltip={`Excluir`}
+          icon={"pi pi-trash"}
+          color="table-button-danger"
+          onClick={() => {
+            setTarget(rowData);
+            // setExcludeModalOpen(true);
+          }}
+        />
+      )}
+    </div>
+  );
 
   const status = (rowData) => {
     switch (rowData.status) {
@@ -79,21 +85,87 @@ const VeiculosTable = () => {
     },
   ];
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
-      <Table
-        titulo={"Veiculos cadastrados"}
-        query={query}
-        setQuery={setQuery}
-        data={data}
-        cols={cols}
-        total={total}
-        id={"VeiculosTable"}
-        inputPlaceholder={"Buscar..."}
-      ></Table>
+    <>
+      {" "}
+      <VeiculoModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+      <div className="flex md:flex-row flex-col w-full">
+        <Table
+          titulo={"Veiculos cadastrados"}
+          onRowClick={(e) => {
+            setPanel(e.data);
+          }}
+          adc={
+            permissions.write && (
+              <Button
+                onClick={() => setIsEditOpen(true)}
+                icon={"pi pi-plus"}
+                className="btn-adc"
+              />
+            )
+          }
+          query={query}
+          setQuery={setQuery}
+          actions={renderActions}
+          data={veiculo}
+          cols={cols}
+          total={total}
+          id={"VeiculosTable"}
+          inputPlaceholder={"Buscar..."}
+        ></Table>
+        <div className="w-5/12 bg-background shadow-sm rounded-md p-4">
+          <div className="bg-background-muted p-4 rounded-md">
+            <h3 className="text-xl text-center text-text-secondary py-4 font-bold text-primary">
+              Informações
+            </h3>
+            {panel && (
+              <div className="text-start">
+                <p>
+                  Placa:{" "}
+                  {panel && (
+                    <span className="text-text-muted">{panel.placa}</span>
+                  )}
+                </p>
+                <p>
+                  Modelo:{" "}
+                  {panel && (
+                    <span className="text-text-muted">{panel.modelo}</span>
+                  )}
+                </p>
+                <p>
+                  Marca:{" "}
+                  {panel && (
+                    <span className="text-text-muted">{panel.marca}</span>
+                  )}
+                </p>
+                <p>
+                  Ano:{" "}
+                  {panel && (
+                    <span className="text-text-muted">{panel.ano}</span>
+                  )}
+                </p>
+                <p>
+                  Cor:{" "}
+                  {panel && (
+                    <span className="text-text-muted">{panel.cor}</span>
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="bg-background-muted p-4 rounded-md mt-2">
+            <div>
+              <h4 className="text-md text-center text-text-secondary py-4 font-bold text-primary">
+                Agenda
+              </h4>
+              <p className="text-center text-text-muted animate-pulse">
+                Em breve... Adicionar Calendar...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

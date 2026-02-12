@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { MotoristaContext } from "./MotoristaContext";
+import { VeiculoContext } from "./VeiculoContext";
 
 import { useToast } from "@/components/shared/toast/ToastProvider.jsx";
 
 import PropTypes from "prop-types";
 
-import { Motoristas } from "../../../service/reservas";
+import { Veiculos } from "../../../service/reservas";
 import { useLoadingContext } from "../../loading/LoadingContext";
 
-export const MotoristaProvider = ({ children }) => {
+export const VeiculoProvider = ({ children }) => {
   const { showToast } = useToast();
   let { attIsLoading } = useLoadingContext();
 
-  let [motorista, setMotorista] = useState([]);
+  let [veiculo, setVeiculo] = useState([]);
   let [target, setTarget] = useState({});
   let [total, setTotal] = useState(0);
   let [panel, setPanel] = useState({});
@@ -22,15 +22,15 @@ export const MotoristaProvider = ({ children }) => {
     search: "",
   });
 
-  const addMotorista = async () => {
+  const addVeiculo = async () => {
     try {
       attIsLoading(true);
-      const data = await Motoristas.post(target);
+      const data = await Veiculos.post(target);
 
-      const newMotorista = await data.motorista;
-      setMotorista((prev) => [...prev, newMotorista]);
+      const newVeiculo = await data.veiculo;
+      setVeiculo((prev) => [...prev, newVeiculo]);
 
-      showToast("success", "Confirmado", "Motorista Cadastrado com sucesso");
+      showToast("success", "Confirmado", "Veiculo Cadastrado com sucesso");
       setTarget({});
 
       setTotal((prev) => prev + 1);
@@ -38,77 +38,78 @@ export const MotoristaProvider = ({ children }) => {
       showToast(
         "error",
         "Error",
-        "Erro ao cadastrar motorista " + error.response?.data?.message || error,
+        "Erro ao cadastrar veiculo " + error.response?.data?.message || error,
       );
     } finally {
       attIsLoading(false);
     }
   };
 
-  const updateMotorista = async () => {
+  const updateVeiculo = async () => {
     try {
-      const response = await Motoristas.update(target.uuid, target);
+      const response = await Veiculos.update(target.uuid, target);
 
-      setMotorista((prev) => {
+      setVeiculo((prev) => {
         return prev.map((item) => {
-          if (item.uuid === response.motorista.uuid) {
-            return response.motorista;
+          if (item.uuid === response.veiculo.uuid) {
+            return response.veiculo;
           }
           return item;
         });
       });
-      showToast("success", "Confirmado", "Motorista Atualizado com sucesso");
+      showToast("success", "Confirmado", "Veiculo Atualizado com sucesso");
 
       setTarget({});
     } catch (error) {
       showToast(
         "error",
         "Error",
-        "Erro ao atualizar motorista " + error.response?.data?.message || error,
+        "Erro ao atualizar veiculo " + error.response?.data?.message || error,
       );
     }
   };
 
-  const salvarMotorista = async () => {
+  const salvarVeiculo = async () => {
     if (target.uuid) {
-      await updateMotorista();
+      await updateVeiculo();
     } else {
-      await addMotorista();
+      await addVeiculo();
     }
   };
 
-  const removeMotorista = async (uuid) => {
+  const removeVeiculo = async (uuid) => {
     try {
       attIsLoading(true);
-      const response = await Motoristas.delete(uuid);
+      const response = await Veiculos.delete(uuid);
       if (response.ok === true)
-        showToast("success", "Confirmado", "Motorista Excluido com sucesso");
+        showToast("success", "Confirmado", "Veiculo Excluido com sucesso");
       setTotal((prev) => prev - 1);
     } catch (error) {
       showToast(
         "error",
         "Error",
-        "Erro ao excluir motorista " + error.response?.data?.message || error,
+        "Erro ao excluir veiculo " + error.response?.data?.message || error,
       );
     } finally {
       attIsLoading(false);
     }
   };
 
-  const fetchMotorista = async () => {
+  const fetchVeiculo = async () => {
     try {
       attIsLoading(true);
-      const data = await Motoristas.getMotoristas(query);
-      const motoristas = await data.motorista;
+      const data = await Veiculos.getVeiculos(query);
+      console.log(data);
+      const veiculos = await data.veiculo;
       const count = await data.count;
 
       setTotal(count);
-      setMotorista(motoristas);
+      setVeiculo(veiculos);
     } catch (error) {
       showToast(
         "error",
         "Error",
-        "Erro ao cadastrar motorista " + error.response?.data?.message || error,
+        "Erro ao cadastrar veiculo " + error.response?.data?.message || error,
       );
     } finally {
       attIsLoading(false);
@@ -120,14 +121,14 @@ export const MotoristaProvider = ({ children }) => {
   };
 
   return (
-    <MotoristaContext.Provider
+    <VeiculoContext.Provider
       value={{
         query,
         setQuery,
-        motorista,
-        fetchMotorista,
-        salvarMotorista,
-        removeMotorista,
+        veiculo,
+        fetchVeiculo,
+        salvarVeiculo,
+        removeVeiculo,
         panel,
         setPanel,
         total,
@@ -137,10 +138,10 @@ export const MotoristaProvider = ({ children }) => {
       }}
     >
       <>{children}</>
-    </MotoristaContext.Provider>
+    </VeiculoContext.Provider>
   );
 };
 
-MotoristaProvider.propTypes = {
+VeiculoProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

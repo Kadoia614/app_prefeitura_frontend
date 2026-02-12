@@ -2,13 +2,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
 
 @import "tailwindcss/index" layer(base);
+
 @import "primereact/resources/themes/lara-light-blue/theme.css"
   layer(primereact);
+  
 @import "tailwindcss/theme" layer(utilities);
 @import "tailwindcss/utilities" layer(utilities);
 
+
+
 /* Definição das camadas: Tailwind base, PrimeReact e Tailwind utilities */
-@layer tailwind-base, primereact, tailwind-utilities, overrides;
+@layer base, primereact, utilities, overrides;
 
 @theme {
   /* ─────────────────────────────
@@ -132,6 +136,22 @@
   .p-password input {
     @apply w-full;
   }
+
+  .table-button-info {
+    @apply bg-transparent text-info hover:text-info-foreground border-none;
+  }
+
+  .table-button-danger {
+    @apply bg-transparent text-danger hover:text-danger-foreground border-none;
+  }
+
+  .custom-speed-dial{
+    @apply relative;
+  }
+
+  .btn-adc{
+    @apply bg-transparent text-info border-none rounded-full hover:bg-info-hover hover:text-text-inverse;
+  }
 }
 
 @layer base {
@@ -157,11 +177,10 @@
   }
 }
 
-/* ─────────────────────────────
- * COMPONENTS
- * ───────────────────────────── */
-
-@layer components {
+@layer utilities {
+  .content {
+    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
+  }
   .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary-hover
       cursor-pointer py-1.5 px-3 rounded;
@@ -184,14 +203,5 @@
 
   .p-speeddial-list {
     @apply absolute top-[110%];
-  }
-}
-
-/* ─────────────────────────────
- * UTILIDADES CUSTOM
- * ───────────────────────────── */
-@layer utilities {
-  .content {
-    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
   }
 }

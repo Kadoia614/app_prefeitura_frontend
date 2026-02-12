@@ -1,163 +1,24 @@
 import { useEffect, useState } from "react";
 import Table from "../../shared/table/Table";
 import RenderStatus from "../../shared/renderStatus";
+import { useAgendamentoContext } from "../../../context/reservas/reservas/AgendamentoContext";
+import { useUserContext } from "../../../context/user/UserContext";
 
 const ReservasTable = () => {
-  const [query, setQuery] = useState({
-    search: "",
-    page: 0,
-    limit: 10,
-  });
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const [data, setData] = useState([]);
+  let {
+    query,
+    setQuery,
+    agendamento,
+    fetchAgendamento,
+    total,
+    setTarget,
+    panel,
+    setPanel,
+  } = useAgendamentoContext();
 
-  const [total, setTotal] = useState(10);
-
-  const fetchData = async () => {
-    try {
-      const response = [
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          data_agendamento: "2026-02-02",
-          hora_inicio: "08:34:30",
-          hora_fim: "08:34:39",
-          origem: "teste",
-          destino: "teste",
-          observacao: "teste",
-          status: "cancelado",
-          ownner_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          responsible_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          motorista: {
-            uuid: "9879ae4c-e21e-4ce2-af4c-a883f4d9f0ce",
-            nome: "miguel dsa",
-            email: "m.morciellwa@gmail.com",
-            telefone: "",
-          },
-          veiculo: {
-            uuid: "adf84186-0f3a-4834-8f21-9e285aade30c",
-            placa: "hbd-7097",
-            marca: "fiat",
-            modelo: "palio fire",
-            cor: "cinza",
-            ano: 2003,
-            capacidade: "5",
-          },
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          data_agendamento: "2026-02-02",
-          hora_inicio: "08:34:30",
-          hora_fim: "08:34:39",
-          origem: "teste",
-          destino: "teste",
-          observacao: "teste",
-          status: "confirmado",
-          ownner_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          responsible_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          motorista: {
-            uuid: "9879ae4c-e21e-4ce2-af4c-a883f4d9f0ce",
-            nome: "miguel dsa",
-            email: "m.morciellwa@gmail.com",
-            telefone: "",
-          },
-          veiculo: {
-            uuid: "adf84186-0f3a-4834-8f21-9e285aade30c",
-            placa: "hbd-7097",
-            marca: "fiat",
-            modelo: "palio fire",
-            cor: "cinza",
-            ano: 2003,
-            capacidade: "5",
-          },
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          data_agendamento: "2026-02-02",
-          hora_inicio: "08:34:30",
-          hora_fim: "08:34:39",
-          origem: "teste",
-          destino: "teste",
-          observacao: "teste",
-          status: "solicitado",
-          ownner_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          responsible_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          motorista: {
-            uuid: "9879ae4c-e21e-4ce2-af4c-a883f4d9f0ce",
-            nome: "miguel dsa",
-            email: "m.morciellwa@gmail.com",
-            telefone: "",
-          },
-          veiculo: {
-            uuid: "adf84186-0f3a-4834-8f21-9e285aade30c",
-            placa: "hbd-7097",
-            marca: "fiat",
-            modelo: "palio fire",
-            cor: "cinza",
-            ano: 2003,
-            capacidade: "5",
-          },
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          data_agendamento: "2026-02-02",
-          hora_inicio: "08:34:30",
-          hora_fim: "08:34:39",
-          origem: "teste",
-          destino: "teste",
-          observacao: "teste",
-          status: "teste",
-          ownner_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          responsible_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          motorista: {
-            uuid: "9879ae4c-e21e-4ce2-af4c-a883f4d9f0ce",
-            nome: "miguel dsa",
-            email: "m.morciellwa@gmail.com",
-            telefone: "",
-          },
-          veiculo: {
-            uuid: "adf84186-0f3a-4834-8f21-9e285aade30c",
-            placa: "hbd-7097",
-            marca: "fiat",
-            modelo: "palio fire",
-            cor: "cinza",
-            ano: 2003,
-            capacidade: "5",
-          },
-        },
-        {
-          uuid: "74384597-7a37-48f3-8108-135d6a4d745a",
-          data_agendamento: "2026-02-02",
-          hora_inicio: "08:34:30",
-          hora_fim: "08:34:39",
-          origem: "teste",
-          destino: "teste",
-          observacao: "teste",
-          status: "concluido",
-          ownner_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          responsible_uuid: "cc01d93e-2c84-40c4-9c30-a04edfc0ce57",
-          motorista: {
-            uuid: "9879ae4c-e21e-4ce2-af4c-a883f4d9f0ce",
-            nome: "miguel dsa",
-            email: "m.morciellwa@gmail.com",
-            telefone: "",
-          },
-          veiculo: {
-            uuid: "adf84186-0f3a-4834-8f21-9e285aade30c",
-            placa: "hbd-7097",
-            marca: "fiat",
-            modelo: "palio fire",
-            cor: "cinza",
-            ano: 2003,
-            capacidade: "5",
-          },
-        },
-      ];
-      setData(response);
-      setTotal(response.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { permissions } = useUserContext();
 
   const status = (rowData) => {
     switch (rowData.status) {
@@ -190,15 +51,15 @@ const ReservasTable = () => {
   ];
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchAgendamento();
+  }, [query]);
 
   return (
     <Table
       titulo={"Reserva de veículos"}
       query={query}
       setQuery={setQuery}
-      data={data}
+      data={agendamento}
       cols={cols}
       total={total}
       id={"ReservasTable"}

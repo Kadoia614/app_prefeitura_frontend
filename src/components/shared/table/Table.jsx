@@ -16,18 +16,21 @@ const Table = ({
   data,
   cols,
   total,
+  onRowClick,
   id,
   inputPlaceholder,
   actions,
-  titulo
+  titulo,
+  adc
 }) => {
   const { isLoading } = useLoadingContext();
   return (
     <TableContainer>
       <TableHeader
         end={
-          <div>
+          <div className="flex gap-4 items-center">
             {titulo}
+            {adc}
           </div>
         }
         start={
@@ -54,6 +57,7 @@ const Table = ({
           id={id}
           value={data}
           size="small"
+          onRowClick={onRowClick}
           stripedRows
           rowClassName="hover:bg-gray-100 transition duration-200"
           header={header}
@@ -93,11 +97,13 @@ export default Table;
 
 Table.propTypes = {
   titulo: Protypes.string,
+  adc: Protypes.node,
   data: Protypes.array.isRequired,
   total: Protypes.number.isRequired,
   query: Protypes.object.isRequired,
   setQuery: Protypes.func.isRequired,
   cols: Protypes.array.isRequired,
+  onRowClick: Protypes.func,
   header: Protypes.node,
   id: Protypes.string.isRequired,
   inputPlaceholder: Protypes.string,

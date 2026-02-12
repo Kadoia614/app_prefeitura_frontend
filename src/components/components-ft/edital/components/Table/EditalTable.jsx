@@ -209,7 +209,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
               </div>
               <div>
                 <SpeedDial
-                  className="relative"
+                  className="custom-speed-dial"
                   model={renderItems}
                   direction="down"
                   type="linear"

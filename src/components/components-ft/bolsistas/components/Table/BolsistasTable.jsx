@@ -161,7 +161,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
                   <div>
                     <Tooltip target=".add-bolsista-btn" position="bottom" />
                     <SpeedDial
-                      className="relative"
+                      className="custom-speed-dial"
                       model={renderItems}
                       direction="down"
                       type="linear"

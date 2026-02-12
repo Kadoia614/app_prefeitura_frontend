@@ -1,6 +1,37 @@
 import API from "../api/API";
 
-export class Reservas {}
+export class Agendamentos {
+  static APIBaseURL = "/reservas/agendamento";
+  
+  static get = async (query) => {
+    const { page, limit, search } = query;
+    const url = search
+      ? `${this.APIBaseURL}?page=${page || 0}&limit=${limit || 10}&search=${search}`
+      : `${this.APIBaseURL}?page=${page || 0}&limit=${limit || 10}`;
+    const { data } = await API.get(`${url}`);
+    return data;
+  };
+
+  static getById = async (id) => {
+    const { data } = await API.get(`${this.APIBaseURL}/${id}`);
+    return data;
+  };
+
+  static post = async (payload) => {
+    const { data } = await API.post(`${this.APIBaseURL}`, payload);
+    return data;
+  };
+
+  static delete = async (id) => {
+    const { data } = await API.delete(`${this.APIBaseURL}/${id}`);
+    return data;
+  };
+
+  static update = async (id, payload) => {
+    const { data } = await API.put(`${this.APIBaseURL}/${id}`, payload);
+    return data;
+  };
+}
 
 export class Veiculos {
   static APIBaseURL = "/reservas/veiculo";
