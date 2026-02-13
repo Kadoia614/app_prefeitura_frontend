@@ -95,7 +95,7 @@ export const AgendamentoProvider = ({ children }) => {
     }
   };
 
-  const fetchAgendamento = async () => {
+  const fetchAgendamento = async () => {  
     try {
       attIsLoading(true);
       const data = await Agendamentos.get(query);
@@ -116,6 +116,36 @@ export const AgendamentoProvider = ({ children }) => {
     }
   };
 
+  const motoristasDisponiveis = async (data_agendamento, inicio, fim) => {
+    const data = await Agendamentos.getDisponivel(data_agendamento, inicio, fim)
+    const motoristas_disponiveis = await data.motorista
+    const veiculos_disponiveis = await data.veiculo
+
+    return { motorista: motoristas_disponiveis, veiculo: veiculos_disponiveis }
+  }
+
+  const confirmAgendamento = async(uuid, payload) => {
+    try {
+      attIsLoading(true);
+      await Agendamentos.confirm(uuid, payload)
+      agendamento.map((item) => {
+        if (item.uuid === uuid) {
+          item.status = "confirmado"
+        }
+      })
+      showToast("success", "Confirmado", "Agendamento Confirmado com sucesso");
+    } catch (error) {
+      console.log(error)
+      showToast(
+        "error",
+        "Error",
+        "Erro ao confirmar agendamento " + error.response?.data?.message || error,
+      );
+    } finally {
+      attIsLoading(false);
+    }
+  }
+
   const clearTarget = () => {
     setTarget({});
   };
@@ -127,8 +157,10 @@ export const AgendamentoProvider = ({ children }) => {
         setQuery,
         agendamento,
         fetchAgendamento,
+        motoristasDisponiveis,
         salvarAgendamento,
         removeAgendamento,
+        confirmAgendamento,
         panel,
         setPanel,
         total,

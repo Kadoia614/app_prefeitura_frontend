@@ -1,6 +1,7 @@
 import { Paginator } from "primereact/paginator";
 import Protypes from "prop-types";
 import InputFieldLine from "../input/inputfield/InputFieldLine";
+import CalendarInput from "../input/CalendarInput";
 import TableHeader from "./TableHeader";
 import TableContainer from "./TableContainer";
 import { DataTable } from "primereact/datatable";
@@ -19,11 +20,70 @@ const Table = ({
   onRowClick,
   id,
   inputPlaceholder,
+  inputType,
   actions,
   titulo,
-  adc
+  adc,
 }) => {
   const { isLoading } = useLoadingContext();
+
+  const renderInput = (inputType) => {
+    switch (inputType) {
+      case "fieldline":
+        return (
+          <InputFieldLine
+            id="SearchTable"
+            placeHolder={inputPlaceholder || "Buscar..."}
+            value={query.search}
+            onChange={(e) =>
+              setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+            }
+          ></InputFieldLine>
+        );
+      case "paginator":
+        return (
+      <Paginator
+      id="SearchTable"
+        first={query.page * query.limit} // ← aqui está o ajuste
+        rows={query.limit}
+        totalRecords={total}
+        rowsPerPageOptions={[10, 20, 30]}
+        onPageChange={(e) =>
+          setQuery((prev) => ({
+            ...prev,
+            page: e.page,
+            limit: e.rows,
+          }))
+        }
+      />
+        )
+        case "calendar":
+        return (
+          <CalendarInput
+            id="SearchTable"
+            label="Buscar"
+            placeHolder={inputPlaceholder || "Buscar..."}
+            value={query.search}
+            view={"date"}
+            onChange={(e) =>
+              setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+            }
+          ></CalendarInput>
+        )
+      case "none":
+        return null;
+      default:
+        return (<InputFieldLine
+            id="SearchTable"
+            placeHolder={inputPlaceholder || "Buscar..."}
+            value={query.search}
+            onChange={(e) =>
+              setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
+            }
+          ></InputFieldLine>);
+    }
+  };
+
   return (
     <TableContainer>
       <TableHeader
@@ -33,18 +93,7 @@ const Table = ({
             {adc}
           </div>
         }
-        start={
-          <>
-            <InputFieldLine
-              id="SearchCertidao"
-              placeHolder={inputPlaceholder || "Buscar..."}
-              value={query.search}
-              onChange={(e) =>
-                setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
-              }
-            ></InputFieldLine>
-          </>
-        }
+        start={<>{renderInput(inputType)}</>}
       ></TableHeader>
 
       {isLoading ? (
@@ -102,10 +151,11 @@ Table.propTypes = {
   total: Protypes.number.isRequired,
   query: Protypes.object.isRequired,
   setQuery: Protypes.func.isRequired,
+  inputType: Protypes.string,
   cols: Protypes.array.isRequired,
   onRowClick: Protypes.func,
   header: Protypes.node,
   id: Protypes.string.isRequired,
   inputPlaceholder: Protypes.string,
-  actions: Protypes.array,
+  actions: Protypes.func, 
 };

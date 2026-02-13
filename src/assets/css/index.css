@@ -121,11 +121,15 @@
   .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary-hover hover:text-text-muted cursor-pointer py-1 px-2 rounded;
   }
+    .btn-info {
+    @apply bg-info text-text-inverse hover:text-info-foreground hover:bg-info-hover cursor-pointer py-1 px-2 rounded;
+  }
+
   .btn-cancel {
     @apply bg-background-muted hover:bg-background-muted-hover cursor-pointer text-text-muted ring-1 ring-border-muted py-1 px-2 rounded;
   }
   .btn-danger {
-    @apply bg-danger hover:bg-danger-hover cursor-pointer text-danger-foreground py-1 px-2 rounded;
+    @apply bg-danger hover:bg-danger-hover cursor-pointer text-text-inverse hover:text-danger-foreground py-1 px-2 rounded;
   }
   .content {
     @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
@@ -140,9 +144,19 @@
   .table-button-info {
     @apply bg-transparent text-info hover:text-info-foreground border-none;
   }
+  .table-button-success {
+    @apply bg-transparent text-success hover:text-success-foreground border-none;
+  }
 
+    .table-button-warning {
+    @apply bg-transparent text-warning hover:text-warning-foreground border-none;
+  }
   .table-button-danger {
     @apply bg-transparent text-danger hover:text-danger-foreground border-none;
+  }
+
+  .p-datepicker {
+    @apply bg-background-muted shadow-lg shadow-text-muted;
   }
 
   .custom-speed-dial{

@@ -14,7 +14,7 @@ const SelectField = ({
   selectClass,
   defaultDisabled
 }) => (
-  <fieldset className={`mt-2 text-end ${fieldsetClass}`}>
+  <fieldset className={`mt-2 ${fieldsetClass}`}>
     <label htmlFor={id} className={`font-bold text-text-muted`}>
       {label}
     </label>

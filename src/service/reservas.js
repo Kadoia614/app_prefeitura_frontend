@@ -17,6 +17,13 @@ export class Agendamentos {
     return data;
   };
 
+  static getDisponivel = async (data_agendamento, hora_inicio, hora_fim) => {
+
+    const {data} = await API.get(`${this.APIBaseURL}/disponiveis?data=${data_agendamento}&inicio=${hora_inicio}&fim=${hora_fim}`);
+
+    return data
+  }
+
   static post = async (payload) => {
     const { data } = await API.post(`${this.APIBaseURL}`, payload);
     return data;
@@ -29,6 +36,14 @@ export class Agendamentos {
 
   static update = async (id, payload) => {
     const { data } = await API.put(`${this.APIBaseURL}/${id}`, payload);
+    return data;
+  };
+
+  static confirm = async (id, payload) => {
+    const { data } = await API.put(`${this.APIBaseURL}/${id}/confirmar`, {
+      ...payload
+    });
+
     return data;
   };
 }
