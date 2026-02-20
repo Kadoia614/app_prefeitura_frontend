@@ -6,9 +6,14 @@ import { useUserContext } from "../../../context/user/UserContext";
 import TableButton from "../../shared/table/TableButton";
 import ReservaSidePanel from "../sidePainel/ReservasSidePanel";
 import ReservasAcceptModal from "../modal/ReservasAcceptModal";
+import { Button } from "primereact/button";
+import ReservasCreateModal from "../modal/ReservasCreateModal";
+import ReservasRejectModal from "../modal/ReservasRejectModal";
 
 const ReservasTable = () => {
   const [isAcceptOpen, setIsAcceptOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isRefuseOpen, setIsRefuseOpen] = useState(false);
 
   let {
     query,
@@ -40,7 +45,7 @@ const ReservasTable = () => {
 
   const renderActions = (rowData) => (
     <div className="flex gap-2">
-      {permissions.edit && (
+      {(permissions.edit && rowData.status === "solicitado") && (
         <TableButton
           tooltip={`Aceitar`}
           icon={"pi pi-check-square"}
@@ -52,14 +57,14 @@ const ReservasTable = () => {
         />
       )}
 
-      {permissions.edit && (
+      {(permissions.edit && rowData.status === "solicitado") && (
         <TableButton
           tooltip={`Recusar`}
           icon={"pi pi-times-circle"}
           color="table-button-danger"
           onClick={() => {
             setTarget(rowData);
-            // setExcludeModalOpen(true);
+            setIsRefuseOpen(true);
           }}
         />
       )}
@@ -88,9 +93,12 @@ const ReservasTable = () => {
   return (
     <>
     <ReservasAcceptModal isOpen={isAcceptOpen} setIsOpen={setIsAcceptOpen}></ReservasAcceptModal>
+    <ReservasCreateModal isOpen={isCreateOpen} setIsOpen={setIsCreateOpen}></ReservasCreateModal>
+    <ReservasRejectModal isOpen={isRefuseOpen} setIsOpen={setIsRefuseOpen}></ReservasRejectModal>
       <div className="flex md:flex-row flex-col w-full">
         <Table
           titulo={"Reserva de veículos"}
+          adc={<Button icon={"pi pi-plus"} className="btn-adc" onClick={() => setIsCreateOpen(true)}/>}
           query={query}
           setQuery={setQuery}
           data={agendamento}

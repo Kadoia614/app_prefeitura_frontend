@@ -10,8 +10,7 @@ import ServicesCards from "./pages/Services";
 // import UserDemandas from "./pages/demandasTI/UserDemandas";
 // import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
 
-import FT_APP from "./pages/FT/FT_APP";
-
+import FT_APP from "./pages/FT_APP";
 import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
@@ -20,7 +19,8 @@ import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 import Esporte from "./pages/esporte/Esporte";
 import MinhaCasa from "./pages/minhacasa/MinhaCasa";
-import Reservas from "./pages/reservas/Reservas";
+import Reservas from "./pages/Reservas";
+import TelaTeste from "./pages/TelaTeste";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -54,6 +54,10 @@ function App() {
       path: "reservas",
       component: <Reservas></Reservas>,
     },
+    {
+      path: "teste",
+      component: <TelaTeste></TelaTeste>
+    }
   ];
 
   return (

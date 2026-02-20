@@ -2,9 +2,9 @@ import { TabView, TabPanel } from "primereact/tabview";
 
 import Title from "@/components/shared/title/Title";
 
-import Bolsista from "../../components/components-ft/bolsistas/Bolsista";
-import Edital from "../../components/components-ft/edital/Edital";
-import { BolsistaProvider } from "../../context/ft/bolsista/BolsistaProvider";
+import Bolsista from "../components/components-ft/bolsistas/Bolsista";
+import Edital from "../components/components-ft/edital/Edital";
+import { BolsistaProvider } from "../context/ft/bolsista/BolsistaProvider";
 
 const FTAPP = () => {
   return (

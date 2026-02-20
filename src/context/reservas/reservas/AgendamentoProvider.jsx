@@ -22,10 +22,10 @@ export const AgendamentoProvider = ({ children }) => {
     search: "",
   });
 
-  const addAgendamento = async () => {
+  const addAgendamento = async (payload) => {
     try {
       attIsLoading(true);
-      const data = await Agendamentos.post(target);
+      const data = await Agendamentos.post(payload);
 
       const newAgendamento = await data.agendamento;
       setAgendamento((prev) => [...prev, newAgendamento]);
@@ -45,42 +45,42 @@ export const AgendamentoProvider = ({ children }) => {
     }
   };
 
-  const updateAgendamento = async () => {
-    try {
-      const response = await Agendamentos.update(target.uuid, target);
+  // const updateAgendamento = async () => {
+  //   try {
+  //     const response = await Agendamentos.update(target.uuid, target);
 
-      setAgendamento((prev) => {
-        return prev.map((item) => {
-          if (item.uuid === response.agendamento.uuid) {
-            return response.agendamento;
-          }
-          return item;
-        });
-      });
-      showToast("success", "Confirmado", "Agendamento Atualizado com sucesso");
+  //     setAgendamento((prev) => {
+  //       return prev.map((item) => {
+  //         if (item.uuid === response.agendamento.uuid) {
+  //           return response.agendamento;
+  //         }
+  //         return item;
+  //       });
+  //     });
+  //     showToast("success", "Confirmado", "Agendamento Atualizado com sucesso");
 
-      setTarget({});
-    } catch (error) {
-      showToast(
-        "error",
-        "Error",
-        "Erro ao atualizar agendamento " + error.response?.data?.message || error,
-      );
-    }
-  };
+  //     setTarget({});
+  //   } catch (error) {
+  //     showToast(
+  //       "error",
+  //       "Error",
+  //       "Erro ao atualizar agendamento " + error.response?.data?.message || error,
+  //     );
+  //   }
+  // };
 
-  const salvarAgendamento = async () => {
-    if (target.uuid) {
-      await updateAgendamento();
-    } else {
-      await addAgendamento();
-    }
-  };
+  // const salvarAgendamento = async () => {
+  //   if (target.uuid) {
+  //     await updateAgendamento();
+  //   } else {
+  //     await addAgendamento();
+  //   }
+  // };
 
-  const removeAgendamento = async (uuid) => {
+  const refuseAgendamento = async () => {
     try {
       attIsLoading(true);
-      const response = await Agendamentos.delete(uuid);
+      const response = await Agendamentos.refuse(target.uuid, target.observacao);
       if (response.ok === true)
         showToast("success", "Confirmado", "Agendamento Excluido com sucesso");
       setTotal((prev) => prev - 1);
@@ -158,8 +158,8 @@ export const AgendamentoProvider = ({ children }) => {
         agendamento,
         fetchAgendamento,
         motoristasDisponiveis,
-        salvarAgendamento,
-        removeAgendamento,
+        addAgendamento,
+        refuseAgendamento,
         confirmAgendamento,
         panel,
         setPanel,

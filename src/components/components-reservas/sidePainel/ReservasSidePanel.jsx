@@ -22,7 +22,7 @@ const ReservaSidePanel = ({ panelData, header }) => {
   return (
     <PanelComponent
       header={header}
-      className={"w-5/12 bg-background shadow-sm rounded-md p-4"}
+      className={"md:w-5/12 w-1/1 bg-background shadow-sm rounded-md p-4"}
     >
       <div className="">
         <div className="bg-background-muted p-4 rounded-md">

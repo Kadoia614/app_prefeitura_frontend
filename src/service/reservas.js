@@ -29,8 +29,14 @@ export class Agendamentos {
     return data;
   };
 
-  static delete = async (id) => {
-    const { data } = await API.delete(`${this.APIBaseURL}/${id}`);
+  static refuse = async (id, obs) => {
+    const payload = {
+      observacao: obs
+    };
+
+    const { data } = await API.put(`${this.APIBaseURL}/${id}/cancelar`, {
+      ...payload
+    });
     return data;
   };
 

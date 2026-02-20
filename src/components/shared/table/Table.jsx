@@ -42,22 +42,22 @@ const Table = ({
         );
       case "paginator":
         return (
-      <Paginator
-      id="SearchTable"
-        first={query.page * query.limit} // ← aqui está o ajuste
-        rows={query.limit}
-        totalRecords={total}
-        rowsPerPageOptions={[10, 20, 30]}
-        onPageChange={(e) =>
-          setQuery((prev) => ({
-            ...prev,
-            page: e.page,
-            limit: e.rows,
-          }))
-        }
-      />
-        )
-        case "calendar":
+          <Paginator
+            id="SearchTable"
+            first={query.page * query.limit} // ← aqui está o ajuste
+            rows={query.limit}
+            totalRecords={total}
+            rowsPerPageOptions={[10, 20, 30]}
+            onPageChange={(e) =>
+              setQuery((prev) => ({
+                ...prev,
+                page: e.page,
+                limit: e.rows,
+              }))
+            }
+          />
+        );
+      case "calendar":
         return (
           <CalendarInput
             id="SearchTable"
@@ -69,18 +69,20 @@ const Table = ({
               setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
             }
           ></CalendarInput>
-        )
+        );
       case "none":
         return null;
       default:
-        return (<InputFieldLine
+        return (
+          <InputFieldLine
             id="SearchTable"
             placeHolder={inputPlaceholder || "Buscar..."}
             value={query.search}
             onChange={(e) =>
               setQuery((q) => ({ ...q, search: e.target.value, page: 0 }))
             }
-          ></InputFieldLine>);
+          ></InputFieldLine>
+        );
     }
   };
 
@@ -157,5 +159,5 @@ Table.propTypes = {
   header: Protypes.node,
   id: Protypes.string.isRequired,
   inputPlaceholder: Protypes.string,
-  actions: Protypes.func, 
+  actions: Protypes.func,
 };

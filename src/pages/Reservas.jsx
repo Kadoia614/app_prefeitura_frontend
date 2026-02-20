@@ -1,13 +1,13 @@
-import ReservationTable from "../../components/components-reservas/table/ReservasTable";
-import Title from "../../components/shared/title/Title";
-import ReservasNav from "../../components/components-reservas/nav/ReservasNav";
+import ReservationTable from "../components/components-reservas/table/ReservasTable";
+import Title from "../components/shared/title/Title";
+import ReservasNav from "../components/components-reservas/nav/ReservasNav";
 import { useState } from "react";
-import MotoristasTable from "../../components/components-reservas/table/MotoristasTable";
-import Dashboard from "../../components/components-reservas/Dashboard";
-import VeiculosTable from "../../components/components-reservas/table/VeiculosTable";
-import { MotoristaProvider } from "../../context/reservas/motorista/MotoristaProvider";
-import { VeiculoProvider } from "../../context/reservas/veiculo/VeiculoProvider";
-import { AgendamentoProvider } from "../../context/reservas/reservas/AgendamentoProvider";
+import MotoristasTable from "../components/components-reservas/table/MotoristasTable";
+import Dashboard from "../components/components-reservas/Dashboard";
+import VeiculosTable from "../components/components-reservas/table/VeiculosTable";
+import { MotoristaProvider } from "../context/reservas/motorista/MotoristaProvider";
+import { VeiculoProvider } from "../context/reservas/veiculo/VeiculoProvider";
+import { AgendamentoProvider } from "../context/reservas/reservas/AgendamentoProvider";
 
 const Reservas = () => {
   const [tabOpen, setTabOpen] = useState(false);
