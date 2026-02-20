@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "../../shared/table/Table";
-import RenderStatus from "../../shared/renderStatus";
+import RenderStatus from "../../shared/RenderStatus";
 import { useUserContext } from "../../../context/user/UserContext";
 import { useVeiculoContext } from "../../../context/reservas/veiculo/VeiculoContext";
 import { Button } from "primereact/button";

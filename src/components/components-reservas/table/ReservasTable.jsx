@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "../../shared/table/Table";
-import RenderStatus from "../../shared/renderStatus";
+import RenderStatus from "../../shared/RenderStatus";
 import { useAgendamentoContext } from "../../../context/reservas/reservas/AgendamentoContext";
 import { useUserContext } from "../../../context/user/UserContext";
 import TableButton from "../../shared/table/TableButton";

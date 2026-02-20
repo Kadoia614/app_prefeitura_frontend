@@ -1,7 +1,7 @@
 import { Divider } from "primereact/divider";
 import PanelComponent from "../../shared/PanelComponent";
 import PropTypes from "prop-types";
-import RenderStatus from "../../shared/renderStatus";
+import RenderStatus from "../../shared/RenderStatus";
 
 const ReservaSidePanel = ({ panelData, header }) => {
   const status = (rowData) => {
