@@ -41,7 +41,6 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
       onAcept={() => CriarAgendamento()}
       setIsOpen={setIsOpen}
     >
-      <div className="py-2"></div>
       <div className="flex flex-row flex-wrap">
         <CalendarInput
           fieldClass={"w-1/1"}

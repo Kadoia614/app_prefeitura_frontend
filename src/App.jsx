@@ -21,6 +21,7 @@ import Esporte from "./pages/esporte/Esporte";
 import MinhaCasa from "./pages/minhacasa/MinhaCasa";
 import Reservas from "./pages/Reservas";
 import TelaTeste from "./pages/TelaTeste";
+import FormReservas from "./pages/FormReservas";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -53,6 +54,10 @@ function App() {
     {
       path: "reservas",
       component: <Reservas></Reservas>,
+    },
+    {
+      path: "formreservas",
+      component: <FormReservas></FormReservas>,
     },
     {
       path: "teste",
