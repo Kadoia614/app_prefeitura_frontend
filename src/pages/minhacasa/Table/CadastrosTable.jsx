@@ -11,12 +11,10 @@ import TableContainer from "@/components/shared/table/TableContainer";
 import TableHeader from "@/components/shared/table/TableHeader";
 import InputFieldLine from "@/components/shared/input/inputfield/InputFieldLine";
 
-import SideBarBolsista from "../sidebar/SideBarBolsista";
-
-import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
 import { useUserContext } from "@/context/user/UserContext";
-import { useLoadingContext } from "../../../../../context/loading/LoadingContext";
 import { Skeleton } from "primereact/skeleton";
+import { useLoadingContext } from "../../../context/loading/LoadingContext";
+import { useMinhaCasaContext } from "../../../context/minhacasa/MinhaCasaContext";
 
 const tag = {
   ativo: {
@@ -37,16 +35,14 @@ const tag = {
   },
 };
 
-const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
-  const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
-    useBolsistaContext();
+const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
+
+  const { cadastros, cadastrosTotal, setTarget, fetchCadastro, query, setQuery } = useMinhaCasaContext();
 
   const { permissions } = useUserContext();
   let { isLoading } = useLoadingContext();
 
-  const [sideBarOpen, setSideBarOpen] = useState(false);
-  const [sideBarId, setSideBarId] = useState(null);
-
+  // componentizar
   const renderStatus = ({ status }) => {
     const item = tag[status];
     if (!item) return null;
@@ -58,9 +54,10 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
     );
   };
 
+  // componentizar
   const renderItems = [
     {
-      label: "Adicionar Bolsista",
+      label: "Adicionar Cadastro",
       icon: "pi pi-user",
       className: "add-bolsista-btn bg-primary hover:bg-primary-hover",
       command: () => {
@@ -77,20 +74,10 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             tooltip={`Editar`}
             icon={"pi pi-pen-to-square"}
             iconPos="left"
-            color="text-primary bg-white border-none"
+            color="text-text-secondary bg-white border-none"
             onClick={() => {
-              setOpenModalEdit(true);
               setTarget(rowData);
-            }}
-          />
-          <TableButton
-            tooltip={`Documentos`}
-            icon={"pi pi-file"}
-            iconPos="left"
-            color="text-primary bg-white border-none"
-            onClick={() => {
-              setSideBarOpen(true);
-              setSideBarId(rowData.id);
+              setOpenModalEdit(true);
             }}
           />
         </>
@@ -111,7 +98,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
   );
 
   useEffect(() => {
-    fetchBolsistas(query);
+    fetchCadastro(query);
   }, [query]);
 
   return (
@@ -120,7 +107,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
         <TableHeader
           center={
             <div className="md:absolute left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]">
-              Bolsistas
+              Cadastros
             </div>
           }
           start={
@@ -145,17 +132,19 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
         ) : (
           <DataTable
             id="BolsistaTable"
-            value={bolsistas}
+            value={cadastros}
             size="small"
             stripedRows
             rowClassName="hover:bg-gray-100 transition duration-200"
             header={
               <div className="relative flex justify-between items-center px-4">
                 <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
-                  <h1 className="font-bold text-nowrap">Painel de Munícipes</h1>
+                  <h1 className="font-bold text-nowrap">Painel de Cadastros</h1>
                 </div>
                 <div>
-                  <p className="text-xs text-text-muted">total: {total}</p>
+                  <p className="text-xs text-text-muted">
+                    total: {cadastrosTotal}
+                  </p>
                 </div>
                 {permissions?.write && (
                   <div>
@@ -173,12 +162,12 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             }
           >
             <Column
-              field="id"
+              field="uuid"
               header="Id"
               className="text-sm text-text-muted p-4 whitespace-nowrap"
             />
             <Column
-              field="nome"
+              field="responsavel1.nome"
               header="Nome"
               sortable
               filter
@@ -187,20 +176,22 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               className="text-sm text-text-muted p-4"
             />
             <Column
-              field="local"
-              header="Local"
+              field="moradia.cep"
+              header="CEP"
               sortable
               filter
               filterPlaceholder="Pesquisar Local"
               filterMatchMode="contains"
-              className="text-sm text-text-muted p-4"
+            />
+                        <Column
+              field="cond_moradia"
+              header="Condição de Moradia"
             />
             <Column
               field="status"
               header="Status"
               body={renderStatus}
               sortable
-              className="text-sm text-text-muted p-4"
             />
             <Column
               field="createdAt"
@@ -209,7 +200,6 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               filter
               filterPlaceholder="Pesquisar data"
               filterMatchMode="contains"
-              className="text-sm text-text-muted p-4 whitespace-nowrap"
               body={(rowData) =>
                 new Date(rowData.createdAt).toLocaleDateString("pt-BR")
               }
@@ -219,7 +209,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
           </DataTable>
         )}
 
-        <Paginator
+        {/* <Paginator
           first={query.page * query.limit} // ← aqui está o ajuste
           rows={query.limit}
           totalRecords={total}
@@ -231,21 +221,15 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
               limit: e.rows,
             }))
           }
-        />
+        /> */}
       </TableContainer>
-
-      <SideBarBolsista
-        sideBarStatus={sideBarOpen}
-        setSideBarStatus={setSideBarOpen}
-        sideBarData={sideBarId}
-      />
     </>
   );
 };
 
-BolsistasTable.propTypes = {
+CadastrosTable.propTypes = {
   setOpenModalEdit: PropTypes.func.isRequired,
-  setExcludeModalOpen: PropTypes.func,
+  setExcludeModalOpen: PropTypes.func.isRequired,
 };
 
-export default BolsistasTable;
+export default CadastrosTable;

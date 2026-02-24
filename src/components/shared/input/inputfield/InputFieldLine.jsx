@@ -11,11 +11,11 @@ const InputFieldLine = ({
   placeHolder,
   disabled,
   invalid,
-  widthField,
+  fieldClass,
   spanClass,
   ...props
 }) => (
-  <fieldset className={`flex mt-2 ${widthField}`}>
+  <fieldset className={`flex mt-2 ${fieldClass}`}>
     {icon && <span className={`p-inputgroup-addon  ${spanClass}`}>{icon}</span>}
     <InputText
       id={id}
@@ -40,7 +40,7 @@ InputFieldLine.propTypes = {
   invalid: PropTypes.bool,
   disabled: PropTypes.bool,
   icon: PropTypes.any,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
 };
 
 export default InputFieldLine;

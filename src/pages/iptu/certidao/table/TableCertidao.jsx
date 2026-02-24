@@ -40,7 +40,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
       permission: "edit",
       name: "edit",
       icon: "pi pi-pen-to-square",
-      color: "text-primary bg-cancel hover:bg-cancel-hover border-none",
+      color: "text-text-secondary bg-cancel hover:bg-cancel-hover border-none",
       onClick: (rowData) => {
         setModalData(rowData);
         setIsOpen(true);
@@ -120,7 +120,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
                   <Button
                     icon="pi pi-plus"
                     tooltip="Adicionar Municipe"
-                    className="bg-white text-primary border-0"
+                    className="bg-white text-text-secondary border-0"
                     onClick={() => setIsOpen(true)}
                   ></Button>
                 </div>

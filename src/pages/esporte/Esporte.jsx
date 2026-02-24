@@ -86,8 +86,8 @@ const Esporte = () => {
                     link
                     tooltip={!sideOpen ? option.label : ""}
                     label={sideOpen ? option.label : ""}
-                    className={`text-sm gap-2 flex items-center  hover:text-primary ${
-                      index == tab ? "text-primary" : "text-text-muted"
+                    className={`text-sm gap-2 flex items-center  hover:text-text-secondary ${
+                      index == tab ? "text-text-secondary" : "text-text-muted"
                     }`}
                     icon={option.icon}
                     onClick={() => setTab(index)}

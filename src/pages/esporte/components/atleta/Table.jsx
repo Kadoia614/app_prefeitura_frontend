@@ -104,7 +104,7 @@ const Table = ({ setEditOpen, setExcludeOpen }) => {
             tooltip={`Editar`}
             icon={"pi pi-pen-to-square"}
             iconPos="left"
-            color="text-primary bg-white border-none"
+            color="text-text-secondary bg-white border-none"
             onClick={() => {
               setAtletaTarget(rowData);
               setEditOpen(true);
@@ -151,7 +151,7 @@ const Table = ({ setEditOpen, setExcludeOpen }) => {
           rowClassName="hover:bg-gray-100 transition duration-200"
           header={
             <div className="relative flex justify-between items-center px-4">
-              <div className="sm:absolute sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]">
+              <div>
                 <h1 className="font-bold text-nowrap">Painel de Atletas</h1>
               </div>
               <div>

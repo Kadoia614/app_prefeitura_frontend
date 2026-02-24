@@ -10,8 +10,7 @@ import ServicesCards from "./pages/Services";
 // import UserDemandas from "./pages/demandasTI/UserDemandas";
 // import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
 
-import FT_APP from "./pages/FT/FT_APP";
-
+import FT_APP from "./pages/FT_APP";
 import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
@@ -19,9 +18,53 @@ import UserConfig from "./pages/user/UserConfig";
 import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 import Esporte from "./pages/esporte/Esporte";
+import MinhaCasa from "./pages/minhacasa/MinhaCasa";
+import Reservas from "./pages/Reservas";
+import TelaTeste from "./pages/TelaTeste";
+import FormReservas from "./pages/FormReservas";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
+
+  const servicos = [
+    {
+      path: "config",
+      component: <UserConfig></UserConfig>,
+    },
+    {
+      path: "certidao",
+      component: <CertidaoIPTU></CertidaoIPTU>,
+    },
+    {
+      path: "esporte",
+      component: <Esporte></Esporte>,
+    },
+    {
+      path: "frente-de-trabalho",
+      component: <FT_APP></FT_APP>,
+    },
+    {
+      path: "admin",
+      component: <Admin></Admin>,
+    },
+    {
+      path: "minha-casa-minha-vida",
+      component: <MinhaCasa></MinhaCasa>,
+    },
+    {
+      path: "reservas",
+      component: <Reservas></Reservas>,
+    },
+    {
+      path: "formreservas",
+      component: <FormReservas></FormReservas>,
+    },
+    {
+      path: "teste",
+      component: <TelaTeste></TelaTeste>
+    }
+  ];
+
   return (
     <>
       {Env === "manutencao" ? (
@@ -30,7 +73,7 @@ function App() {
 
           <div className="absolute w-full bg-background-muted h-full md:max-w-[50vw] md:max-h-[50vh] rounded-md left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
             <div className="animate-pulse flex justify-center items-center h-full w-full">
-              <h1 className="text-center text-2xl text-primary mt-5">
+              <h1 className="text-center text-2xl text-text-secondary mt-5">
                 {" "}
                 Sistema em manutenção, tente novamente em alguns minutos...
               </h1>
@@ -47,14 +90,14 @@ function App() {
 
                 <Route path="/services/:id?" element={<ProtectRoutes />}>
                   <Route index element={<ServicesCards />} />
-                  <Route path="config" element={<UserConfig />} />
-                  <Route path="admin" element={<Admin />} />
-                  <Route path="frente-de-trabalho" element={<FT_APP />}></Route>
-                  <Route
-                    path="iptu/certidao"
-                    element={<CertidaoIPTU></CertidaoIPTU>}
-                  ></Route>
-                  <Route path="esporte/:modalidade?" element={<Esporte />}></Route>
+
+                  {servicos.map((servico) => (
+                    <Route
+                      key={servico.path}
+                      path={servico.path}
+                      element={servico.component}
+                    />
+                  ))}
                 </Route>
 
                 <Route path="*" element={<HandleError />} />

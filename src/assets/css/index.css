@@ -1,0 +1,221 @@
+/* Fonte custom */
+@import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
+
+@import "tailwindcss/index" layer(base);
+
+@import "primereact/resources/themes/lara-light-blue/theme.css"
+  layer(primereact);
+  
+@import "tailwindcss/theme" layer(utilities);
+@import "tailwindcss/utilities" layer(utilities);
+
+
+
+/* Definição das camadas: Tailwind base, PrimeReact e Tailwind utilities */
+@layer base, primereact, utilities, overrides;
+
+@theme {
+  /* ─────────────────────────────
+   * CORES PRINCIPAIS
+   * ───────────────────────────── */
+  --color-primary: #80bdff;
+  --color-primary-hover: #6fb3f0;
+  --color-primary-foreground: #ffffff;
+  --color-primary-muted: #e6f4ff;
+
+  --color-secondary: #d6eadf;
+  --color-secondary-hover: #c2d9cc;
+  --color-secondary-foreground: #3f5f5f;
+  --color-secondary-muted: #eef6f1;
+
+  /* ─────────────────────────────
+   * BACKGROUND / SURFACE
+   * ───────────────────────────── */
+  --color-background: #fcfcfa;
+  --color-background-muted: #efefec;
+  --color-background-muted-hover: #dfdfdc;
+  --color-background-card: #ffffff;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f5f5;
+
+  /* ─────────────────────────────
+   * TEXTO
+   * ───────────────────────────── */
+  --color-text: #4a4a4a;
+  --color-text-muted: #7a7a7a;
+  --color-text-subtle: #9a9a9a;
+  --color-text-inverse: #ffffff;
+
+  /* ─────────────────────────────
+   * FEEDBACK / STATUS
+   * ───────────────────────────── */
+  --color-success: oklch(52.7% 0.154 150.069);
+  --color-success-border: oklch(92.5% 0.084 155.995);
+  --color-success-hover: #bfd8b8;
+  --color-success-foreground: oklch(39.3% 0.095 152.535);
+  --color-success-soft: #dcfce7;
+
+  --color-danger: oklch(58.6% 0.253 17.585);
+  --color-danger-hover: oklch(81% 0.117 11.638);
+  --color-danger-foreground: oklch(41% 0.159 10.272);
+  --color-danger-border: oklch(89.2% 0.058 10.001);
+  --color-danger-soft: oklch(89.2% 0.058 10.001);
+
+  --color-warning: oklch(66.6% 0.179 58.318);
+  --color-warning-hover: oklch(87.9% 0.169 91.605);
+  --color-warning-foreground: oklch(41.4% 0.112 45.904);
+  --color-warning-border: oklch(94.5% 0.129 101.54);
+  --color-warning-soft: oklch(96.2% 0.059 95.617);
+
+  --color-info: oklch(62.3% 0.214 259.815);
+  --color-info-foreground: oklch(42.4% 0.199 265.638);
+  --color-info-border: oklch(88.2% 0.059 254.128);
+  --color-info-hover: oklch(80.9% 0.105 251.813);
+  --color-info-soft: oklch(93.2% 0.032 255.585);
+
+  --color-neutral: oklch(44.6% 0.03 256.802);
+  --color-neutral-foreground: oklch(21% 0.034 264.665);
+  --color-neutral-border: oklch(92.8% 0.006 264.531);
+  --color-neutral-hover: oklch(87.2% 0.01 258.338);
+  --color-neutral-soft: oklch(96.7% 0.003 264.542);
+
+  /* ─────────────────────────────
+   * STATUS DE NEGÓCIO
+   * ───────────────────────────── */
+  --color-status-solicitado: #dbeafe;
+  --color-status-confirmado: #dcfce7;
+  --color-status-cancelado: #fee2e2;
+  --color-status-concluido: #e0e7ff;
+
+  /* ─────────────────────────────
+   * BORDAS
+   * ───────────────────────────── */
+  --color-border: #e5e7eb;
+  --color-border-muted: #f0f0f0;
+}
+
+/* ─────────────────────────────
+ * BASE (obrigatório para @apply)
+ * ───────────────────────────── */
+@layer overrides {
+  #root {
+    font-family: "Inika", serif;
+    font-weight: 400;
+    @apply h-dvh text-lg flex flex-col bg-background;
+  }
+  #Main {
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  .input .p-calendar,
+  input {
+    @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-text-muted placeholder:text-text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-primary;
+  }
+  .p-speeddial-button {
+    @apply h-[48px] w-[48px] bg-primary hover:bg-primary-hover cursor-pointer text-primary-foreground py-1 px-2;
+  }
+  .p-speeddial-list {
+    @apply top-[110%] absolute;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover hover:text-text-muted cursor-pointer py-1 px-2 rounded;
+  }
+    .btn-info {
+    @apply bg-info text-text-inverse hover:text-info-foreground hover:bg-info-hover cursor-pointer py-1 px-2 rounded;
+  }
+
+  .btn-cancel {
+    @apply bg-background-muted hover:bg-background-muted-hover cursor-pointer text-text-muted ring-1 ring-border-muted py-1 px-2 rounded;
+  }
+  .btn-danger {
+    @apply bg-danger hover:bg-danger-hover cursor-pointer text-text-inverse hover:text-danger-foreground py-1 px-2 rounded;
+  }
+  .content {
+    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
+  }
+  .p-datepicker-trigger {
+    @apply bg-primary p-0;
+  }
+  .p-password input {
+    @apply w-full;
+  }
+
+  .table-button-info {
+    @apply bg-transparent text-info hover:text-info-foreground border-none;
+  }
+  .table-button-success {
+    @apply bg-transparent text-success hover:text-success-foreground border-none;
+  }
+
+    .table-button-warning {
+    @apply bg-transparent text-warning hover:text-warning-foreground border-none;
+  }
+  .table-button-danger {
+    @apply bg-transparent text-danger hover:text-danger-foreground border-none;
+  }
+
+  .p-datepicker {
+    @apply bg-background-muted shadow-lg shadow-text-muted;
+  }
+
+  .custom-speed-dial{
+    @apply relative;
+  }
+
+  .btn-adc{
+    @apply bg-transparent text-info border-none rounded-full hover:bg-info-hover hover:text-text-inverse;
+  }
+}
+
+@layer base {
+  #root {
+    font-family: "Inika", serif;
+    font-weight: 400;
+    @apply min-h-dvh text-lg flex flex-col bg-background;
+  }
+
+  #Main {
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  input {
+    @apply appearance-none rounded-md py-1.5 pr-7 pl-3
+      text-base
+      text-text-muted
+      placeholder:text-text-subtle
+      focus:outline
+      focus:outline-2
+      focus:outline-primary;
+  }
+}
+
+@layer utilities {
+  .content {
+    @apply w-full mb-10 py-5 md:px-4 overflow-auto relative;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover
+      cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .btn-cancel {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary-hover
+      ring-1 ring-border cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .btn-danger {
+    @apply bg-danger text-danger-foreground hover:bg-danger-hover
+      cursor-pointer py-1.5 px-3 rounded;
+  }
+
+  .p-speeddial-button {
+    @apply h-12 w-12 bg-primary hover:bg-primary-hover
+      text-primary-foreground rounded-full;
+  }
+
+  .p-speeddial-list {
+    @apply absolute top-[110%];
+  }
+}

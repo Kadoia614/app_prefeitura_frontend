@@ -11,11 +11,11 @@ const PasswordFieldLine = ({
   placeHolder,
   disabled,
   invalid,
-  widthField,
+  fieldClass,
   feedback,
   spanClass
 }) => (
-  <fieldset className={`flex mt-2 ${widthField}`}>
+  <fieldset className={`flex mt-2 ${fieldClass}`}>
     <span className={`p-inputgroup-addon ${spanClass}`}>
       {icon}
     </span>
@@ -45,7 +45,7 @@ PasswordFieldLine.propTypes = {
   disabled: PropTypes.bool,
   feedback: PropTypes.bool,
   icon: PropTypes.any,
-  widthField: PropTypes.string,
+  fieldClass: PropTypes.string,
 };
 
 export default PasswordFieldLine;
