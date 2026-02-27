@@ -38,6 +38,7 @@ const ReservasAcceptModal = ({ isOpen, setIsOpen }) => {
       onAcept={() => {confirmAgendamento(target.uuid, value); setValue({ motorista: "", veiculo: ""})}}
       refuseLabel="Cancelar"
       onRefuse={() => setIsOpen(false)}
+      isDisabled={!value.motorista_uuid || !value.veiculo_uuid}
       typeAction="btn-info"
       typeCancel="btn-cancel"
     >

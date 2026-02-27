@@ -8,14 +8,14 @@ import PropTypes from "prop-types";
 import { useAgendamentoContext } from "../../../context/reservas/reservas/AgendamentoContext";
 
 const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
-    let {addAgendamento} = useAgendamentoContext();
+  let { addAgendamento } = useAgendamentoContext();
   const [data, setData] = useState({
     data_agendamento: "",
     hora_inicio: "",
     hora_fim: "",
   });
 
-
+  const now = new Date();
 
   const Clear = () => {
     setData({});
@@ -35,6 +35,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
         Clear();
         setIsOpen(false);
       }}
+      isDisabled={!data.data_agendamento || !data.hora_inicio || !data.hora_fim || !data.origem || !data.destino}
       refuseLabel="Cancelar"
       onRefuse={Clear}
       isOpen={isOpen}
@@ -50,6 +51,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           placeHolder={"Selecionar data"}
           value={data.data_agendamento}
           view={"date"}
+          min={now}
           onChange={(e) =>
             editableItem("data_agendamento", e.target.value, setData)
           }
@@ -60,6 +62,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           label="Hora de inicio"
           placeHolder={"Selecionar a hora"}
           value={data.hora_inicio}
+
           timeOnly
           icon={() => <i className="pi pi-clock" />}
           onChange={(e) => editableItem("hora_inicio", e.target.value, setData)}
@@ -72,8 +75,8 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           placeHolder={"Selecionar a hora"}
           value={data.hora_fim}
           timeOnly
-          minTime={data.hora_inicio}
-          maxTime={data.hora_fim}
+
+          invalid={!data.hora_fim}
           icon={<i className="pi pi-clock"></i>}
           onChange={(e) => editableItem("hora_fim", e.target.value, setData)}
         ></CalendarInput>
@@ -82,6 +85,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"md:w-6/12 w-12/12 md:pr-2"}
           id="ReservaOrigem"
           value={data?.origem}
+          invalid={!data?.origem}
           onChange={(e) => editableItem("origem", e.target.value, setData)}
           label="Origem"
         ></InputField>
@@ -89,6 +93,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"md:w-6/12 w-12/12 md:pr-2"}
           id="ReservaDestino"
           value={data?.destino}
+          invalid={!data?.destino}
           onChange={(e) => editableItem("destino", e.target.value, setData)}
           label="Destino"
         ></InputField>
@@ -96,6 +101,7 @@ const ReservasCreateModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"w-12/12 md:pr-2"}
           id="ReservaObservacao"
           maxLength={150}
+          invalid={!data?.observacao}
           value={data?.observacao}
           onChange={(e) => editableItem("observacao", e.target.value, setData)}
           label="Observacao"

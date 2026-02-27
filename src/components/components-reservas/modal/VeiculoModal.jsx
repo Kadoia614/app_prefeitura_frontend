@@ -30,6 +30,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
       refuseLabel="Cancelar"
       onRefuse={clearTarget}
       isOpen={isOpen}
+      isDisabled={!(target?.status && target?.placa && target?.modelo && target?.marca && target?.ano && target?.cor) ? true : false}
       onAcept={() => salvarVeiculo()}
       setIsOpen={setIsOpen}
     >
@@ -50,6 +51,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"md:w-6/12 w-12/12 md:pr-2"}
           id="VeiculoPlaca"
           value={target?.placa}
+          invalid={!target?.placa}
           onChange={(e) => editableItem("placa", e.target.value.toUpperCase(), setTarget)}
           maxLength={8}
           placeHolder={"ABC-1234 ou ABC1D23"}
@@ -59,6 +61,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"md:w-6/12 w-12/12 md:pl-2"}
           id="VeiculoModelo"
           value={target?.modelo}
+          invalid={!target?.modelo}
           onChange={(e) => editableItem("modelo", e.target.value, setTarget)}
           label="Modelo"
         ></InputField>
@@ -66,6 +69,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"md:w-6/12 w-12/12 md:pr-2"}
           id="VeiculoMarca"
           value={target?.marca}
+          invalid={!target?.marca}
           onChange={(e) => editableItem("marca", e.target.value, setTarget)}
           label="Marca"
         ></InputField>
@@ -73,6 +77,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"w-12/12"}
           id="VeiculoAno"
           value={target?.ano}
+          invalid={!target?.ano}
           onChange={(e) => editableItem("ano", e.target.value, setTarget)}
           label="Ano"
         ></InputField>
@@ -80,6 +85,7 @@ const VeiculoModal = ({ isOpen, setIsOpen }) => {
           fieldClass={"w-12/12"}
           id="VeiculoCor"
           value={target?.cor}
+          invalid={!target?.cor}
           onChange={(e) => editableItem("cor", e.target.value, setTarget)}
           label="Cor"
         ></InputField>
