@@ -4,7 +4,7 @@ import InputField from "@/components/shared/input/inputfield/InputField";
 import InputFieldMoney from "@/components/shared/input/inputfield/InputFieldMoney";
 import CalendarInput from "@/components/shared/input/CalendarInput";
 import PropTypes from "prop-types";
-import { useEditalContext } from "../../../../../context/ft/edital/EditalContext";
+import { useEditalContext } from "../../../../context/ft/edital/EditalContext";
 
 const Edital_Modal = ({
   isEditalModalOpen,

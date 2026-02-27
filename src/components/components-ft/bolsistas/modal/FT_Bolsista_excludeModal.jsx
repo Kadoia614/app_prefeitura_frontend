@@ -1,4 +1,4 @@
-import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
+import { useBolsistaContext } from "../../../../context/ft/bolsista/BolsistaContext";
 import PropTypes from 'prop-types';
 
 import Modal from "@/components/shared/modal/Modal";

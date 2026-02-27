@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import EditalTable from "./components/Table/EditalTable";
+import EditalTable from "./Table/EditalTable";
 
-import Edital_Modal from "./components/modal/Edital_Modal";
+import Edital_Modal from "./modal/Edital_Modal";
 
-import Vincular_Bolsista from "./components/modal/Vincular_Bolsista";
+import Vincular_Bolsista from "./modal/Vincular_Bolsista";
 
 import { EditalProvider } from "../../../context/ft/edital/EditalProvider";
 

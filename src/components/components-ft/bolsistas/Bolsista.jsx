@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import BolsistasTable from "./components/Table/BolsistasTable";
-import FT_Bolsista_Modal from "./components/modal/FT_Bolsista_Modal";
-import FT_Bolsista_ExcludeModal from "./components/modal/FT_Bolsista_excludeModal";
-import FT_Bolsista_Prorrogate_Bolsista from "./components/modal/FT_Bolsista_Prorrogate_Bolsista";
+import BolsistasTable from "./Table/BolsistasTable";
+import FT_Bolsista_Modal from "./modal/FT_Bolsista_Modal";
+import FT_Bolsista_ExcludeModal from "./modal/FT_Bolsista_excludeModal";
+import FT_Bolsista_Prorrogate_Bolsista from "./modal/FT_Bolsista_Prorrogate_Bolsista";
 import { useBolsistaContext } from "../../../context/ft/bolsista/BolsistaContext";
 
 const Bolsista = () => {

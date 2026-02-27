@@ -13,29 +13,11 @@ import InputFieldLine from "@/components/shared/input/inputfield/InputFieldLine"
 
 import SideBarBolsista from "../sidebar/SideBarBolsista";
 
-import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
+import { useBolsistaContext } from "../../../../context/ft/bolsista/BolsistaContext";
 import { useUserContext } from "@/context/user/UserContext";
-import { useLoadingContext } from "../../../../../context/loading/LoadingContext";
+import { useLoadingContext } from "../../../../context/loading/LoadingContext";
 import { Skeleton } from "primereact/skeleton";
-
-const tag = {
-  ativo: {
-    style:
-      "bg-success-primary-hover text-text-muted p-2 text-sm rounded-md font-bold",
-    icon: <i className="pi pi-check-circle"> </i>,
-    label: "Ativo",
-  },
-  inativo: {
-    style: "bg-amber-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
-    icon: <i className="pi pi-exclamation-triangle"></i>,
-    label: "Inativo",
-  },
-  pendente: {
-    style: "bg-red-200/70 text-text-muted p-2 text-sm rounded-md font-bold",
-    icon: <i className="pi pi-exclamation-triangle"></i>,
-    label: "Pendente",
-  },
-};
+import RenderStatus from "../../../shared/RenderStatus";
 
 const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
   const { query, setQuery, fetchBolsistas, total, bolsistas, setTarget } =
@@ -47,15 +29,17 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [sideBarId, setSideBarId] = useState(null);
 
-  const renderStatus = ({ status }) => {
-    const item = tag[status];
-    if (!item) return null;
-    return (
-      <div className={`flex gap-2 items-center ${item.style}`}>
-        {item.icon}
-        {item.label}
-      </div>
-    );
+  const renderStatus = (rowData) => {
+    switch (rowData.status) {
+      case "ativo":
+        return <RenderStatus type={"success"}> {rowData.status} </RenderStatus>;
+      case "inativo":
+        return <RenderStatus type={"warning"}> {rowData.status} </RenderStatus>;
+      case "pendente":
+        return <RenderStatus type={"danger"}> {rowData.status} </RenderStatus>;
+      default:
+        return <RenderStatus type={"default"}> {rowData.status} </RenderStatus>;
+    }
   };
 
   const renderItems = [
@@ -77,7 +61,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             tooltip={`Editar`}
             icon={"pi pi-pen-to-square"}
             iconPos="left"
-            color="text-info bg-white border-none"
+            color="table-button-info"
             onClick={() => {
               setOpenModalEdit(true);
               setTarget(rowData);
@@ -87,7 +71,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             tooltip={`Documentos`}
             icon={"pi pi-file"}
             iconPos="left"
-            color="text-warning bg-white border-none"
+            color="table-button-warning"
             onClick={() => {
               setSideBarOpen(true);
               setSideBarId(rowData.id);
@@ -100,7 +84,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
         <TableButton
           tooltip={`Excluir`}
           icon={"pi pi-trash"}
-          color="text-danger bg-white border-none"
+          color="table-button-danger"
           onClick={() => {
             setTarget(rowData);
             setExcludeModalOpen(true);
@@ -198,7 +182,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
             <Column
               field="status"
               header="Status"
-              body={renderStatus}
+              body={(rowData) => renderStatus(rowData)}
               sortable
               className="text-sm text-text-muted p-4"
             />
@@ -214,8 +198,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
                 new Date(rowData.createdAt).toLocaleDateString("pt-BR")
               }
             />
-            {permissions &&
-            <Column header="Ações" body={renderActions} />}
+            {permissions && <Column header="Ações" body={renderActions} />}
           </DataTable>
         )}
 

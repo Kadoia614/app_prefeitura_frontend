@@ -9,6 +9,7 @@ import { Skeleton } from "primereact/skeleton";
 import { useLoadingContext } from "../../../context/loading/LoadingContext";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
+import SelectField from "../input/SelectField";
 
 const Table = ({
   query,
@@ -21,6 +22,7 @@ const Table = ({
   id,
   inputPlaceholder,
   inputType,
+  selectData,
   actions,
   titulo,
   adc,
@@ -55,6 +57,28 @@ const Table = ({
                 limit: e.rows,
               }))
             }
+          />
+        );
+      case "select":
+        if (!selectData)
+          return (
+            <p className="text-danger font-bold">
+              Esqueceu de passar as configs
+            </p>
+          );
+        return (
+          <SelectField
+            id="SelectEdital"
+            label="Selecione o Edital"
+            fieldsetClass={"text-end"}
+            selectClass={"select text-end max-w-50 overflow-hidden"}
+            value={selectData.value || ""}
+            onChange={(e) => {
+              selectData.onChange(e.target.value);
+            }}
+            defaultValue={"Selecionar"}
+            defaultDisabled={false}
+            options={selectData.data}
           />
         );
       case "calendar":
@@ -154,6 +178,7 @@ Table.propTypes = {
   query: Protypes.object.isRequired,
   setQuery: Protypes.func.isRequired,
   inputType: Protypes.string,
+  selectData: Protypes.object,
   cols: Protypes.array.isRequired,
   onRowClick: Protypes.func,
   header: Protypes.node,

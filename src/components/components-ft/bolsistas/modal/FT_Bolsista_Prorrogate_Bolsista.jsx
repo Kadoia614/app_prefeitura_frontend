@@ -6,7 +6,7 @@ import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
-import { useBolsistaContext } from "../../../../../context/ft/bolsista/BolsistaContext";
+import { useBolsistaContext } from "../../../../context/ft/bolsista/BolsistaContext";
 
 const FT_Bolsista_Prorrogate_Bolsista = ({ isOpen, setIsOpen }) => {
   let { toExpire, prorrogate } = useBolsistaContext();
