@@ -22,14 +22,22 @@ const PainelServices = () => {
   const { attIsLoading } = useLoadingContext();
   const { showToast } = useToast();
 
+  const API_ENDPOINTS = {
+  SERVICE: "/service",
+  ROLES: "/roles",
+  SETORES: "/setores",
+};
+
   const fetchData = async () => {
     attIsLoading(true);
 
     try {
-      const { data } = await API.get("/service");
-      setTableData(data.services);
-      setRoles(data.roles);
-      setSetor(data.setores);
+      const responseService = await API.get(API_ENDPOINTS.SERVICE);
+      const responseRoles = await API.get(API_ENDPOINTS.ROLES);
+      const responseSetores = await API.get(API_ENDPOINTS.SETORES);
+      setTableData(responseService.data.services);
+      setRoles(responseRoles.data.roles);
+      setSetor(responseSetores.data.setores);
     } catch (error) {
       showToast(
         "error",
