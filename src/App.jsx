@@ -20,6 +20,11 @@ import Footer from "./pages/layout/Footer";
 import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
 import Esporte from "./pages/esporte/Esporte";
 import MinhaCasa from "./pages/minhacasa/MinhaCasa";
+import Reservas from "./pages/Reservas";
+import TelaTeste from "./pages/TelaTeste";
+import FormReservas from "./pages/FormReservas";
+import Devs from "./pages/devs/Devs";
+import Chamados from "./pages/chamados/Chamados";
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -47,9 +52,25 @@ function App() {
     },
         {
       path: "minha-casa-minha-vida",
-      component: <MinhaCasa></MinhaCasa>
-    }
-  ]
+      component: <MinhaCasa></MinhaCasa>,
+    },
+    {
+      path: "reservas",
+      component: <Reservas></Reservas>,
+    },
+    {
+      path: "chamados",
+      component: <Chamados></Chamados>,
+    },
+    {
+      path: "formreservas",
+      component: <FormReservas></FormReservas>,
+    },
+    {
+      path: "teste",
+      component: <TelaTeste></TelaTeste>,
+    },
+  ];
 
   return (
     <>
@@ -86,7 +107,10 @@ function App() {
                   ))}
 
                 </Route>
-
+                <Route
+                  path={"devs"}
+                  element={<Devs/>}
+                />
                 <Route path="*" element={<HandleError />} />
               </Routes>
               {Env === "development" && (
