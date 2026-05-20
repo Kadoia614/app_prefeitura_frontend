@@ -10,8 +10,7 @@ import ServicesCards from "./pages/Services";
 // import UserDemandas from "./pages/demandasTI/UserDemandas";
 // import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
 
-import FT_APP from "./pages/FT/FT_APP";
-
+import FT_APP from "./pages/FT_APP";
 import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
 import Admin from "./pages/admin/PainelAdmin";
@@ -32,25 +31,25 @@ function App() {
   const servicos = [
     {
       path: "config",
-      component: <UserConfig></UserConfig>
+      component: <UserConfig></UserConfig>,
     },
     {
       path: "certidao",
-      component: <CertidaoIPTU></CertidaoIPTU>
+      component: <CertidaoIPTU></CertidaoIPTU>,
     },
     {
       path: "esporte",
-      component: <Esporte></Esporte>
+      component: <Esporte></Esporte>,
     },
     {
       path: "frente-de-trabalho",
-      component: <FT_APP></FT_APP>
+      component: <FT_APP></FT_APP>,
     },
     {
       path: "admin",
-      component: <Admin></Admin>
+      component: <Admin></Admin>,
     },
-        {
+    {
       path: "minha-casa-minha-vida",
       component: <MinhaCasa></MinhaCasa>,
     },
@@ -105,7 +104,6 @@ function App() {
                       element={servico.component}
                     />
                   ))}
-
                 </Route>
                 <Route
                   path={"devs"}

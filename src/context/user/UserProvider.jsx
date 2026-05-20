@@ -57,8 +57,9 @@ export const UserProvider = ({ children }) => {
       });
 
       const serviceTarget = ServicePermissions[0];
+    console.log("switchPermissions ", serviceTarget?.permissions[0]);
 
-      setPermissions(serviceTarget?.permission);
+      setPermissions(serviceTarget?.permissions[0]);
   };
 
   useEffect(() => {
