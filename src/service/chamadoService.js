@@ -42,11 +42,17 @@ const chamadoService = {
    */
   list: async (filters = {}) => {
     try {
-      const params = new URLSearchParams(filters).toString();
-      const response = await API.get(`/chamados${params ? `?${params}` : ""}`);
+      const status = filters.status;
+      const setorId = filters.setorId;
+      
+      const response = await API.get(`/chamados${
+        status ? `?status=${status}` : ""
+      }${setorId ? `&setorId=${setorId}` : ""}`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao listar chamados");
+      throw new Error(
+        error.response?.data?.message || "Erro ao listar chamados",
+      );
     }
   },
 
@@ -60,7 +66,9 @@ const chamadoService = {
       const response = await API.get(`/chamados/${id}`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Chamado não encontrado");
+      throw new Error(
+        error.response?.data?.message || "Chamado não encontrado",
+      );
     }
   },
 
@@ -80,7 +88,9 @@ const chamadoService = {
       const response = await API.put(`/chamados/${id}`, data);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao atualizar chamado");
+      throw new Error(
+        error.response?.data?.message || "Erro ao atualizar chamado",
+      );
     }
   },
 
@@ -94,7 +104,9 @@ const chamadoService = {
       const response = await API.delete(`/chamados/${id}`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao deletar chamado");
+      throw new Error(
+        error.response?.data?.message || "Erro ao deletar chamado",
+      );
     }
   },
 
@@ -108,7 +120,9 @@ const chamadoService = {
       const response = await API.patch(`/chamados/${id}/assign`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao atribuir chamado");
+      throw new Error(
+        error.response?.data?.message || "Erro ao atribuir chamado",
+      );
     }
   },
 
@@ -124,11 +138,13 @@ const chamadoService = {
     try {
       const params = new URLSearchParams(filters).toString();
       const response = await API.get(
-        `/chamados/reports${params ? `?${params}` : ""}`
+        `/chamados/reports${params ? `?${params}` : ""}`,
       );
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao gerar relatório");
+      throw new Error(
+        error.response?.data?.message || "Erro ao gerar relatório",
+      );
     }
   },
 
@@ -145,11 +161,13 @@ const chamadoService = {
     try {
       const params = new URLSearchParams(filters).toString();
       const response = await API.get(
-        `/chamados/reports/all${params ? `?${params}` : ""}`
+        `/chamados/reports/all${params ? `?${params}` : ""}`,
       );
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Erro ao gerar relatório completo");
+      throw new Error(
+        error.response?.data?.message || "Erro ao gerar relatório completo",
+      );
     }
   },
 };
