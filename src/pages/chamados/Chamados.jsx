@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { useChamados } from "../../hooks/UseChamados";
+import TableContainer from "@/components/shared/table/TableContainer";
+import TableButton from "@/components/shared/table/TableButton";
 import "../../assets/css/chamados.css";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import RenderStatus from "@/components/shared/RenderStatus";
+import { useUserContext } from "../../context/user/UserContext";
 
 const Chamados = () => {
-  const { chamados, loading, error, loadChamados, createChamado } = useChamados();
+  const { chamados, loading, error, loadChamados, createChamado } =
+    useChamados();
+  const { permissions } = useUserContext();
+
   const [showForm, setShowForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("");
   const [filterSetor, setFilterSetor] = useState("");
@@ -25,7 +34,8 @@ const Chamados = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "setorId" || name === "solicitanteId" ? Number(value) : value,
+      [name]:
+        name === "setorId" || name === "solicitanteId" ? Number(value) : value,
     }));
   };
 
@@ -49,31 +59,69 @@ const Chamados = () => {
     }
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      aberto: "status-aberto",
-      em_progresso: "status-progresso",
-      resolvido: "status-resolvido",
-      fechado: "status-fechado",
-      cancelado: "status-cancelado",
-    };
-    return colors[status] || "";
+  const renderActions = (rowData) => (
+    <div className="flex gap-2">
+      {permissions.edit && (
+        <>
+          <TableButton
+            tooltip={`Editar`}
+            icon={"pi pi-pen-to-square"}
+            iconPos="left"
+            color="text-text-secondary bg-white border-none"
+            onClick={() => {
+              // setAtletaTarget(rowData);
+              // setEditOpen(true);
+            }}
+          />
+        </>
+      )}
+
+      {permissions.del && (
+        <TableButton
+          tooltip={`Excluir`}
+          icon={"pi pi-trash"}
+          color="text-danger bg-white border-none"
+          onClick={() => {
+            // setAtletaTarget(rowData);
+            // setExcludeOpen(true);
+          }}
+        />
+      )}
+    </div>
+  );
+
+  const renderStatus = (rowData) => {
+    switch (rowData.status) {
+      case "aberto":
+        return <RenderStatus type={"warning"}> {rowData.status} </RenderStatus>;
+      case "em_progresso":
+        return <RenderStatus type={"info"}> {rowData.status} </RenderStatus>;
+      case "resolvido":
+        return <RenderStatus type={"success"}> {rowData.status} </RenderStatus>;
+      case "fechado":
+        return <RenderStatus type={"success"}> {rowData.status} </RenderStatus>;
+      case "cancelado":
+        return <RenderStatus type={"danger"}> {rowData.status} </RenderStatus>;
+      default:
+        return <RenderStatus type={"default"}> {rowData.status} </RenderStatus>;
+    }
   };
 
-  const getPriorityColor = (priority) => {
+  const renderPrioridade = (rowData) => {
     const colors = {
-      baixa: "priority-low",
-      media: "priority-medium",
-      alta: "priority-high",
-      critica: "priority-critical",
+      baixa: "status status-sucess",
+      media: "status status-info",
+      alta: "status status-warning",
+      critica: "status status-danger",
     };
-    return colors[priority] || "";
+    // return colors[priority] || "";
+    return <p className={colors[rowData.prioridade]}>{rowData.prioridade}</p>
   };
 
   if (loading) return <div className="loading">Carregando chamados...</div>;
 
   return (
-    <div className="chamados-container">
+    <div className="content">
       <header className="chamados-header">
         <h1>Gerenciamento de Chamados</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
@@ -99,7 +147,11 @@ const Chamados = () => {
             </div>
             <div className="form-group">
               <label>Tipo *</label>
-              <select name="tipo" value={formData.tipo} onChange={handleInputChange}>
+              <select
+                name="tipo"
+                value={formData.tipo}
+                onChange={handleInputChange}
+              >
                 <option value="manutencao">Manutenção</option>
                 <option value="reparo">Reparo</option>
                 <option value="instalacao">Instalação</option>
@@ -175,73 +227,100 @@ const Chamados = () => {
         </form>
       )}
 
-      <div className="filters">
-        <div className="filter-group">
-          <label>Status:</label>
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="">Todos</option>
-            <option value="aberto">Aberto</option>
-            <option value="em_progresso">Em Progresso</option>
-            <option value="resolvido">Resolvido</option>
-            <option value="fechado">Fechado</option>
-            <option value="cancelado">Cancelado</option>
-          </select>
-        </div>
-        <div className="filter-group">
-          <label>Setor:</label>
-          <input
-            type="number"
-            value={filterSetor}
-            onChange={(e) => setFilterSetor(e.target.value)}
-            placeholder="ID do setor"
-          />
-        </div>
-      </div>
-
       <div className="chamados-list">
-        {chamados.length === 0 ? (
-          <p className="no-data">Nenhum chamado encontrado</p>
-        ) : (
-          <table className="chamados-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Patrimônio</th>
-                <th>Tipo</th>
-                <th>Descrição</th>
-                <th>Prioridade</th>
-                <th>Status</th>
-                <th>Responsável</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {chamados.map((chamado) => (
-                <tr key={chamado.id}>
-                  <td>{chamado.id.substring(0, 8)}...</td>
-                  <td>{chamado.patrimonio}</td>
-                  <td>{chamado.tipo}</td>
-                  <td>{chamado.descricao.substring(0, 30)}...</td>
-                  <td>
-                    <span className={`priority ${getPriorityColor(chamado.prioridade)}`}>
-                      {chamado.prioridade}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`status ${getStatusColor(chamado.status)}`}>
-                      {chamado.status}
-                    </span>
-                  </td>
-                  <td>{chamado.responsavelId || "Não atribuído"}</td>
-                  <td>
-                    <button className="btn-small">Ver</button>
-                    <button className="btn-small">Editar</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <TableContainer>
+          <DataTable
+            id="BolsistaTable"
+            value={chamados}
+            size="small"
+            stripedRows
+            rowClassName="hover:bg-gray-100 transition duration-200"
+            header={
+              <div className="relative flex justify-between items-center px-4">
+                <div className="filters">
+                  <div className="filter-group">
+                    <label>Status:</label>
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                    >
+                      <option value="">Todos</option>
+                      <option value="aberto">Aberto</option>
+                      <option value="em_progresso">Em Progresso</option>
+                      <option value="resolvido">Resolvido</option>
+                      <option value="fechado">Fechado</option>
+                      <option value="cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                  <div className="filter-group">
+                    <label>Setor:</label>
+                    <input
+                      type="number"
+                      value={filterSetor}
+                      onChange={(e) => setFilterSetor(e.target.value)}
+                      placeholder="ID do setor"
+                    />
+                  </div>
+                </div>
+                <div>
+                  {/* <p className="text-xs text-text-muted">total: {total}</p> */}
+                </div>
+                {/* {permissions?.write && (
+                  <div>
+                    <Tooltip target=".add-bolsista-btn" position="bottom" />
+                    <SpeedDial
+                      className="relative"
+                      model={renderItems}
+                      direction="down"
+                      type="linear"
+                      style={{ right: 0 }}
+                    ></SpeedDial>
+                  </div>
+                )} */}
+              </div>
+            }
+          >
+            <Column
+              field="id"
+              header="Id"
+              className="text-sm text-text-muted p-4 whitespace-nowrap"
+            />
+            <Column
+              field="patrimonio"
+              header="Patrimônio"
+              className="text-sm text-text-muted p-4"
+            />
+            <Column
+              field="tipo"
+              header="Tipo"
+              className="text-sm text-text-muted p-4"
+            />
+            <Column
+              field="descricao"
+              header="Descrição"
+              className="text-sm text-text-muted p-4"
+            />
+            <Column
+              field="prioridade"
+              header="Prioridade"
+              body={(rowData) => renderPrioridade(rowData)}
+            />
+            <Column
+              field="status"
+              header="Status"
+              body={(rowData) => renderStatus(rowData)}
+              sortable
+              className="text-sm text-text-muted p-4"
+            />
+
+            <Column
+              field={"responsavelId"}
+              header="Responsável"
+              className="text-sm text-text-muted p-4 whitespace-nowrap"
+            />
+            {permissions && <Column header="Ações" body={renderActions} />}
+          </DataTable>
+        </TableContainer>
       </div>
     </div>
   );

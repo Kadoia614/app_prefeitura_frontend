@@ -140,7 +140,6 @@ const Table = ({ setEditOpen, setExcludeOpen }) => {
 
   return (
     <>
-      {console.log(permissions)}
       <TableContainer>
         <TableHeader>Esporte</TableHeader>
         <DataTable

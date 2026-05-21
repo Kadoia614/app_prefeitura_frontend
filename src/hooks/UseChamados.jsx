@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ChamadoContext from "../context/chamado/ChamadoProvider";
+import { ChamadoContext } from "../context/chamado/ChamadoProvider";
 
 /**
  * Hook customizado para usar o contexto de chamados

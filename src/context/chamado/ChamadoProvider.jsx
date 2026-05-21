@@ -183,4 +183,4 @@ export const ChamadoProvider = ({ children }) => {
   );
 };
 
-export default ChamadoContext;
+export default ChamadoProvider;
