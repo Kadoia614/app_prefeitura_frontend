@@ -47,7 +47,7 @@ const chamadoService = {
       
       const response = await API.get(`/chamados${
         status ? `?status=${status}` : ""
-      }${setorId ? `&setorId=${setorId}` : ""}`);
+    }${setorId ? status ? `&setorId=${setorId}` : `?setorId=${setorId}` : ""}`);
       return response.data;
     } catch (error) {
       throw new Error(
