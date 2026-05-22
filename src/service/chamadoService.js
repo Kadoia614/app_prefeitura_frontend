@@ -11,7 +11,7 @@ const chamadoService = {
    * @param {string} data.patrimonio - Identificação do patrimônio
    * @param {string} data.tipo - Tipo do chamado (manutencao, reparo, instalacao, suporte, outros)
    * @param {number} data.setorId - ID do setor vinculado
-   * @param {number} data.solicitanteId - ID do usuário solicitante
+   * @param {number} [data.solicitanteId] - ID do usuário solicitante (opcional)
    * @param {string} data.descricao - Descrição detalhada
    * @param {string} data.prioridade - Prioridade (baixa, media, alta, critica)
    * @param {number} [data.responsavelId] - ID do responsável (opcional)
@@ -127,6 +127,65 @@ const chamadoService = {
   },
 
   /**
+   * Atribui o chamado a um usuário específico e marca como em progresso.
+   * @param {string} id - ID do chamado
+   * @param {number} userId - ID do usuário responsável
+   * @returns {Promise<Object>} Chamado atualizado
+   */
+  assignToUser: async (id, userId) => {
+    try {
+      const response = await API.put(`/chamados/${id}`, {
+        responsavelId: userId,
+        status: "em_progresso",
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Erro ao atribuir chamado ao usuário",
+      );
+    }
+  },
+
+  /**
+   * Abre uma conexão SSE para acompanhar eventos em tempo real do módulo de chamados
+   * @param {Function} onEvent - Callback para eventos recebidos
+   * @param {Function} onError - Callback para erros de conexão
+   * @returns {EventSource}
+   */
+  subscribeToEvents: (onEvent, onError) => {
+    const token = localStorage.getItem("token");
+    const query = token ? `?token=${encodeURIComponent(token)}` : "";
+    const source = new EventSource(`/api/chamados/stream${query}`);
+
+    const handleServerEvent = (eventType) => (event) => {
+      try {
+        const data = event.data ? JSON.parse(event.data) : null;
+        onEvent({ type: eventType, payload: data });
+      } catch (err) {
+        console.error("Erro ao processar evento SSE de chamados", err);
+      }
+    };
+
+    source.addEventListener("CHAMADO_CREATED", handleServerEvent("CHAMADO_CREATED"));
+    source.addEventListener("CHAMADO_UPDATED", handleServerEvent("CHAMADO_UPDATED"));
+    source.addEventListener("CHAMADO_DELETED", handleServerEvent("CHAMADO_DELETED"));
+    source.addEventListener("CHAMADO_ASSIGNED", handleServerEvent("CHAMADO_ASSIGNED"));
+    source.addEventListener("message", handleServerEvent("message"));
+
+    source.onopen = () => {
+      console.debug("SSE chamado conectado", `/api/chamados/stream${query}`);
+    };
+
+    source.onerror = (event) => {
+      if (typeof onError === "function") {
+        onError(event);
+      }
+    };
+
+    return source;
+  },
+
+  /**
    * Gera relatório de chamados filtrado
    * @param {Object} filters - Filtros do relatório
    * @param {number} [filters.setorId] - ID do setor
@@ -167,6 +226,29 @@ const chamadoService = {
     } catch (error) {
       throw new Error(
         error.response?.data?.message || "Erro ao gerar relatório completo",
+      );
+    }
+  },
+
+  /**
+   * Gera relatório de tempo médio de resolução
+   * @param {Object} filters - Filtros do relatório
+   * @param {string} [filters.period] - Período de agrupamento (mensal, semestral, anual)
+   * @param {number} [filters.year] - Ano do relatório
+   * @param {number} [filters.setorId] - ID do setor
+   * @param {string} [filters.tipo] - Tipo de chamado
+   * @returns {Promise<Object>} Dados do relatório de tempo médio
+   */
+  getAverageTimeReport: async (filters = {}) => {
+    try {
+      const params = new URLSearchParams(filters).toString();
+      const response = await API.get(
+        `/chamados/reports/average-time${params ? `?${params}` : ""}`,
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Erro ao gerar relatório de tempo médio",
       );
     }
   },

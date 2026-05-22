@@ -1,10 +1,17 @@
-import React, { createContext, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import chamadoService from "../../service/chamadoService";
 
 export const ChamadoContext = createContext();
 
 export const ChamadoProvider = ({ children }) => {
   const [chamados, setChamados] = useState([]);
+  const eventSourceRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentChamado, setCurrentChamado] = useState(null);
@@ -128,6 +135,25 @@ export const ChamadoProvider = ({ children }) => {
     }
   }, [chamados, currentChamado]);
 
+  const assignChamadoToUser = useCallback(async (id, responsavelId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updated = await chamadoService.assignToUser(id, responsavelId);
+      setChamados(chamados.map((c) => (c.id === id ? updated : c)));
+      if (currentChamado?.id === id) {
+        setCurrentChamado(updated);
+      }
+      return updated;
+    } catch (err) {
+      setError(err.message);
+      console.error("Erro ao atribuir chamado ao usuário:", err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [chamados, currentChamado]);
+
   /**
    * Carrega relatório de chamados
    */
@@ -162,6 +188,65 @@ export const ChamadoProvider = ({ children }) => {
     }
   }, []);
 
+  const startChamadoStream = useCallback(() => {
+    if (
+      eventSourceRef.current &&
+      eventSourceRef.current.readyState !== EventSource.CLOSED
+    ) {
+      return;
+    }
+
+    const source = chamadoService.subscribeToEvents(
+      ({ type, payload }) => {
+        setChamados((current) => {
+          switch (type) {
+            case "CHAMADO_CREATED":
+              return [...current, payload];
+            case "CHAMADO_UPDATED":
+            case "CHAMADO_ASSIGNED":
+              return current.map((item) =>
+                item.id === payload.id ? payload : item,
+              );
+            case "CHAMADO_DELETED":
+              return current.filter((item) => item.id !== payload.id);
+            default:
+              return current;
+          }
+        });
+
+        setCurrentChamado((current) =>
+          current?.id === payload.id ? payload : current,
+        );
+      },
+      (error) => {
+        console.error("Erro na conexão SSE de chamados:", error);
+        if (eventSourceRef.current?.readyState === EventSource.CLOSED) {
+          eventSourceRef.current = null;
+        }
+      },
+    );
+
+    source.onopen = () => {
+      console.debug("Conexão SSE de chamados aberta");
+    };
+
+    source.onerror = () => {
+      if (source.readyState === EventSource.CLOSED) {
+        eventSourceRef.current = null;
+      }
+    };
+
+    eventSourceRef.current = source;
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+      }
+    };
+  }, []);
+
   const value = {
     chamados,
     currentChamado,
@@ -173,8 +258,10 @@ export const ChamadoProvider = ({ children }) => {
     updateChamado,
     deleteChamado,
     assignChamado,
+    assignChamadoToUser,
     loadReport,
     loadFullReport,
+    startChamadoStream,
     setError,
   };
 
