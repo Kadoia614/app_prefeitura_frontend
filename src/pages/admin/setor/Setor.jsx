@@ -21,7 +21,7 @@ const Setor = () => {
   const fetchData = async () => {
     attIsLoading(true);
     try {
-      const { data } = await API.get("/setor");
+      const { data } = await API.get("/setores");
       setTableData(data.setores);
     } catch (error) {
       showToast(
@@ -39,6 +39,7 @@ const Setor = () => {
 
   useEffect(() => {
     loadTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -16,6 +16,7 @@ const Header = () => {
     if (user.auth) {
       getServices();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {

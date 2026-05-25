@@ -10,6 +10,7 @@ const Modal = ({
   onShow,
   aceptLabel = "Confirmar",
   onAcept,
+  closeAfeterAction = true,
   refuseLabel = "Cancelar",
   onRefuse,
   typeAction = "btn-primary",
@@ -25,7 +26,7 @@ const Modal = ({
     try {
       attIsLoading(true);
       await onAcept();
-      setIsOpen(false);
+      closeAfeterAction && setIsOpen(false);
       attIsLoading(false);
     } catch {
       attIsLoading(false);
@@ -85,6 +86,7 @@ Modal.propTypes = {
   setIsOpen: PropTypes.func,
   aceptLabel: PropTypes.string,
   onAcept: PropTypes.func,
+  closeAfeterAction: PropTypes.bool,
   refuseLabel: PropTypes.string,
   onRefuse: PropTypes.func,
   onHide: PropTypes.func,

@@ -11,6 +11,8 @@ import API from "../../../api/API";
 
 const API_ENDPOINTS = {
   USERS: "/user",
+  ROLES: "/roles",
+  SETORES: "/setores",
 };
 
 const MESSAGES = {
@@ -40,10 +42,14 @@ const PainelAdmin = () => {
   const fetchData = async () => {
     attIsLoading(true);
     try {
-      const response = await API.get(API_ENDPOINTS.USERS);
-      setTableData(response.data.users);
-      setRoles(response.data.roles);
-      setSetores(response.data.setores);
+      const responseUser = await API.get(API_ENDPOINTS.USERS);
+      const responseRoles = await API.get(API_ENDPOINTS.ROLES);
+      const responseSetores = await API.get(API_ENDPOINTS.SETORES);
+
+      console.log(responseUser);
+      setTableData(responseUser.data.user);
+      setRoles(responseRoles.data.roles);
+      setSetores(responseSetores.data.setores);
     } catch (error) {
       showToast(
         "error",
@@ -60,6 +66,7 @@ const PainelAdmin = () => {
 
   useEffect(() => {
     loadTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

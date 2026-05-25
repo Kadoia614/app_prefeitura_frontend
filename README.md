@@ -61,6 +61,9 @@ Aplicação web desenvolvida em React + Vite para gestão de demandas, usuários
 - Gestão de demandas de TI
 - Cadastro e edição de usuários, setores e funções administrativas
 - Upload e visualização de documentos
+- Acompanhamento em tempo real de chamados via SSE
+- Atribuição de chamados via modal com seleção de usuário do setor 1
+- Formulário de chamados com seleção de setor por nome
 - Painel administrativo
 - Notificações e feedbacks via Toast
 

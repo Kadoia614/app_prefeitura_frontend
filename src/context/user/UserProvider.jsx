@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import PropTypes from "prop-types";
 import API from "../../api/API";
@@ -20,54 +20,53 @@ export const UserProvider = ({ children }) => {
 
   const [params, setParams] = useState({});
 
-  const AttAuth = (value) => {
+  const AttAuth = useCallback((value) => {
     setUser((e) => ({ ...e, auth: value }));
-  };
+  }, []);
 
-  const AttScopo = (value) => {
+  const AttScopo = useCallback((value) => {
     setUser((e) => ({ ...e, scopo: value }));
-  };
+  }, []);
 
-  const attUser = (IP, username, scopo) => {
+  const attUser = useCallback((IP, username, scopo) => {
     setUser({
       ip: IP,
       name: username,
       scopo: scopo,
     });
-  };
+  }, []);
 
-  const getServices = async () => {
+  const getServices = useCallback(async () => {
     try {
       attIsLoading(true);
 
       const response = await API.get("/service/user");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
-      console.log(error.response.data.message);
-      showToast("error", "Error", error.response.data.message);
+      showToast("error", "Error", error.response?.data?.message || "Erro ao carregar serviços");
       return []; // Retorna um array vazio em caso de erro
     } finally {
       attIsLoading(false);
     }
-  };
+  }, [attIsLoading, showToast]);
 
-  const switchPermissions = async () => {
+  const switchPermissions = useCallback(async () => {
       let ServicePermissions = services.filter((service) => {
-        return service.id == params.id;
+        return service.id === Number(params.id);
       });
 
       const serviceTarget = ServicePermissions[0];
 
-      setPermissions(serviceTarget?.permission);
-  };
+      setPermissions(serviceTarget?.permissions[0]);
+  }, [params.id, services]);
 
   useEffect(() => {
     switchPermissions();
-  }, [services, params]);
+  }, [switchPermissions]);
 
-  const AttParams = (param) => {
-    setParams(param)
-  };
+  const AttParams = useCallback((param) => {
+    setParams(param);
+  }, []);
 
   return (
     <UserContext.Provider

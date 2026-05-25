@@ -12,9 +12,7 @@ import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
 import InputField from "../../../components/shared/input/inputfield/InputField";
 import { useMinhaCasaContext } from "../../../context/minhacasa/MinhaCasaContext";
-import InputFieldMask from "../../../components/shared/input/inputfield/InputFieldMask";
 import CalendarInput from "../../../components/shared/input/CalendarInput";
-import { DataInteractive } from "@headlessui/react";
 
 const Cadastro_Modal = ({ setOpenModalEdit, openModalEdit }) => {
   const { target, setTarget, addCadastro, attCadastro } = useMinhaCasaContext();
