@@ -96,6 +96,7 @@ const BolsistasTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
 
   useEffect(() => {
     fetchBolsistas(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (

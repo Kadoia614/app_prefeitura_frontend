@@ -55,6 +55,7 @@ const PainelServices = () => {
   //#region EDIT / CREATE ITEMS
   useEffect(() => {
     loadTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

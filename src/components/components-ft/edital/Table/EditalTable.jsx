@@ -34,6 +34,7 @@ const EditalTable = ({ setIsEditalModalOpen, setIsVincularModalOpen }) => {
 
   useEffect(() => {
     fetchEdital();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderStatus = (rowData) => {

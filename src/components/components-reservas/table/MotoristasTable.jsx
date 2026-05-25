@@ -23,6 +23,7 @@ const MotoristasTable = () => {
 
   useEffect(() => {
     fetchMotorista();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   const renderActions = (rowData) => (

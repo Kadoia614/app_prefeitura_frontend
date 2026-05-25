@@ -1,12 +1,14 @@
-import React, {
+import {
   createContext,
   useRef,
   useState,
   useCallback,
   useEffect,
 } from "react";
+import PropTypes from "prop-types";
 import chamadoService from "../../service/chamadoService";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ChamadoContext = createContext();
 
 export const ChamadoProvider = ({ children }) => {
@@ -59,7 +61,14 @@ export const ChamadoProvider = ({ children }) => {
     setError(null);
     try {
       const newChamado = await chamadoService.create(data);
-      setChamados([...chamados, newChamado]);
+      setChamados((current) => {
+        if (current.some((item) => item.id === newChamado.id)) {
+          return current.map((item) =>
+            item.id === newChamado.id ? newChamado : item,
+          );
+        }
+        return [...current, newChamado];
+      });
       return newChamado;
     } catch (err) {
       setError(err.message);
@@ -68,7 +77,7 @@ export const ChamadoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [chamados]);
+  }, []);
 
   /**
    * Atualiza um chamado existente
@@ -78,7 +87,7 @@ export const ChamadoProvider = ({ children }) => {
     setError(null);
     try {
       const updated = await chamadoService.update(id, data);
-      setChamados(chamados.map((c) => (c.id === id ? updated : c)));
+      setChamados((current) => current.map((c) => (c.id === id ? updated : c)));
       if (currentChamado?.id === id) {
         setCurrentChamado(updated);
       }
@@ -90,7 +99,7 @@ export const ChamadoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [chamados, currentChamado]);
+  }, [currentChamado]);
 
   /**
    * Deleta um chamado
@@ -100,7 +109,7 @@ export const ChamadoProvider = ({ children }) => {
     setError(null);
     try {
       await chamadoService.delete(id);
-      setChamados(chamados.filter((c) => c.id !== id));
+      setChamados((current) => current.filter((c) => c.id !== id));
       if (currentChamado?.id === id) {
         setCurrentChamado(null);
       }
@@ -111,7 +120,7 @@ export const ChamadoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [chamados, currentChamado]);
+  }, [currentChamado]);
 
   /**
    * Atribui o chamado ao usuário autenticado
@@ -121,7 +130,7 @@ export const ChamadoProvider = ({ children }) => {
     setError(null);
     try {
       const updated = await chamadoService.assign(id);
-      setChamados(chamados.map((c) => (c.id === id ? updated : c)));
+      setChamados((current) => current.map((c) => (c.id === id ? updated : c)));
       if (currentChamado?.id === id) {
         setCurrentChamado(updated);
       }
@@ -133,14 +142,14 @@ export const ChamadoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [chamados, currentChamado]);
+  }, [currentChamado]);
 
   const assignChamadoToUser = useCallback(async (id, responsavelId) => {
     setLoading(true);
     setError(null);
     try {
       const updated = await chamadoService.assignToUser(id, responsavelId);
-      setChamados(chamados.map((c) => (c.id === id ? updated : c)));
+      setChamados((current) => current.map((c) => (c.id === id ? updated : c)));
       if (currentChamado?.id === id) {
         setCurrentChamado(updated);
       }
@@ -152,7 +161,7 @@ export const ChamadoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [chamados, currentChamado]);
+  }, [currentChamado]);
 
   /**
    * Carrega relatório de chamados
@@ -201,6 +210,11 @@ export const ChamadoProvider = ({ children }) => {
         setChamados((current) => {
           switch (type) {
             case "CHAMADO_CREATED":
+              if (current.some((item) => item.id === payload.id)) {
+                return current.map((item) =>
+                  item.id === payload.id ? payload : item,
+                );
+              }
               return [...current, payload];
             case "CHAMADO_UPDATED":
             case "CHAMADO_ASSIGNED":
@@ -271,3 +285,7 @@ export const ChamadoProvider = ({ children }) => {
 };
 
 export default ChamadoProvider;
+
+ChamadoProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

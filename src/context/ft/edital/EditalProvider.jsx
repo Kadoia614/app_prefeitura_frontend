@@ -149,6 +149,7 @@ export const EditalProvider = ({ children }) => {
 
   useEffect(() => {
     fetchBolsistaEdital();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetEdital, queryEdital]);
 
   return (

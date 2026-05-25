@@ -63,6 +63,7 @@ const SideBarBolsista = ({ sideBarStatus, setSideBarStatus, sideBarData }) => {
     } else {
       clearSideBar();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sideBarStatus]);
 
   return (

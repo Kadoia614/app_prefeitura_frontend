@@ -22,6 +22,7 @@ const FT_Bolsista_Prorrogate_Bolsista = ({ isOpen, setIsOpen }) => {
     } else {
       setToProrrogate([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectAll]);
 
   return (

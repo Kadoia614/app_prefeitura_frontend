@@ -1,5 +1,7 @@
 import API from "../api/API";
 
+const API_BASE_URL = API.defaults.baseURL || "";
+
 /**
  * Serviço para gerenciar chamados via API
  * Endpoints: /chamados
@@ -42,12 +44,16 @@ const chamadoService = {
    */
   list: async (filters = {}) => {
     try {
-      const status = filters.status;
-      const setorId = filters.setorId;
-      
-      const response = await API.get(`/chamados${
-        status ? `?status=${status}` : ""
-    }${setorId ? status ? `&setorId=${setorId}` : `?setorId=${setorId}` : ""}`);
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          params.append(key, value);
+        }
+      });
+
+      const response = await API.get(
+        `/chamados${params.toString() ? `?${params.toString()}` : ""}`,
+      );
       return response.data;
     } catch (error) {
       throw new Error(
@@ -155,7 +161,8 @@ const chamadoService = {
   subscribeToEvents: (onEvent, onError) => {
     const token = localStorage.getItem("token");
     const query = token ? `?token=${encodeURIComponent(token)}` : "";
-    const source = new EventSource(`/api/chamados/stream${query}`);
+    const streamUrl = `${API_BASE_URL}/chamados/stream${query}`;
+    const source = new EventSource(streamUrl);
 
     const handleServerEvent = (eventType) => (event) => {
       try {
@@ -173,7 +180,7 @@ const chamadoService = {
     source.addEventListener("message", handleServerEvent("message"));
 
     source.onopen = () => {
-      console.debug("SSE chamado conectado", `/api/chamados/stream${query}`);
+      console.debug("SSE chamado conectado", streamUrl);
     };
 
     source.onerror = (event) => {

@@ -25,6 +25,7 @@ const VeiculosTable = () => {
 
   useEffect(() => {
     fetchVeiculo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   const renderActions = (rowData) => (

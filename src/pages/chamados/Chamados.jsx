@@ -10,6 +10,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import RenderStatus from "@/components/shared/RenderStatus";
 import { useUserContext } from "../../context/user/UserContext";
+import { useToast } from "../../components/shared/toast/ToastProvider";
 
 const Chamados = () => {
   const {
@@ -23,6 +24,7 @@ const Chamados = () => {
     startChamadoStream,
   } = useChamados();
   const { permissions } = useUserContext();
+  const { showToast } = useToast();
 
   const [showForm, setShowForm] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -93,7 +95,7 @@ const Chamados = () => {
       };
 
       await createChamado(payload);
-      alert("Chamado criado com sucesso!");
+      showToast("success", "Sucesso", "Chamado criado com sucesso!");
       setFormData({
         patrimonio: "",
         tipo: "manutencao",
@@ -105,7 +107,7 @@ const Chamados = () => {
       });
       setShowForm(false);
     } catch (err) {
-      alert("Erro ao criar chamado: " + err.message);
+      showToast("error", "Erro", "Erro ao criar chamado: " + err.message);
     }
   };
 
@@ -155,10 +157,10 @@ const Chamados = () => {
         status: statusUpdate,
         observacoes: observacoesUpdate,
       });
-      alert("Chamado atualizado com sucesso!");
+      showToast("success", "Sucesso", "Chamado atualizado com sucesso!");
       setShowDetailModal(false);
     } catch (err) {
-      alert("Erro ao salvar chamado: " + err.message);
+      showToast("error", "Erro", "Erro ao salvar chamado: " + err.message);
     }
   };
 
@@ -171,18 +173,18 @@ const Chamados = () => {
   const handleSaveAssignChamado = async () => {
     if (!selectedAssignChamado) return;
     if (!selectedAssignedUserId) {
-      alert("Selecione um usuário para assumir o chamado.");
+      showToast("warn", "Atenção", "Selecione um usuário para assumir o chamado.");
       return;
     }
 
     try {
       await assignChamadoToUser(selectedAssignChamado.id, Number(selectedAssignedUserId));
-      alert("Chamado atribuído com sucesso e movido para em progresso.");
+      showToast("success", "Sucesso", "Chamado atribuído com sucesso e movido para em progresso.");
       setShowAssignModal(false);
       setSelectedAssignChamado(null);
       setSelectedAssignedUserId(null);
     } catch (err) {
-      alert("Erro ao atribuir chamado: " + err.message);
+      showToast("error", "Erro", "Erro ao atribuir chamado: " + err.message);
     }
   };
 
@@ -220,7 +222,7 @@ const Chamados = () => {
       const data = await chamadoService.getAverageTimeReport(filters);
       setReportData(data);
     } catch (err) {
-      alert("Erro ao gerar relatório: " + err.message);
+      showToast("error", "Erro", "Erro ao gerar relatório: " + err.message);
     } finally {
       setReportLoading(false);
     }
@@ -236,7 +238,7 @@ const Chamados = () => {
         color="text-primary bg-white border-none"
         onClick={() => openChamadoDetail(rowData)}
       />
-      {!isFinalizado(rowData.status) && rowData.status === "aberto" && (
+      {permissions?.edit && !isFinalizado(rowData.status) && rowData.status === "aberto" && (
         <TableButton
           tooltip={`Assumir chamado`}
           icon={"pi pi-user-plus"}
@@ -497,7 +499,9 @@ const Chamados = () => {
               body={(rowData) => getResponsavelName(rowData.responsavelId)}
               className="text-sm text-text-muted p-4 whitespace-nowrap"
             />
-            {permissions && <Column header="Ações" body={renderActions} />}
+            {(permissions?.read || permissions?.edit) && (
+              <Column header="Ações" body={renderActions} />
+            )}
           </DataTable>
         </TableContainer>
       </div>
@@ -608,13 +612,13 @@ const Chamados = () => {
               <strong>Setor atual:</strong> {getSetorName(selectedAssignChamado.setorId)}
             </div>
             <div className="form-group">
-              <label>Responsável (Setor 1)</label>
+              <label>Responsável</label>
               <select
                 value={selectedAssignedUserId || ""}
                 onChange={(e) => setSelectedAssignedUserId(e.target.value)}
               >
                 <option value="" disabled>
-                  Selecione um usuário do setor 1
+                  Selecione um usuário do setor
                 </option>
                 {assignableUsers.length ? (
                   assignableUsers.map((user) => (
@@ -624,7 +628,7 @@ const Chamados = () => {
                   ))
                 ) : (
                   <option value="" disabled>
-                    Nenhum usuário encontrado no setor 1
+                    Nenhum usuário encontrado nesse setor
                   </option>
                 )}
               </select>
@@ -638,6 +642,7 @@ const Chamados = () => {
       <Modal
         title="Relatório de Tempo Médio de Resolução"
         isOpen={showReportModal}
+        closeAfeterAction={false}
         setIsOpen={setShowReportModal}
         onHide={() => setShowReportModal(false)}
         onAcept={handleFetchReport}
@@ -696,9 +701,9 @@ const Chamados = () => {
               <option value="">Todos os tipos</option>
               <option value="manutencao">Manutenção</option>
               <option value="reparo">Reparo</option>
-              <option value="atualizacao">Atualização</option>
-              <option value="consultoria">Consultoria</option>
               <option value="instalacao">Instalação</option>
+              <option value="suporte">Suporte</option>
+              <option value="outros">Outros</option>
             </select>
           </div>
 

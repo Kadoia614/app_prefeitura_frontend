@@ -70,6 +70,7 @@ const Vincular_Bolsista = ({ isVincularModalOpen, setIsVincularModalOpen }) => {
 
   useEffect(() => {
     fetchBolsistas(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (

@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Paginator } from "primereact/paginator";
 import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 
@@ -99,6 +98,7 @@ const CadastrosTable = ({ setOpenModalEdit, setExcludeModalOpen }) => {
 
   useEffect(() => {
     fetchCadastro(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (

@@ -2,7 +2,6 @@ import TableContainer from "@/components/shared/table/TableContainer";
 import TableHeader from "@/components/shared/table/TableHeader";
 import TableButton from "@/components/shared/table/TableButton";
 
-import { Paginator } from "primereact/paginator";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { SpeedDial } from "primereact/speeddial";

@@ -76,6 +76,7 @@ const TableCertidao = ({ setModalData, setIsOpen, setExcludeIsOpen }) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (

@@ -1,29 +1,25 @@
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router";
 
 import Header from "./pages/layout/Header";
 import Login from "./pages/login/Login";
 
-import ServicesCards from "./pages/Services";
-
-// import DemandasTi from "./pages/demandasTI/PainelDemandasTi";
-// import Demandas from "./pages/demandasTI/AllDemandas";
-// import UserDemandas from "./pages/demandasTI/UserDemandas";
-// import HistoryDemandas from "./pages/demandasTI/HistoryDemandas";
-
-import FT_APP from "./pages/FT_APP";
 import ProtectRoutes from "./middleware/ProtectRoutes";
 import HandleError from "./middleware/HandleError";
-import Admin from "./pages/admin/PainelAdmin";
-import UserConfig from "./pages/user/UserConfig";
 import Footer from "./pages/layout/Footer";
-import CertidaoIPTU from "./pages/iptu/certidao/Certidao";
-import Esporte from "./pages/esporte/Esporte";
-import MinhaCasa from "./pages/minhacasa/MinhaCasa";
-import Reservas from "./pages/Reservas";
-import TelaTeste from "./pages/TelaTeste";
-import FormReservas from "./pages/FormReservas";
-import Devs from "./pages/devs/Devs";
-import Chamados from "./pages/chamados/Chamados";
+
+const ServicesCards = lazy(() => import("./pages/Services"));
+const FT_APP = lazy(() => import("./pages/FT_APP"));
+const Admin = lazy(() => import("./pages/admin/PainelAdmin"));
+const UserConfig = lazy(() => import("./pages/user/UserConfig"));
+const CertidaoIPTU = lazy(() => import("./pages/iptu/certidao/Certidao"));
+const Esporte = lazy(() => import("./pages/esporte/Esporte"));
+const MinhaCasa = lazy(() => import("./pages/minhacasa/MinhaCasa"));
+const Reservas = lazy(() => import("./pages/Reservas"));
+const TelaTeste = lazy(() => import("./pages/TelaTeste"));
+const FormReservas = lazy(() => import("./pages/FormReservas"));
+const Devs = lazy(() => import("./pages/devs/Devs"));
+const Chamados = lazy(() => import("./pages/chamados/Chamados"));
 
 function App() {
   const Env = import.meta.env.VITE_APP_NODE_ENV;
@@ -91,26 +87,28 @@ function App() {
           <div id="Main" className="min-h-full flex flex-col bg-background">
             <Header />
             <div className="flex flex-col justify-between h-[100%] overflow-auto">
-              <Routes>
-                <Route path="/" index element={<Login />} />
+              <Suspense fallback={<div className="loading">Carregando...</div>}>
+                <Routes>
+                  <Route path="/" index element={<Login />} />
 
-                <Route path="/services/:id?" element={<ProtectRoutes />}>
-                  <Route index element={<ServicesCards />} />
+                  <Route path="/services/:id?" element={<ProtectRoutes />}>
+                    <Route index element={<ServicesCards />} />
 
-                  {servicos.map((servico) => (
-                    <Route
-                      key={servico.path}
-                      path={servico.path}
-                      element={servico.component}
-                    />
-                  ))}
-                </Route>
-                <Route
-                  path={"devs"}
-                  element={<Devs/>}
-                />
-                <Route path="*" element={<HandleError />} />
-              </Routes>
+                    {servicos.map((servico) => (
+                      <Route
+                        key={servico.path}
+                        path={servico.path}
+                        element={servico.component}
+                      />
+                    ))}
+                  </Route>
+                  <Route
+                    path={"devs"}
+                    element={<Devs/>}
+                  />
+                  <Route path="*" element={<HandleError />} />
+                </Routes>
+              </Suspense>
               {Env === "development" && (
                 <div className="bg-background-muted text-danger fixed rounded-md p-4 left-2 bottom-2 z-999">
                   Sistema em ambiente de desenvolvimento...
