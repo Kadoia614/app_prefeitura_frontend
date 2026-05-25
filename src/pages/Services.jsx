@@ -6,7 +6,6 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Link } from "react-router";
 
-// eslint-disable-next-line react/prop-types
 function Services() {
   const [services, setServices] = useState([]); // Inicializado como array vazio
   const [error, setError] = useState(false);
@@ -16,7 +15,6 @@ function Services() {
       const response = await API.get("/service/user");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
-      console.log(error.response.data.message);
       setError(error);
       return []; // Retorna um array vazio em caso de erro
     }
@@ -29,6 +27,7 @@ function Services() {
 
   useEffect(() => {
     getService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {

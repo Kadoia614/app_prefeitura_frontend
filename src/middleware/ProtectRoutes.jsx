@@ -24,7 +24,7 @@ const ProtectRoutes = () => {
       attUser(data.user.ip, data.user.name, data.user.role);
       AttAuth(true);
     } catch (err) {
-      if (err.status === 401 || err.status === 403) {
+      if (err.status === 401 || err.status === 403 || err.status === 400) {
         AttAuth(false);
         localStorage.removeItem("token");
         navigate("/");
@@ -53,7 +53,7 @@ const ProtectRoutes = () => {
 
   return (
     <>
-      <div className="container mx-auto my-4 bg-background-muted rounded-md">
+      <div className="w-full mx-auto my-4 bg-background-muted rounded-md">
         <Outlet />
       </div>
     </>

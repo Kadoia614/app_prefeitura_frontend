@@ -1,15 +1,10 @@
 import { SportContext } from "./SportContext";
 import PropTypes from "prop-types";
-import { useToast } from "../../components/shared/toast/ToastProvider";
-import { useLoadingContext } from "../loading/LoadingContext";
 import { useState } from "react";
 
 const SportProvider = ({ children }) => {
-  let { showToast } = useToast();
-  let { attIsLoading } = useLoadingContext();
-
   const [atleta, setAtleta] = useState([]);
-  const [modalidade, setModalidade] = useState([]);
+  const [modalidade] = useState([]);
   const [atletaTarget, setAtletaTarget] = useState({
   });
 
@@ -19,7 +14,9 @@ const SportProvider = ({ children }) => {
   };
 
   const removeAtleta = () => {
-    setAtleta(e=>[e.filter((item) => item.uuid !== atletaTarget.uuid)]);
+    setAtleta((current) =>
+      current.filter((item) => item.uuid !== atletaTarget.uuid),
+    );
     setAtletaTarget({});
   };
 

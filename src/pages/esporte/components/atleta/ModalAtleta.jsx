@@ -11,6 +11,7 @@ import InputFieldMask from "@/components/shared/input/inputfield/InputFieldMask"
 import Modal from "@/components/shared/modal/Modal";
 
 import { useRef, useState } from "react";
+import PropTypes from "prop-types";
 
 const ModalAtleta = ({ isOpen, setIsOpen }) => {
   const { setAtletaTarget, atletaTarget, saveAtleta } = useSportContext();
@@ -287,3 +288,8 @@ const ModalAtleta = ({ isOpen, setIsOpen }) => {
 };
 
 export default ModalAtleta;
+
+ModalAtleta.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+};

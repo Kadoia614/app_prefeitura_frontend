@@ -24,8 +24,7 @@ export default defineConfig({
     strictPort: true, // Garante que use a porta 5173
     proxy: {
       "/api": {
-        target: "http://192.168.16.13:3000/api",
-        //target: "http://192.168.16.13:3000",
+        target: "http://192.168.16.13:3000/api/v2",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace("/api", ""),
@@ -35,6 +34,16 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace("/ft/", ""),
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom", "react-router"],
+          charts: ["chart.js"],
+        },
       },
     },
   },

@@ -19,45 +19,58 @@ const SaveServiceModal = ({
   roles,
   loadTable,
 }) => {
-    
   const [rolePermission, setRolePermission] = useState(false);
   const [dropdownService, setDropdownService] = useState(false);
-
 
   const { showToast } = useToast();
 
   const onSave = async (id) => {
-    if (!id) {
-      await saveService({ service: modalData });
+    if (!modalData.service.id) {
+      await saveService({ service: modalData.service });
     } else {
-      await updateService({ service: modalData }, id);
+      await updateService(
+        {
+          service: modalData.service,
+          visibility: modalData.visibility,
+          permissions: modalData.permissions,
+        },
+        id,
+      );
     }
   };
 
   const handleSave = async () => {
     try {
-      await onSave(modalData.id);
+      await onSave(modalData.service.id);
       showToast(
         "success",
-        modalData.id ? "Service updated successfully!" : "Service saved successfully!"
+        modalData.id
+          ? "Service updated successfully!"
+          : "Service saved successfully!",
       );
       setModalData({});
     } catch (error) {
-      showToast("error", "Failed to save Service: " + error.response.data.message);
+      showToast(
+        "error",
+        "Failed to save Service: " + error.response.data.message,
+      );
     } finally {
       loadTable();
     }
   };
 
   const editableItem = (key, value) => {
-    setModalData((prev) => ({ ...prev, [key]: value }));
+    setModalData((prev) => ({
+      ...prev,
+      service: { ...prev.service, [key]: value },
+    }));
   };
 
   const editablePermission = (permissionId, key, value) => {
     setModalData((prev) => ({
       ...prev,
-      permission: prev.permission.map((perm) =>
-        perm.id === permissionId ? { ...perm, [key]: value } : perm
+      permissions: prev.permissions.map((perm) =>
+        perm.id === permissionId ? { ...perm, [key]: value } : perm,
       ),
     }));
   };
@@ -66,7 +79,7 @@ const SaveServiceModal = ({
     setModalData((prev) => ({
       ...prev,
       visibility: prev.visibility.map((visib) =>
-        visib.id === visibilityId ? { ...visib, visibility: value } : visib
+        visib.id === visibilityId ? { ...visib, visibility: value } : visib,
       ),
     }));
     console.log(modalData);
@@ -74,7 +87,7 @@ const SaveServiceModal = ({
 
   return (
     <Modal
-      title={modalData.id ? "Edit Service" : "New Service"}
+      title={modalData.service?.id ? "Edit Service" : "New Service"}
       isOpen={isOpen}
       onAcept={() => handleSave()}
       onRefuse={() => setIsOpen(false)}
@@ -83,6 +96,7 @@ const SaveServiceModal = ({
       typeCancel="btn-cancel"
       setIsOpen={setIsOpen}
     >
+      {console.log(modalData)}
       <div className="p-4">
         <div id="ServiceData" className="sm:grid grid-cols-1 gap-4">
           <div id="Data" className="sm:grid grid-cols-1 gap-4">
@@ -90,14 +104,14 @@ const SaveServiceModal = ({
             <InputField
               id="Name"
               label="Nome do Serviço"
-              value={modalData.name || ""}
+              value={modalData.service?.name || ""}
               onChange={(e) => editableItem("name", e.target.value)}
             />
             {/* Description */}
             <InputField
               id="Description"
               label="Descrição do Serviço"
-              value={modalData.description || ""}
+              value={modalData.service?.description || ""}
               onChange={(e) => editableItem("description", e.target.value)}
               isTextArea
             />
@@ -105,7 +119,7 @@ const SaveServiceModal = ({
             <InputField
               id="Url"
               label="Url do Serviço"
-              value={modalData.url || ""}
+              value={modalData.service?.url || ""}
               onChange={(e) => editableItem("url", e.target.value)}
             />
           </div>
@@ -130,8 +144,8 @@ const SaveServiceModal = ({
             </div>
 
             <div>
-              {modalData?.permission
-                ? modalData.permission.map((permission) => (
+              {modalData?.permissions
+                ? modalData.permissions.map((permission) => (
                     <div
                       key={permission.id}
                       className="flex justify-between items-start px-4 py-2"
@@ -164,7 +178,7 @@ const SaveServiceModal = ({
                             editablePermission(
                               permission.id,
                               "write",
-                              e.checked
+                              e.checked,
                             )
                           }
                           checked={permission.write || false}
@@ -234,7 +248,7 @@ const SaveServiceModal = ({
                         <h3 className="text-lg font-bold">
                           {
                             setor.find(
-                              (setor) => setor.id == visibility.setor_id
+                              (setor) => setor.id == visibility.setor_id,
                             )?.name
                           }
                         </h3>
@@ -265,7 +279,7 @@ SaveServiceModal.propTypes = {
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       name: PropTypes.string,
-    })
+    }),
   ).isRequired,
   roles: PropTypes.array,
   onSave: PropTypes.func,

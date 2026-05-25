@@ -8,28 +8,30 @@ const SelectField = ({
   options,
   onChange,
   disabled,
+  valueKey,
+  labelOptions,
   defaultValue,
   selectClass,
   defaultDisabled
 }) => (
-  <fieldset className={`mt-2 text-end ${fieldsetClass}`}>
+  <fieldset className={`mt-2 ${fieldsetClass}`}>
     <label htmlFor={id} className={`font-bold text-text-muted`}>
       {label}
     </label>
     <div className="mt-1">
       <select
         id={id}
-        className={`rounded-md border-gray-300 focus:border-primary focus:ring focus:ring-blue-200 w-full ps-2 py-1.5 ${selectClass} ${disabled ? "bg-gray-100" : "bg-"}`}
+        className={`rounded-md border-gray-300 focus:border-primary focus:ring focus:ring-blue-200 w-full ps-2 py-1.5 ${selectClass} ${disabled ? "bg-background-muted" : "bg-"}`}
         value={value || ""}
         onChange={onChange}
         disabled={disabled}
       >
-        <option value="" disabled={defaultDisabled ? defaultDisabled : ""}>
+        <option value="" disabled={defaultDisabled ? defaultDisabled : ""} className="text-text">
           {defaultValue || "Escolha uma opção"}
         </option>
-        {options && options.map((option, index) => (
-          <option key={index} value={option.id || ""}>
-            {option.name || ""}
+        {options && options.map((option, index) => (  
+          <option key={index} value={option[valueKey] || option.id || ""} className="text-text">
+            {option[labelOptions] || option.name || ""}
           </option>
         ))}
       </select>
@@ -42,10 +44,9 @@ SelectField.propTypes = {
   label: PropTypes.string.isRequired,
   fieldsetClass: PropTypes.string,
   value: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string,
-    label: PropTypes.string,
-  })),
+  options: PropTypes.array.isRequired,
+  labelOptions: PropTypes.string,
+  valueKey: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   defaultValue: PropTypes.string,

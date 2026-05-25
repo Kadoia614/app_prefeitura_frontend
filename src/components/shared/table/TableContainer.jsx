@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const TableContainer = ({ children }) => {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
+    <div className=" w-full overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
       {children}
     </div>
   );

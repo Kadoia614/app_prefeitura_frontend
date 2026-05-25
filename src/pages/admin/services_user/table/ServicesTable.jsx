@@ -6,6 +6,7 @@ import TableButton from "@/components/shared/table/TableButton";
 import TableHeader from "@/components/shared/table/TableHeader";
 import { Button } from "primereact/button";
 import PropTypes from "prop-types";
+import API from "../../../../api/API";
 
 const ServicesTable = ({
   tableData,
@@ -14,6 +15,17 @@ const ServicesTable = ({
   setExcludeModalOpen,
   setExcludeModal,
 }) => {
+
+  const fetchData = async (id) => {
+    await API.get(`/service/${id}`).then((response) => {
+      const payload = {
+        service: response.data.services,
+        permissions: response.data.permissions,
+        visibility: response.data.visibility
+      };
+      setModalData(payload);})
+  };
+
   const renderActions = (rowData) => (
     <div className="flex flex-wrap gap-2">
       <TableButton
@@ -23,7 +35,7 @@ const ServicesTable = ({
         color="text-text-secondary bg-white border-none"
         onClick={() => {
           setOpenModalEdit(true);
-          setModalData(rowData);
+          fetchData(rowData.id);
         }}
       />
 
